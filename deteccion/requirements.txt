@@ -1,0 +1,7 @@
+ultralytics 
+opencv-python
+websockets 
+flask 
+flask-sock 
+simple-websocket
+requests
