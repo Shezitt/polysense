@@ -26,12 +26,6 @@
                     </div>
 
                     <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                        
-                        <a href="{{ url('/') }}" 
-                           class="inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium transition-colors
-                           {{ request()->is('/') ? 'border-indigo-500 text-gray-900' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300' }}">
-                            Home
-                        </a>
 
                         <a href="{{ route('modulo1') }}" 
                            class="inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium transition-colors
@@ -43,10 +37,6 @@
                            class="inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium transition-colors
                            {{ request()->routeIs('modulo2') ? 'border-indigo-500 text-gray-900' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300' }}">
                             Módulo 2
-                        </a>
-
-                        <a href="#" class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300">
-                            About
                         </a>
                     </div>
                 </div>

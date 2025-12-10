@@ -5,7 +5,7 @@ use App\Http\Controllers\ReporteController;
 use App\Http\Controllers\VehicleMonitorController;
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('modulo1');
 });
 
 Route::get('/modulo1', function() {
