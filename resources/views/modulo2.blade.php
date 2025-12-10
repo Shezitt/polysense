@@ -11,7 +11,6 @@
         </div>
         
         <form action="{{ route('modulo2') }}" method="GET" class="flex items-center gap-3 bg-gray-50 p-2 rounded-lg border border-gray-200">
-            
             <div class="flex flex-col">
                 <label class="text-xs text-gray-500 font-semibold ml-1">Rango de Fechas</label>
                 <div class="flex items-center gap-2">
@@ -41,10 +40,9 @@
 </div>
 
 <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
-    
     <div class="lg:col-span-2 bg-white rounded-lg shadow-lg p-6">
         <div class="flex justify-between items-center mb-6">
-            <h2 class="text-lg font-semibold text-gray-800">📊 Vehículos Detectados por Día (Última Semana)</h2>
+            <h2 class="text-lg font-semibold text-gray-800">📊 Vehículos Detectados por Día</h2>
             <button class="text-gray-400 hover:text-gray-600">
                 <i class="fas fa-ellipsis-v"></i>
             </button>
@@ -92,18 +90,14 @@
                 </tr>
             </thead>
             <tbody class="divide-y divide-gray-100 text-sm text-gray-700" id="reportsTableBody">
-                {{-- BUCLE DINÁMICO: Itera sobre la variable $registros que enviará el controlador --}}
                 @forelse($registros ?? [] as $registro)
                     @php
-                        // Lógica simple para color del punto según tipo
                         $colorClass = match(strtolower($registro['tipo'])) {
                             'auto' => 'bg-blue-500',
                             'moto' => 'bg-red-500',
                             'bus' => 'bg-green-500',
                             default => 'bg-gray-500'
                         };
-                        
-                        // Lógica para color de confianza
                         $conf = floatval($registro['confianza']);
                         $confColor = $conf > 90 ? 'bg-green-100 text-green-800' : ($conf > 75 ? 'bg-yellow-100 text-yellow-800' : 'bg-red-100 text-red-800');
                     @endphp
@@ -136,12 +130,7 @@
     </div>
 
     <div class="px-6 py-4 border-t border-gray-100 bg-gray-50 flex justify-between items-center text-sm text-gray-500">
-        <span>Mostrando resultados recientes</span>
-        <div class="flex gap-1">
-            <button class="px-3 py-1 border rounded hover:bg-white disabled:opacity-50" disabled>Ant.</button>
-            <button class="px-3 py-1 border rounded hover:bg-white bg-blue-50 text-blue-600 border-blue-200">1</button>
-            <button class="px-3 py-1 border rounded hover:bg-white">Sig.</button>
-        </div>
+        <span>Total: {{ count($registros ?? []) }} registros</span>
     </div>
 </div>
 @endsection
@@ -151,35 +140,72 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        initCharts();
+        // Obtenemos los datos pasados desde PHP (XML)
+        const rawData = @json($registros ?? []);
+        processAndInitCharts(rawData);
     });
 
-    function initCharts() {
-        // NOTA: Estos datos son estáticos por ahora para cumplir con la visualización.
-        // Para hacerlos dinámicos, necesitarías pasar los arrays desde el Controller a JavaScript
+    function processAndInitCharts(data) {
+        // --- PROCESAMIENTO DE DATOS ---
+        
+        // 1. Agrupar por Fecha y Tipo para el Gráfico de Barras
+        // Estructura deseada: { '2025-12-01': { Auto: 2, Moto: 1, Bus: 0 }, ... }
+        const dailyCounts = {};
+        const typesCount = { 'Auto': 0, 'Moto': 0, 'Bus': 0, 'Otro': 0 };
 
-        // --- 1. Gráfico de Barras ---
+        data.forEach(item => {
+            // Extraer solo la fecha YYYY-MM-DD
+            const date = item.fecha.split(' ')[0]; 
+            const type = item.tipo; // Asumiendo que viene como "Auto", "Moto", etc.
+
+            // Inicializar objeto del día si no existe
+            if (!dailyCounts[date]) {
+                dailyCounts[date] = { 'Auto': 0, 'Moto': 0, 'Bus': 0, 'Otro': 0 };
+            }
+
+            // Contar para el día
+            if (['Auto', 'Moto', 'Bus'].includes(type)) {
+                dailyCounts[date][type]++;
+                typesCount[type]++; // Contar global para la torta
+            } else {
+                dailyCounts[date]['Otro']++;
+                typesCount['Otro']++;
+            }
+        });
+
+        // Ordenar fechas cronológicamente
+        const sortedDates = Object.keys(dailyCounts).sort();
+
+        // Preparar arrays para Chart.js
+        const labels = sortedDates;
+        const dataAuto = sortedDates.map(date => dailyCounts[date]['Auto']);
+        const dataMoto = sortedDates.map(date => dailyCounts[date]['Moto']);
+        const dataBus = sortedDates.map(date => dailyCounts[date]['Bus']);
+
+        // --- 2. CONFIGURACIÓN GRÁFICOS ---
+
+        // A. Gráfico de Barras
         const ctxBar = document.getElementById('dailyChart').getContext('2d');
         new Chart(ctxBar, {
             type: 'bar',
             data: {
-                labels: ['Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab', 'Dom'],
+                labels: labels, // Fechas dinámicas
                 datasets: [
                     {
                         label: 'Autos',
-                        data: [150, 210, 180, 240, 200, 150, 190],
+                        data: dataAuto,
                         backgroundColor: '#3b82f6',
                         borderRadius: 4,
                     },
                     {
                         label: 'Motos',
-                        data: [80, 95, 70, 85, 60, 100, 50],
+                        data: dataMoto,
                         backgroundColor: '#ef4444',
                         borderRadius: 4,
                     },
                     {
                         label: 'Buses',
-                        data: [40, 30, 45, 20, 35, 25, 15],
+                        data: dataBus,
                         backgroundColor: '#10b981',
                         borderRadius: 4,
                     }
@@ -190,20 +216,20 @@
                 maintainAspectRatio: false,
                 plugins: { legend: { position: 'top', labels: { usePointStyle: true, boxWidth: 8 } } },
                 scales: {
-                    y: { beginAtZero: true, grid: { borderDash: [2, 2], drawBorder: false } },
+                    y: { beginAtZero: true, grid: { borderDash: [2, 2], drawBorder: false }, ticks: { stepSize: 1 } },
                     x: { grid: { display: false } }
                 }
             }
         });
 
-        // --- 2. Gráfico de Torta ---
+        // B. Gráfico de Torta
         const ctxPie = document.getElementById('typeDistributionChart').getContext('2d');
         new Chart(ctxPie, {
             type: 'pie',
             data: {
                 labels: ['Autos', 'Motos', 'Buses', 'Otros'],
                 datasets: [{
-                    data: [36, 23.5, 7, 33.5],
+                    data: [typesCount['Auto'], typesCount['Moto'], typesCount['Bus'], typesCount['Otro']],
                     backgroundColor: ['#3b82f6', '#ef4444', '#10b981', '#9ca3af'],
                     borderWidth: 0,
                     hoverOffset: 4
