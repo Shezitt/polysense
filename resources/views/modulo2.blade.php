@@ -42,7 +42,7 @@
 <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
     <div class="lg:col-span-2 bg-white rounded-lg shadow-lg p-6">
         <div class="flex justify-between items-center mb-6">
-            <h2 class="text-lg font-semibold text-gray-800">📊 Vehículos Detectados por Día</h2>
+            <h2 class="text-lg font-semibold text-gray-800">Vehículos Detectados por Día</h2>
             <button class="text-gray-400 hover:text-gray-600">
                 <i class="fas fa-ellipsis-v"></i>
             </button>
@@ -54,7 +54,7 @@
 
     <div class="bg-white rounded-lg shadow-lg p-6">
         <div class="flex justify-between items-center mb-6">
-            <h2 class="text-lg font-semibold text-gray-800">🥧 Distribución</h2>
+            <h2 class="text-lg font-semibold text-gray-800">Distribución</h2>
             <button class="text-gray-400 hover:text-gray-600">
                 <i class="fas fa-ellipsis-v"></i>
             </button>
@@ -67,13 +67,13 @@
 
 <div class="bg-white rounded-lg shadow-lg overflow-hidden">
     <div class="p-6 border-b border-gray-100 flex justify-between items-center">
-        <h2 class="text-lg font-semibold text-gray-800">📋 Registro Reciente de Detecciones</h2>
+        <h2 class="text-lg font-semibold text-gray-800">Registro Reciente de Detecciones</h2>
         <div class="flex gap-2">
             <a href="{{ route('exportar.excel') }}" class="px-3 py-1 text-sm text-green-600 bg-green-50 rounded border border-green-200 hover:bg-green-100 flex items-center gap-2">
-                <span>📄</span> Exportar Excel
+                Exportar Excel
             </a>
             <button onclick="window.print()" class="px-3 py-1 text-sm text-red-600 bg-red-50 rounded border border-red-200 hover:bg-red-100 flex items-center gap-2">
-                <span>🖨️</span> PDF / Imprimir
+                PDF / Imprimir
             </button>
         </div>
     </div>
@@ -85,9 +85,7 @@
                     <th class="px-6 py-4 font-medium">Fecha/Hora</th>
                     <th class="px-6 py-4 font-medium">Tipo de Vehículo</th>
                     <th class="px-6 py-4 font-medium">Color</th>
-                    <th class="px-6 py-4 font-medium">Cámara</th>
                     <th class="px-6 py-4 font-medium text-center">Confianza IA</th>
-                    <th class="px-6 py-4 font-medium text-right">Estado</th>
                 </tr>
             </thead>
             <tbody class="divide-y divide-gray-100 text-sm text-gray-700" id="reportsTableBody">
@@ -97,7 +95,7 @@
                             'auto' => 'bg-blue-500',
                             'moto' => 'bg-red-500',
                             'bus' => 'bg-green-500',
-                            'camión' => 'bg-orange-500',
+                            'camion' => 'bg-orange-500',
                             default => 'bg-gray-500'
                         };
                         $conf = floatval($registro['confianza']);
@@ -132,13 +130,12 @@
                                 <span class="capitalize">{{ $registro['color'] ?? 'desconocido' }}</span>
                             </span>
                         </td>
-                        <td class="px-6 py-4">{{ $registro['camara'] }}</td>
-                        <td class="px-6 py-4 text-center">
-                            <span class="{{ $confColor }} px-2 py-1 rounded text-xs font-bold">
-                                {{ number_format($conf, 2) }}%
+                        <td class="px-6 py-4">
+                            <span class="flex items-center gap-2">
+                                <span class="w-4 h-4 rounded-full {{ $colorBadge }}"></span>
+                                <span class="capitalize">{{ $registro['confianza'] ?? 'desconocido' }}</span>
                             </span>
                         </td>
-                        <td class="px-6 py-4 text-right text-gray-400">Archivado</td>
                     </tr>
                 @empty
                     <tr>

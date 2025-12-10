@@ -22,7 +22,6 @@ class ReporteController extends Controller
                 $registro = [
                     'fecha' => (string)$det->fecha,
                     'tipo'  => (string)$det->tipo,
-                    'camara'=> (string)$det->camara,
                     'confianza' => (float)$det->confianza,
                     'color' => isset($det->color) ? (string)$det->color : 'desconocido'
                 ];
@@ -83,7 +82,7 @@ class ReporteController extends Controller
         // BOM para UTF-8
         fprintf($handle, chr(0xEF).chr(0xBB).chr(0xBF));
         
-        fputcsv($handle, ['Fecha', 'Tipo', 'Color', 'Camara', 'Confianza (%)']); // Cabeceras
+        fputcsv($handle, ['Fecha', 'Tipo', 'Color', 'Confianza (%)']); // Cabeceras
         
         // Aquí leerías el XML de nuevo y escribirías las filas
         $xmlPath = storage_path('app/vehiculos_db.xml');
@@ -94,7 +93,6 @@ class ReporteController extends Controller
                     $det->fecha, 
                     $det->tipo, 
                     isset($det->color) ? $det->color : 'desconocido',
-                    $det->camara, 
                     $det->confianza
                 ]);
             }
