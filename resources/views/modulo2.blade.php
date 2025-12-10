@@ -84,6 +84,7 @@
                 <tr class="bg-gray-50 text-gray-600 text-sm uppercase tracking-wider">
                     <th class="px-6 py-4 font-medium">Fecha/Hora</th>
                     <th class="px-6 py-4 font-medium">Tipo de Vehículo</th>
+                    <th class="px-6 py-4 font-medium">Color</th>
                     <th class="px-6 py-4 font-medium">Cámara</th>
                     <th class="px-6 py-4 font-medium text-center">Confianza IA</th>
                     <th class="px-6 py-4 font-medium text-right">Estado</th>
@@ -96,10 +97,25 @@
                             'auto' => 'bg-blue-500',
                             'moto' => 'bg-red-500',
                             'bus' => 'bg-green-500',
+                            'camión' => 'bg-orange-500',
                             default => 'bg-gray-500'
                         };
                         $conf = floatval($registro['confianza']);
                         $confColor = $conf > 90 ? 'bg-green-100 text-green-800' : ($conf > 75 ? 'bg-yellow-100 text-yellow-800' : 'bg-red-100 text-red-800');
+                        
+                        // Mapear colores de vehículo a colores de badge
+                        $vehicleColorMap = [
+                            'rojo' => 'bg-red-500',
+                            'azul' => 'bg-blue-500',
+                            'verde' => 'bg-green-500',
+                            'amarillo' => 'bg-yellow-400',
+                            'naranja' => 'bg-orange-500',
+                            'negro' => 'bg-gray-800',
+                            'blanco' => 'bg-gray-100 border border-gray-300',
+                            'gris' => 'bg-gray-400',
+                            'morado' => 'bg-purple-500',
+                        ];
+                        $colorBadge = $vehicleColorMap[strtolower($registro['color'] ?? 'desconocido')] ?? 'bg-gray-300';
                     @endphp
 
                     <tr class="hover:bg-gray-50 transition-colors">
@@ -108,6 +124,12 @@
                             <span class="flex items-center gap-2">
                                 <span class="w-2 h-2 rounded-full {{ $colorClass }}"></span>
                                 {{ $registro['tipo'] }}
+                            </span>
+                        </td>
+                        <td class="px-6 py-4">
+                            <span class="flex items-center gap-2">
+                                <span class="w-4 h-4 rounded-full {{ $colorBadge }}"></span>
+                                <span class="capitalize">{{ $registro['color'] ?? 'desconocido' }}</span>
                             </span>
                         </td>
                         <td class="px-6 py-4">{{ $registro['camara'] }}</td>
@@ -120,7 +142,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="5" class="px-6 py-8 text-center text-gray-500">
+                        <td colspan="6" class="px-6 py-8 text-center text-gray-500">
                             No se encontraron registros en el archivo XML o base de datos.
                         </td>
                     </tr>

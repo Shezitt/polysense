@@ -18,6 +18,9 @@ from flask import Flask, jsonify, Response
 from flask_sock import Sock
 from ultralytics import YOLO
 import io
+import xml.etree.ElementTree as ET
+from datetime import datetime
+import os
 
 app = Flask(__name__)
 sock = Sock(app)
@@ -33,6 +36,10 @@ LOCAL_PORT = 8080  # Puerto local para API y WebSocket
 YOLO_MODEL = "yolov8n.pt"  # Modelo nano (rápido)
 CONFIDENCE_THRESHOLD = 0.5
 VEHICLE_CLASSES = [2, 3, 5, 7]  # car, motorcycle, bus, truck
+
+# Ruta del archivo XML (Laravel storage)
+XML_DB_PATH = os.path.join(os.path.dirname(__file__), '..', 'storage', 'app', 'vehiculos_db.xml')
+SAVE_INTERVAL = 5  # Guardar cada X detecciones
 
 COCO_CLASSES = {
     0: 'person', 1: 'bicycle', 2: 'car', 3: 'motorcycle',
@@ -66,6 +73,68 @@ websocket_clients = []
 print("🔄 Cargando modelo YOLOv8...")
 model = YOLO(YOLO_MODEL)
 print("✅ Modelo cargado!")
+
+# ===========================
+# FUNCIONES DE XML
+# ===========================
+
+def init_xml_database():
+    """Inicializa el archivo XML si no existe"""
+    if not os.path.exists(XML_DB_PATH):
+        os.makedirs(os.path.dirname(XML_DB_PATH), exist_ok=True)
+        root = ET.Element('detecciones')
+        tree = ET.ElementTree(root)
+        ET.indent(tree, space='  ')
+        tree.write(XML_DB_PATH, encoding='utf-8', xml_declaration=True)
+        print(f"✅ Archivo XML creado: {XML_DB_PATH}")
+    else:
+        print(f"✅ Archivo XML existente: {XML_DB_PATH}")
+
+def save_detection_to_xml(vehicle):
+    """Guarda una detección de vehículo en el XML"""
+    try:
+        # Leer XML existente
+        if os.path.exists(XML_DB_PATH):
+            tree = ET.parse(XML_DB_PATH)
+            root = tree.getroot()
+        else:
+            root = ET.Element('detecciones')
+            tree = ET.ElementTree(root)
+        
+        # Crear nueva detección
+        deteccion = ET.SubElement(root, 'deteccion')
+        
+        # Agregar datos
+        fecha = ET.SubElement(deteccion, 'fecha')
+        fecha.text = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        
+        tipo = ET.SubElement(deteccion, 'tipo')
+        # Mapear nombres de YOLO a nombres en español
+        tipo_map = {
+            'car': 'Auto',
+            'motorcycle': 'Moto',
+            'bus': 'Bus',
+            'truck': 'Camión'
+        }
+        tipo.text = tipo_map.get(vehicle['type'], 'Auto')
+        
+        camara = ET.SubElement(deteccion, 'camara')
+        camara.text = CAMERA_ID
+        
+        confianza = ET.SubElement(deteccion, 'confianza')
+        confianza.text = f"{vehicle['confidence'] * 100:.2f}"
+        
+        color = ET.SubElement(deteccion, 'color')
+        color.text = vehicle['color']
+        
+        # Guardar con formato
+        ET.indent(tree, space='  ')
+        tree.write(XML_DB_PATH, encoding='utf-8', xml_declaration=True)
+        
+        return True
+    except Exception as e:
+        print(f"❌ Error guardando en XML: {e}")
+        return False
 
 # ===========================
 # FUNCIONES DE DETECCIÓN
@@ -234,10 +303,14 @@ async def consume_oracle_stream():
                         camera_data['vehicle_history'].append(len(vehicles))
                         camera_data['detected_vehicles'] = vehicles
                         
-                        # Contar tipos y colores
+                        # Contar tipos y colores y guardar en XML
                         for vehicle in vehicles:
                             camera_data['vehicle_types'][vehicle['type']] += 1
                             camera_data['vehicle_colors'][vehicle['color']] += 1
+                            
+                            # Guardar cada detección en XML (con alta confianza)
+                            if vehicle['confidence'] > 0.7:
+                                save_detection_to_xml(vehicle)
                         
                         # Broadcast a clientes WebSocket
                         if processed_frame is not None and len(websocket_clients) > 0:
@@ -357,8 +430,12 @@ if __name__ == '__main__':
     print(f"📊 Stats: http://localhost:{LOCAL_PORT}/stats")
     print(f"🔌 WebSocket: ws://localhost:{LOCAL_PORT}/ws/stream")
     print(f"🎯 API Laravel: http://localhost:{LOCAL_PORT}/api/vehicles")
+    print(f"💾 XML Database: {XML_DB_PATH}")
     print("="*70)
     print("\n📦 Instalación: pip install ultralytics opencv-python websockets flask flask-sock\n")
+    
+    # Inicializar base de datos XML
+    init_xml_database()
     
     # Iniciar cliente WebSocket en thread
     ws_thread = threading.Thread(target=start_websocket_client, daemon=True)
