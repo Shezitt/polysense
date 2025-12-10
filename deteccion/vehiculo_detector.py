@@ -63,7 +63,12 @@ camera_data = {
     'vehicle_history': deque(maxlen=100),
     'vehicle_colors': defaultdict(int),
     'vehicle_types': defaultdict(int),
-    'detected_vehicles': []
+    'detected_vehicles': [],
+    # Sistema de tracking
+    'tracked_vehicles': {},  # {id: {'bbox': (x1,y1,x2,y2), 'last_seen': frame_num, 'counted': bool}}
+    'next_vehicle_id': 1,
+    'max_distance': 100,  # Distancia máxima para considerar el mismo vehículo
+    'max_frames_missing': 30  # Frames sin ver un vehículo antes de eliminarlo
 }
 
 data_lock = threading.Lock()
@@ -140,6 +145,35 @@ def save_detection_to_xml(vehicle):
 # FUNCIONES DE DETECCIÓN
 # ===========================
 
+def calculate_bbox_center(bbox):
+    """Calcula el centro de un bounding box"""
+    x1, y1, x2, y2 = bbox
+    return ((x1 + x2) / 2, (y1 + y2) / 2)
+
+def calculate_distance(center1, center2):
+    """Calcula la distancia euclidiana entre dos centros"""
+    return np.sqrt((center1[0] - center2[0])**2 + (center1[1] - center2[1])**2)
+
+def match_vehicle_to_tracked(bbox, tracked_vehicles, max_distance):
+    """
+    Encuentra si un vehículo detectado corresponde a uno ya rastreado.
+    Retorna el ID del vehículo o None si es nuevo.
+    """
+    center = calculate_bbox_center(bbox)
+    
+    best_match_id = None
+    best_distance = float('inf')
+    
+    for vehicle_id, vehicle_data in tracked_vehicles.items():
+        tracked_center = calculate_bbox_center(vehicle_data['bbox'])
+        distance = calculate_distance(center, tracked_center)
+        
+        if distance < max_distance and distance < best_distance:
+            best_distance = distance
+            best_match_id = vehicle_id
+    
+    return best_match_id
+
 def get_dominant_color(image, bbox):
     """Extrae el color dominante del vehículo"""
     x1, y1, x2, y2 = map(int, bbox)
@@ -189,7 +223,7 @@ def get_dominant_color(image, bbox):
         else:
             return "gris"
 
-def detect_vehicles(frame):
+def detect_vehicles(frame, tracked_vehicles=None):
     """Detecta vehículos en el frame"""
     if frame is None:
         return None, []
@@ -223,12 +257,23 @@ def detect_vehicles(frame):
                     'color': color
                 })
                 
+                # Buscar ID del tracking si está disponible
+                vehicle_id = None
+                if tracked_vehicles:
+                    for vid, vdata in tracked_vehicles.items():
+                        if vdata['bbox'] == (x1, y1, x2, y2):
+                            vehicle_id = vid
+                            break
+                
                 # Dibujar bounding box
                 color_bgr = (0, 255, 0)
                 cv2.rectangle(frame, (x1, y1), (x2, y2), color_bgr, 2)
                 
-                # Label
-                label = f"{vehicle_type} ({color}) {conf:.2f}"
+                # Label con ID si está disponible
+                if vehicle_id:
+                    label = f"ID:{vehicle_id} {vehicle_type} ({color}) {conf:.2f}"
+                else:
+                    label = f"{vehicle_type} ({color}) {conf:.2f}"
                 
                 # Fondo para el texto
                 (text_w, text_h), _ = cv2.getTextSize(label, cv2.FONT_HERSHEY_SIMPLEX, 0.5, 2)
@@ -277,8 +322,10 @@ async def consume_oracle_stream():
                         print("⚠️ Frame corrupto recibido")
                         continue
                     
-                    # Detectar vehículos
-                    processed_frame, vehicles = detect_vehicles(frame.copy())
+                    # Detectar vehículos (pasar tracked_vehicles para mostrar IDs)
+                    with data_lock:
+                        tracked = camera_data['tracked_vehicles'].copy()
+                    processed_frame, vehicles = detect_vehicles(frame.copy(), tracked)
                     
                     current_time = time.time()
                     
@@ -297,20 +344,64 @@ async def consume_oracle_stream():
                         camera_data['last_fps_time'] = current_time
                         camera_data['frame_count'] += 1
                         
-                        # Estadísticas de vehículos
+                        # ===== SISTEMA DE TRACKING DE VEHÍCULOS ÚNICOS =====
+                        current_frame = camera_data['frame_count']
+                        matched_ids = set()
+                        
+                        # Procesar cada vehículo detectado
+                        for vehicle in vehicles:
+                            bbox = vehicle['bbox']
+                            
+                            # Buscar si este vehículo ya está siendo rastreado
+                            vehicle_id = match_vehicle_to_tracked(
+                                bbox, 
+                                camera_data['tracked_vehicles'],
+                                camera_data['max_distance']
+                            )
+                            
+                            if vehicle_id is not None:
+                                # Vehículo existente - actualizar posición
+                                camera_data['tracked_vehicles'][vehicle_id]['bbox'] = bbox
+                                camera_data['tracked_vehicles'][vehicle_id]['last_seen'] = current_frame
+                                matched_ids.add(vehicle_id)
+                            else:
+                                # Vehículo nuevo - crear nuevo tracking
+                                new_id = camera_data['next_vehicle_id']
+                                camera_data['tracked_vehicles'][new_id] = {
+                                    'bbox': bbox,
+                                    'last_seen': current_frame,
+                                    'counted': True,
+                                    'type': vehicle['type'],
+                                    'color': vehicle['color'],
+                                    'confidence': vehicle['confidence']
+                                }
+                                camera_data['next_vehicle_id'] += 1
+                                matched_ids.add(new_id)
+                                
+                                # INCREMENTAR CONTADOR SOLO PARA VEHÍCULOS NUEVOS
+                                camera_data['total_vehicles_detected'] += 1
+                                
+                                # Contar tipos y colores
+                                camera_data['vehicle_types'][vehicle['type']] += 1
+                                camera_data['vehicle_colors'][vehicle['color']] += 1
+                                
+                                # Guardar en XML solo vehículos nuevos con alta confianza
+                                if vehicle['confidence'] > 0.7:
+                                    save_detection_to_xml(vehicle)
+                        
+                        # Limpiar vehículos que ya no se ven
+                        vehicles_to_remove = []
+                        for vehicle_id, vehicle_data in camera_data['tracked_vehicles'].items():
+                            if current_frame - vehicle_data['last_seen'] > camera_data['max_frames_missing']:
+                                vehicles_to_remove.append(vehicle_id)
+                        
+                        for vehicle_id in vehicles_to_remove:
+                            del camera_data['tracked_vehicles'][vehicle_id]
+                        
+                        # Actualizar estadísticas
                         camera_data['vehicle_count'] = len(vehicles)
-                        camera_data['total_vehicles_detected'] += len(vehicles)
                         camera_data['vehicle_history'].append(len(vehicles))
                         camera_data['detected_vehicles'] = vehicles
-                        
-                        # Contar tipos y colores y guardar en XML
-                        for vehicle in vehicles:
-                            camera_data['vehicle_types'][vehicle['type']] += 1
-                            camera_data['vehicle_colors'][vehicle['color']] += 1
-                            
-                            # Guardar cada detección en XML (con alta confianza)
-                            if vehicle['confidence'] > 0.7:
-                                save_detection_to_xml(vehicle)
                         
                         # Broadcast a clientes WebSocket
                         if processed_frame is not None and len(websocket_clients) > 0:
@@ -376,7 +467,9 @@ def stats():
             'current_vehicles': camera_data['vehicle_count'],
             'total_detected': camera_data['total_vehicles_detected'],
             'vehicle_types': dict(camera_data['vehicle_types']),
-            'vehicle_colors': dict(camera_data['vehicle_colors'])
+            'vehicle_colors': dict(camera_data['vehicle_colors']),
+            'tracked_count': len(camera_data['tracked_vehicles']),
+            'next_id': camera_data['next_vehicle_id']
         })
 
 @app.route('/api/vehicles')
@@ -390,6 +483,7 @@ def api_vehicles():
             'timestamp': time.time(),
             'current_vehicles': camera_data['vehicle_count'],
             'total_detected': camera_data['total_vehicles_detected'],
+            'unique_vehicles_tracked': len(camera_data['tracked_vehicles']),
             'fps': camera_data['fps'],
             'avg_vehicles': avg_vehicles,
             'vehicle_types': dict(camera_data['vehicle_types']),
@@ -397,6 +491,17 @@ def api_vehicles():
             'history': list(camera_data['vehicle_history']),
             'detected_vehicles': camera_data['detected_vehicles']
         })
+
+@app.route('/api/reset', methods=['POST'])
+def reset_counter():
+    """Resetea el contador de vehículos"""
+    with data_lock:
+        camera_data['total_vehicles_detected'] = 0
+        camera_data['vehicle_types'].clear()
+        camera_data['vehicle_colors'].clear()
+        camera_data['tracked_vehicles'].clear()
+        camera_data['next_vehicle_id'] = 1
+        return jsonify({'status': 'success', 'message': 'Contador reseteado'})
 
 @sock.route('/ws/stream')
 def websocket_stream(ws):
@@ -423,14 +528,21 @@ def websocket_stream(ws):
 
 if __name__ == '__main__':
     print("\n" + "="*70)
-    print("🚗 DETECTOR LOCAL DE VEHÍCULOS")
+    print("🚗 DETECTOR LOCAL DE VEHÍCULOS CON TRACKING ÚNICO")
     print("="*70)
     print(f"📡 Conectando a Oracle: {ORACLE_SERVER}")
     print(f"🌐 API Local: http://localhost:{LOCAL_PORT}")
     print(f"📊 Stats: http://localhost:{LOCAL_PORT}/stats")
     print(f"🔌 WebSocket: ws://localhost:{LOCAL_PORT}/ws/stream")
     print(f"🎯 API Laravel: http://localhost:{LOCAL_PORT}/api/vehicles")
+    print(f"🔄 Reset Contador: POST http://localhost:{LOCAL_PORT}/api/reset")
     print(f"💾 XML Database: {XML_DB_PATH}")
+    print("="*70)
+    print("✨ SISTEMA DE TRACKING:")
+    print("  - Cada vehículo único recibe un ID")
+    print("  - Solo se cuenta una vez por vehículo")
+    print("  - Distancia máxima tracking: 100px")
+    print("  - Frames antes de eliminar: 30")
     print("="*70)
     print("\n📦 Instalación: pip install ultralytics opencv-python websockets flask flask-sock\n")
     
