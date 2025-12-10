@@ -67,9 +67,9 @@
 
 <div class="bg-white rounded-lg shadow-lg overflow-hidden">
     <div class="p-6 border-b border-gray-100 flex justify-between items-center">
-        <h2 class="text-lg font-semibold text-gray-800">Registro Reciente de Detecciones</h2>
+        <h2 class="text-lg font-semibold text-gray-800">Registro de Detecciones</h2>
         <div class="flex gap-2">
-            <a href="{{ route('exportar.excel') }}" class="px-3 py-1 text-sm text-green-600 bg-green-50 rounded border border-green-200 hover:bg-green-100 flex items-center gap-2">
+            <a href="{{ route('exportar.excel', request()->all()) }}" class="px-3 py-1 text-sm text-green-600 bg-green-50 rounded border border-green-200 hover:bg-green-100 flex items-center gap-2">
                 Exportar Excel
             </a>
             <button onclick="window.print()" class="px-3 py-1 text-sm text-red-600 bg-red-50 rounded border border-red-200 hover:bg-red-100 flex items-center gap-2">

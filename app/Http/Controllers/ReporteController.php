@@ -6,10 +6,11 @@ use Illuminate\Http\Request;
 
 class ReporteController extends Controller
 {
-    public function index(Request $request)
+    /**
+     * Obtiene y filtra los registros del XML
+     */
+    private function obtenerRegistrosFiltrados(Request $request)
     {
-        // 1. LEER EL XML
-        // Verificamos si existe el archivo, si no, array vacío
         $registros = [];
         $xmlPath = storage_path('app/vehiculos_db.xml');
         
@@ -17,11 +18,12 @@ class ReporteController extends Controller
             $xmlContent = file_get_contents($xmlPath);
             $xml = simplexml_load_string($xmlContent);
             
-            // Convertir XML a Array JSON para que sea fácil de usar en Blade
+            // Convertir XML a Array y aplicar filtros
             foreach ($xml->deteccion as $det) {
                 $registro = [
                     'fecha' => (string)$det->fecha,
                     'tipo'  => (string)$det->tipo,
+                    'camara'=> (string)$det->camara,
                     'confianza' => (float)$det->confianza,
                     'color' => isset($det->color) ? (string)$det->color : 'desconocido'
                 ];
@@ -36,7 +38,7 @@ class ReporteController extends Controller
                     }
                 }
                 
-                // Filtrar por fecha
+                // Filtrar por fecha inicio
                 if ($request->has('fecha_inicio') && $request->fecha_inicio != '') {
                     $fechaRegistro = strtotime($registro['fecha']);
                     $fechaInicio = strtotime($request->fecha_inicio . ' 00:00:00');
@@ -45,6 +47,7 @@ class ReporteController extends Controller
                     }
                 }
                 
+                // Filtrar por fecha fin
                 if ($request->has('fecha_fin') && $request->fecha_fin != '') {
                     $fechaRegistro = strtotime($registro['fecha']);
                     $fechaFin = strtotime($request->fecha_fin . ' 23:59:59');
@@ -64,16 +67,34 @@ class ReporteController extends Controller
             return strtotime($b['fecha']) - strtotime($a['fecha']);
         });
 
-        // Pasamos los datos a la vista
+        return $registros;
+    }
+
+    public function index(Request $request)
+    {
+        $registros = $this->obtenerRegistrosFiltrados($request);
         return view('modulo2', compact('registros'));
     }
 
     // Funcionalidad del Botón: EXPORTAR A EXCEL (Simulado con CSV)
-    public function exportarExcel()
+    public function exportarExcel(Request $request)
     {
-        // Aquí generarías el archivo real. 
-        // Para este ejemplo, descargaremos un CSV simple.
-        $filename = "reporte_vehiculos_" . date('Y-m-d_His') . ".csv";
+        // Obtener registros filtrados usando la misma lógica que index()
+        $registros = $this->obtenerRegistrosFiltrados($request);
+        
+        // Generar nombre de archivo con información de filtros
+        $filename = "reporte_vehiculos_" . date('Y-m-d_His');
+        if ($request->has('tipo') && $request->tipo != '') {
+            $filename .= "_" . strtolower($request->tipo);
+        }
+        if ($request->has('fecha_inicio') && $request->fecha_inicio != '') {
+            $filename .= "_desde_" . $request->fecha_inicio;
+        }
+        if ($request->has('fecha_fin') && $request->fecha_fin != '') {
+            $filename .= "_hasta_" . $request->fecha_fin;
+        }
+        $filename .= ".csv";
+        
         $handle = fopen('php://output', 'w');
         
         header('Content-Type: text/csv; charset=utf-8');
@@ -82,20 +103,18 @@ class ReporteController extends Controller
         // BOM para UTF-8
         fprintf($handle, chr(0xEF).chr(0xBB).chr(0xBF));
         
-        fputcsv($handle, ['Fecha', 'Tipo', 'Color', 'Confianza (%)']); // Cabeceras
+        // Cabeceras
+        fputcsv($handle, ['Fecha', 'Tipo', 'Color', 'Camara', 'Confianza (%)']);
         
-        // Aquí leerías el XML de nuevo y escribirías las filas
-        $xmlPath = storage_path('app/vehiculos_db.xml');
-        if (file_exists($xmlPath)) {
-            $xml = simplexml_load_string(file_get_contents($xmlPath));
-            foreach ($xml->deteccion as $det) {
-                fputcsv($handle, [
-                    $det->fecha, 
-                    $det->tipo, 
-                    isset($det->color) ? $det->color : 'desconocido',
-                    $det->confianza
-                ]);
-            }
+        // Escribir solo los registros filtrados
+        foreach ($registros as $registro) {
+            fputcsv($handle, [
+                $registro['fecha'], 
+                $registro['tipo'], 
+                $registro['color'],
+                $registro['camara'],
+                $registro['confianza']
+            ]);
         }
         
         fclose($handle);
