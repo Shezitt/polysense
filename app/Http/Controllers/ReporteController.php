@@ -23,7 +23,6 @@ class ReporteController extends Controller
                 $registro = [
                     'fecha' => (string)$det->fecha,
                     'tipo'  => (string)$det->tipo,
-                    'camara'=> (string)$det->camara,
                     'confianza' => (float)$det->confianza,
                     'color' => isset($det->color) ? (string)$det->color : 'desconocido'
                 ];
@@ -104,7 +103,7 @@ class ReporteController extends Controller
         fprintf($handle, chr(0xEF).chr(0xBB).chr(0xBF));
         
         // Cabeceras
-        fputcsv($handle, ['Fecha', 'Tipo', 'Color', 'Camara', 'Confianza (%)']);
+        fputcsv($handle, ['Fecha', 'Tipo', 'Color', 'Confianza (%)']);
         
         // Escribir solo los registros filtrados
         foreach ($registros as $registro) {
@@ -112,7 +111,6 @@ class ReporteController extends Controller
                 $registro['fecha'], 
                 $registro['tipo'], 
                 $registro['color'],
-                $registro['camara'],
                 $registro['confianza']
             ]);
         }

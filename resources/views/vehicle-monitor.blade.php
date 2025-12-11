@@ -344,8 +344,8 @@
                 const response = await fetch('/api/vehicle-monitor/stats');
                 const data = await response.json();
 
-                // Ya no necesitamos selector de cámara, solo hay una
-                selectedCamera = data.camera_id || 'camera_01';
+                // Ya no se usa camera_id
+                selectedCamera = 'default';
             } catch (error) {
                 console.error('Error loading cameras:', error);
                 updateStatus(false, 'Error de conexión');

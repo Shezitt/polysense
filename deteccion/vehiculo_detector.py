@@ -29,7 +29,6 @@ sock = Sock(app)
 # CONFIGURACIÓN
 # ===========================
 ORACLE_SERVER = "ws://144.22.56.85:5000"  # Tu servidor Oracle
-CAMERA_ID = "CAM_001"  # ID de tu cámara ESP32
 LOCAL_PORT = 8080  # Puerto local para API y WebSocket
 
 # Configuración YOLO
@@ -122,9 +121,6 @@ def save_detection_to_xml(vehicle):
             'truck': 'Camión'
         }
         tipo.text = tipo_map.get(vehicle['type'], 'Auto')
-        
-        camara = ET.SubElement(deteccion, 'camara')
-        camara.text = CAMERA_ID
         
         confianza = ET.SubElement(deteccion, 'confianza')
         confianza.text = f"{vehicle['confidence'] * 100:.2f}"
@@ -295,7 +291,7 @@ def detect_vehicles(frame, tracked_vehicles=None):
 
 async def consume_oracle_stream():
     """Conecta al servidor Oracle y consume el stream"""
-    uri = f"{ORACLE_SERVER}/ws/{CAMERA_ID}"
+    uri = f"{ORACLE_SERVER}/ws/stream"
     
     print(f"🔄 Conectando a Oracle: {uri}")
     
@@ -461,7 +457,6 @@ def stats():
     with data_lock:
         return jsonify({
             'status': 'online',
-            'camera_id': CAMERA_ID,
             'fps': camera_data['fps'],
             'frame_count': camera_data['frame_count'],
             'current_vehicles': camera_data['vehicle_count'],
@@ -479,7 +474,6 @@ def api_vehicles():
         avg_vehicles = (sum(camera_data['vehicle_history']) / len(camera_data['vehicle_history'])) if camera_data['vehicle_history'] else 0
         
         return jsonify({
-            'camera_id': CAMERA_ID,
             'timestamp': time.time(),
             'current_vehicles': camera_data['vehicle_count'],
             'total_detected': camera_data['total_vehicles_detected'],
