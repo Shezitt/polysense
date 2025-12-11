@@ -38,6 +38,12 @@
                            {{ request()->routeIs('modulo2') ? 'border-indigo-500 text-gray-900' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300' }}">
                             Módulo 2
                         </a>
+
+                        <a href="{{ route('modulo4') }}" 
+                           class="inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium transition-colors
+                           {{ request()->routeIs('modulo4') ? 'border-indigo-500 text-gray-900' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300' }}">
+                            Módulo 4
+                        </a>
                     </div>
                 </div>
 
@@ -76,6 +82,7 @@
             <div class="pt-2 pb-3 space-y-1">
                 <a href="{{ route('modulo1') }}" class="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800">Módulo 1</a>
                 <a href="{{ route('modulo2') }}" class="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800">Módulo 2</a>
+                <a href="{{ route('modulo4') }}" class="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800">🎤 Módulo 4</a>
             </div>
         </div>
     </nav>
@@ -98,6 +105,21 @@
             </p>
         </div>
     </footer>
+
+    <!-- Indicador de Voz Activa -->
+    <div id="voiceIndicator" class="hidden fixed bottom-4 left-4 bg-blue-500 text-white px-4 py-2 rounded-full shadow-lg flex items-center space-x-2" style="z-index: 9999;">
+        <svg class="w-5 h-5 animate-pulse" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M7 4a3 3 0 016 0v4a3 3 0 11-6 0V4zm4 10.93A7.001 7.001 0 0017 8a1 1 0 10-2 0A5 5 0 015 8a1 1 0 00-2 0 7.001 7.001 0 006 6.93V17H6a1 1 0 100 2h8a1 1 0 100-2h-3v-2.07z" clip-rule="evenodd"/>
+        </svg>
+        <span class="status-text">Voz activa</span>
+    </div>
+
+    <!-- Texto Parcial de Voz -->
+    <div id="voicePartial" class="hidden fixed bottom-16 left-4 bg-gray-800 text-white px-4 py-2 rounded-lg shadow-lg text-sm italic" style="z-index: 9999;"></div>
+
+    <!-- Sistema de Comandos de Voz LOCAL (WebSocket) -->
+    <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+    <script src="{{ asset('js/voice-websocket.js') }}"></script>
 
     @stack('scripts')
 </body>

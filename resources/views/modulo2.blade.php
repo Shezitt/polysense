@@ -261,5 +261,11 @@
             }
         });
     }
+
+    // Función global para exportar (puede ser llamada por comandos de voz)
+    window.exportToExcel = function() {
+        const params = new URLSearchParams(window.location.search);
+        window.location.href = '{{ route("exportar.excel") }}?' + params.toString();
+    };
 </script>
 @endpush
