@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+    <users><user><id>693f472c6c106</id><name>Andre</name><email>202401363@est.umss.edu</email></user></users>
+    <reports><report><user_email>202401363@est.umss.edu</user_email><frequency>monthly</frequency><format>pdf</format></report></reports>
+    <notifications><notification><user_email>202401363@est.umss.edu</user_email><camera/><min_threshold>1</min_threshold><max_threshold>10</max_threshold><notify_black_screen>true</notify_black_screen></notification></notifications>
+</config>

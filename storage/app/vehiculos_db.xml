@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<registros>
+  <deteccion>
+    <id>1</id>
+    <fecha>2025-12-01 08:10:00</fecha>
+    <tipo>Auto</tipo>
+    <camara>Cámara 3.10</camara>
+    <confianza>98.5</confianza>
+  </deteccion>
+  <deteccion>
+    <id>2</id>
+    <fecha>2025-12-01 09:15:30</fecha>
+    <tipo>Moto</tipo>
+    <camara>Cámara 3.03</camara>
+    <confianza>88.2</confianza>
+  </deteccion>
+  <deteccion>
+    <id>3</id>
+    <fecha>2025-12-01 10:45:00</fecha>
+    <tipo>Auto</tipo>
+    <camara>Cámara 3.10</camara>
+    <confianza>95.0</confianza>
+  </deteccion>
+  <deteccion>
+    <id>4</id>
+    <fecha>2025-12-02 11:20:10</fecha>
+    <tipo>Bus</tipo>
+    <camara>Cámara 3.05</camara>
+    <confianza>99.1</confianza>
+  </deteccion>
+  <deteccion>
+    <id>5</id>
+    <fecha>2025-12-02 12:30:45</fecha>
+    <tipo>Auto</tipo>
+    <camara>Cámara 3.10</camara>
+    <confianza>92.4</confianza>
+  </deteccion>
+  <deteccion>
+    <id>6</id>
+    <fecha>2025-12-02 14:15:00</fecha>
+    <tipo>Auto</tipo>
+    <camara>Cámara 3.03</camara>
+    <confianza>96.3</confianza>
+  </deteccion>
+  <deteccion>
+    <id>7</id>
+    <fecha>2025-12-03 08:00:00</fecha>
+    <tipo>Moto</tipo>
+    <camara>Cámara 3.10</camara>
+    <confianza>85.5</confianza>
+  </deteccion>
+  <deteccion>
+    <id>8</id>
+    <fecha>2025-12-03 08:05:00</fecha>
+    <tipo>Moto</tipo>
+    <camara>Cámara 3.03</camara>
+    <confianza>87.0</confianza>
+  </deteccion>
+  <deteccion>
+    <id>9</id>
+    <fecha>2025-12-04 16:20:00</fecha>
+    <tipo>Bus</tipo>
+    <camara>Cámara 3.05</camara>
+    <confianza>94.2</confianza>
+  </deteccion>
+  <deteccion>
+    <id>10</id>
+    <fecha>2025-12-04 16:25:00</fecha>
+    <tipo>Bus</tipo>
+    <camara>Cámara 3.10</camara>
+    <confianza>96.8</confianza>
+  </deteccion>
+  <deteccion>
+    <id>11</id>
+    <fecha>2025-12-04 17:00:00</fecha>
+    <tipo>Auto</tipo>
+    <camara>Cámara 3.10</camara>
+    <confianza>91.5</confianza>
+  </deteccion>
+  <deteccion>
+    <id>12</id>
+    <fecha>2025-12-05 09:30:00</fecha>
+    <tipo>Auto</tipo>
+    <camara>Cámara 3.03</camara>
+    <confianza>93.0</confianza>
+  </deteccion>
+  <deteccion>
+    <id>13</id>
+    <fecha>2025-12-05 10:00:00</fecha>
+    <tipo>Auto</tipo>
+    <camara>Cámara 3.10</camara>
+    <confianza>95.5</confianza>
+  </deteccion>
+  <deteccion>
+    <id>14</id>
+    <fecha>2025-12-06 13:45:00</fecha>
+    <tipo>Moto</tipo>
+    <camara>Cámara 3.05</camara>
+    <confianza>89.0</confianza>
+  </deteccion>
+  <deteccion>
+    <id>15</id>
+    <fecha>2025-12-06 14:00:00</fecha>
+    <tipo>Moto</tipo>
+    <camara>Cámara 3.10</camara>
+    <confianza>90.1</confianza>
+  </deteccion>
+  <deteccion>
+    <id>16</id>
+    <fecha>2025-12-07 19:10:00</fecha>
+    <tipo>Auto</tipo>
+    <camara>Cámara 3.03</camara>
+    <confianza>88.9</confianza>
+  </deteccion>
+  <deteccion>
+    <id>17</id>
+    <fecha>2025-12-08 12:57:45</fecha>
+    <tipo>Auto</tipo>
+    <camara>Cámara 3.10</camara>
+    <confianza>97.40</confianza>
+  </deteccion>
+  <deteccion>
+    <id>18</id>
+    <fecha>2025-12-08 12:52:30</fecha>
+    <tipo>Moto</tipo>
+    <camara>Cámara 3.03</camara>
+    <confianza>90.95</confianza>
+  </deteccion>
+  <deteccion>
+    <id>19</id>
+    <fecha>2025-12-08 12:50:10</fecha>
+    <tipo>Bus</tipo>
+    <camara>Cámara 3.10</camara>
+    <confianza>98.20</confianza>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-10 15:57:36</fecha>
+    <tipo>Auto</tipo>
+    <camara>CAM_001</camara>
+    <confianza>91.68</confianza>
+    <color>azul</color>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-10 17:14:25</fecha>
+    <tipo>Auto</tipo>
+    <camara>CAM_001</camara>
+    <confianza>90.98</confianza>
+    <color>azul</color>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-10 17:29:34</fecha>
+    <tipo>Auto</tipo>
+    <camara>CAM_001</camara>
+    <confianza>84.72</confianza>
+    <color>azul</color>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-10 18:06:25</fecha>
+    <tipo>Auto</tipo>
+    <camara>CAM_001</camara>
+    <confianza>73.87</confianza>
+    <color>azul</color>
+  </deteccion>
+</registros>

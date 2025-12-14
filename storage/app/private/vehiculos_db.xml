@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<registros>
+    <deteccion><id>1</id><fecha>2025-12-01 08:10:00</fecha><tipo>Auto</tipo><camara>Cámara 3.10</camara><confianza>98.5</confianza></deteccion>
+    <deteccion><id>2</id><fecha>2025-12-01 09:15:30</fecha><tipo>Moto</tipo><camara>Cámara 3.03</camara><confianza>88.2</confianza></deteccion>
+    <deteccion><id>3</id><fecha>2025-12-02 14:15:00</fecha><tipo>Auto</tipo><camara>Cámara 3.03</camara><confianza>96.3</confianza></deteccion>
+    <deteccion><id>4</id><fecha>2025-12-04 16:25:00</fecha><tipo>Bus</tipo><camara>Cámara 3.10</camara><confianza>96.8</confianza></deteccion>
+    <deteccion><id>5</id><fecha>2025-12-05 10:00:00</fecha><tipo>Auto</tipo><camara>Cámara 3.10</camara><confianza>95.5</confianza></deteccion>
+    <deteccion><id>6</id><fecha>2025-12-06 13:45:00</fecha><tipo>Moto</tipo><camara>Cámara 3.05</camara><confianza>89.0</confianza></deteccion>
+    <deteccion><id>7</id><fecha>2025-12-08 12:57:45</fecha><tipo>Auto</tipo><camara>Cámara 3.10</camara><confianza>97.40</confianza></deteccion>
+    <deteccion><id>8</id><fecha>2025-12-08 12:52:30</fecha><tipo>Moto</tipo><camara>Cámara 3.03</camara><confianza>90.95</confianza></deteccion>
+    <deteccion><id>9</id><fecha>2025-12-08 12:50:10</fecha><tipo>Bus</tipo><camara>Cámara 3.10</camara><confianza>98.20</confianza></deteccion>
+</registros>

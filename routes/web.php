@@ -15,6 +15,14 @@ Route::get('/modulo1', function() {
 
 Route::get('/modulo2', [ReporteController::class, 'index'])->name('modulo2');
 
+Route::get('/modulo3', [App\Http\Controllers\AutomationController::class, 'index'])->name('modulo3');
+Route::post('/modulo3/clean', [App\Http\Controllers\AutomationController::class, 'cleanData'])->name('modulo3.clean');
+Route::post('/modulo3/user', [App\Http\Controllers\AutomationController::class, 'saveUser'])->name('modulo3.saveUser');
+Route::post('/modulo3/notify', [App\Http\Controllers\AutomationController::class, 'updateNotification'])->name('modulo3.notify');
+Route::post('/modulo3/sendReport', function() {
+    return redirect()->back()->with('success', 'Reporte enviado (Simulado) - TODO: Implementar envío real.');
+})->name('modulo3.sendReport');
+
 Route::get('/modulo4', function() {
     return view('modulo4');
 })->name('modulo4');

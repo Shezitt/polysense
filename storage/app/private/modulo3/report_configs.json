@@ -1,0 +1,28 @@
+[
+    {
+        "id": "dda2a9a6-9271-41e2-86e8-015cf931e143",
+        "timestamp": "2025-12-14 21:36:54",
+        "frequency": "daily",
+        "period": "7",
+        "cameras": [
+            "CAM001"
+        ],
+        "recipients": [
+            "andrevillca.edu@gmail.com"
+        ],
+        "origin_email": "no-reply@system"
+    },
+    {
+        "id": "54f3f79f-7145-4d31-8bc2-ed163ffdfa9e",
+        "timestamp": "2025-12-14 21:33:15",
+        "frequency": "daily",
+        "period": "7",
+        "cameras": [
+            "CAM001"
+        ],
+        "recipients": [
+            "andrevillca.edu@gmail.com"
+        ],
+        "origin_email": "no-reply@system"
+    }
+]
