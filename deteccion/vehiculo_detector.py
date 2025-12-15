@@ -360,8 +360,16 @@ def process_frame_generic(frame, camera_id):
                 state['vehicle_types'][v['type']] += 1
                 state['vehicle_colors'][v['color']] += 1
                 
+                # Guardar en XML con logs
+                logger.info(f"🚗 Nuevo vehículo detectado: {v['type']} {v['color']} (confianza: {v['confidence']:.2f})")
                 if v['confidence'] > 0.7:
-                    save_detection_to_xml(v, camera_id)
+                    result = save_detection_to_xml(v, camera_id)
+                    if result:
+                        logger.info(f"✅ Guardado en XML exitoso")
+                    else:
+                        logger.error(f"❌ Error al guardar en XML")
+                else:
+                    logger.warning(f"⚠️ Confianza muy baja ({v['confidence']:.2f}), no se guarda en XML")
         
         # Cleanup
         to_remove = []
