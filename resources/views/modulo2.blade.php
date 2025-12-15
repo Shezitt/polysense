@@ -12,6 +12,16 @@
         
         <form action="{{ route('modulo2') }}" method="GET" class="flex items-center gap-3 bg-gray-50 p-2 rounded-lg border border-gray-200">
             <div class="flex flex-col">
+                <label class="text-xs text-gray-500 font-semibold ml-1">Cámara</label>
+                <select name="camera_id" class="border-gray-300 rounded text-sm min-w-[180px] focus:ring-blue-500 focus:border-blue-500">
+                    <option value="CAM_002" {{ request('camera_id') == 'CAM_002' ? 'selected' : '' }}>Skyline Cochabamba</option>
+                    <option value="CAM_001" {{ request('camera_id') == 'CAM_001' ? 'selected' : '' }}>Oracle Server</option>
+                </select>
+            </div>
+
+            <div class="h-8 w-px bg-gray-300 mx-2"></div>
+
+            <div class="flex flex-col">
                 <label class="text-xs text-gray-500 font-semibold ml-1">Rango de Fechas</label>
                 <div class="flex items-center gap-2">
                     <input type="date" name="fecha_inicio" class="border-gray-300 rounded text-sm focus:ring-blue-500 focus:border-blue-500" value="{{ request('fecha_inicio', date('Y-m-01')) }}">
@@ -158,10 +168,26 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script>
+    // Variables globales para gráficos
+    let chartBar = null;
+    let chartPie = null;
+    const getSelectedCamera = () => {
+        const params = new URLSearchParams(window.location.search);
+        return params.get('camera_id') || 'CAM_002';
+    };
+
     document.addEventListener('DOMContentLoaded', function() {
         // Obtenemos los datos pasados desde PHP (XML)
         const rawData = @json($registros ?? []);
         processAndInitCharts(rawData);
+
+        // Escuchar cambios en el formulario de filtros
+        const filterForm = document.querySelector('form');
+        if (filterForm) {
+            filterForm.addEventListener('submit', function(e) {
+                // El formulario se envía normalmente, recargando la página con nuevos filtros
+            });
+        }
     });
 
     function processAndInitCharts(data) {
@@ -203,9 +229,13 @@
 
         // --- 2. CONFIGURACIÓN GRÁFICOS ---
 
+        // Destruir gráficos anteriores si existen
+        if (chartBar) chartBar.destroy();
+        if (chartPie) chartPie.destroy();
+
         // A. Gráfico de Barras
         const ctxBar = document.getElementById('dailyChart').getContext('2d');
-        new Chart(ctxBar, {
+        chartBar = new Chart(ctxBar, {
             type: 'bar',
             data: {
                 labels: labels, // Fechas dinámicas
@@ -243,7 +273,7 @@
 
         // B. Gráfico de Torta
         const ctxPie = document.getElementById('typeDistributionChart').getContext('2d');
-        new Chart(ctxPie, {
+        chartPie = new Chart(ctxPie, {
             type: 'pie',
             data: {
                 labels: ['Autos', 'Motos', 'Buses', 'Otros'],
