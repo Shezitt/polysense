@@ -362,7 +362,7 @@ def process_frame_generic(frame, camera_id):
                 
                 # Guardar en XML con logs
                 logger.info(f"🚗 Nuevo vehículo detectado: {v['type']} {v['color']} (confianza: {v['confidence']:.2f})")
-                if v['confidence'] > 0.7:
+                if v['confidence'] > 0.5:
                     result = save_detection_to_xml(v, camera_id)
                     if result:
                         logger.info(f"✅ Guardado en XML exitoso")
