@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='utf-8'?>
 <registros>
   <deteccion>
     <id>1</id>
@@ -160,5 +160,12 @@
     <camara>CAM_001</camara>
     <confianza>73.87</confianza>
     <color>azul</color>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-15 03:04:06</fecha>
+    <tipo>Auto</tipo>
+    <confianza>86.08</confianza>
+    <color>azul</color>
+    <origen>SkylineWebcams</origen>
   </deteccion>
 </registros>
