@@ -31,9 +31,8 @@ class DatabaseSeeder extends Seeder
             'role' => 'user',
         ]);
 
-        // Cargar comandos de voz predeterminados
+        // Seeders para notificaciones y reportes
         $this->call([
-            VoiceCommandSeeder::class,
             NotificationSeeder::class,
             ReportSeeder::class,
         ]);
