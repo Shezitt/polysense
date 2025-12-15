@@ -18,7 +18,7 @@ class ReporteController extends Controller
             $xmlContent = file_get_contents($xmlPath);
             $xml = simplexml_load_string($xmlContent);
             
-            // Convertir XML a Array y aplicar filtros
+            
             foreach ($xml->deteccion as $det) {
                 $registro = [
                     'fecha' => (string)$det->fecha,
@@ -29,24 +29,20 @@ class ReporteController extends Controller
                     'nombre_camara' => isset($det->nombre_camara) ? (string)$det->nombre_camara : 'Skyline Cochabamba'
                 ];
                 
-                // Aplicar filtros si existen
                 $incluir = true;
                 
-                // Filtrar por cámara
                 if ($request->has('camera_id') && $request->camera_id != '') {
                     if ($registro['camara'] != $request->camera_id) {
                         $incluir = false;
                     }
                 }
                 
-                // Filtrar por tipo
                 if ($request->has('tipo') && $request->tipo != '') {
                     if ($registro['tipo'] != $request->tipo) {
                         $incluir = false;
                     }
                 }
                 
-                // Filtrar por fecha inicio
                 if ($request->has('fecha_inicio') && $request->fecha_inicio != '') {
                     $fechaRegistro = strtotime($registro['fecha']);
                     $fechaInicio = strtotime($request->fecha_inicio . ' 00:00:00');
@@ -55,7 +51,6 @@ class ReporteController extends Controller
                     }
                 }
                 
-                // Filtrar por fecha fin
                 if ($request->has('fecha_fin') && $request->fecha_fin != '') {
                     $fechaRegistro = strtotime($registro['fecha']);
                     $fechaFin = strtotime($request->fecha_fin . ' 23:59:59');
@@ -70,7 +65,6 @@ class ReporteController extends Controller
             }
         }
 
-        // Ordenar por fecha descendente (más reciente primero)
         usort($registros, function($a, $b) {
             return strtotime($b['fecha']) - strtotime($a['fecha']);
         });
