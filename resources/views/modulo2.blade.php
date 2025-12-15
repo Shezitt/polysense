@@ -3,71 +3,63 @@
 @section('title', 'Módulo 2: Analítica y Reportes')
 
 @section('content')
-<div class="container mx-auto px-4 py-6">
-    <h1 class="text-2xl font-bold mb-4">Módulo 2: Reportes y Estadísticas</h1>
-
-    <!-- Accesos rápidos -->
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-        <a href="{{ route('modulo2.my-notifications') }}" class="bg-blue-50 hover:bg-blue-100 p-4 rounded-lg transition">
-            <h3 class="font-bold text-lg mb-2">📬 Mis Notificaciones</h3>
-            <p class="text-sm text-gray-600">Ver mis notificaciones del sistema</p>
-        </a>
-        <a href="{{ route('modulo2.my-reports') }}" class="bg-green-50 hover:bg-green-100 p-4 rounded-lg transition">
-            <h3 class="font-bold text-lg mb-2">📊 Mis Reportes</h3>
-            <p class="text-sm text-gray-600">Generar y ver mis reportes personalizados</p>
-        </a>
-    </div>
-</div>
 <div class="bg-white rounded-lg shadow-lg p-6 mb-6">
-    <div class="flex flex-col md:flex-row justify-between items-center gap-4">
+    <!-- Título y botones en la misma línea -->
+    <div class="flex justify-between items-start mb-4">
         <div>
-            <h1 class="text-3xl font-bold text-gray-800">Módulo 2: Analítica y Reportes Viales</h1>
-            <p class="text-gray-500 mt-1">Visualización de datos históricos y estadísticas de detección.</p>
+            <h1 class="text-2xl font-bold text-gray-800">Módulo 2: Analítica y Reportes Viales</h1>
+            <p class="text-gray-500 text-sm mt-1">Visualización de datos históricos y estadísticas</p>
+        </div>
+        <div class="flex gap-2">
+            <a href="{{ route('modulo2.my-notifications') }}" class="text-xs bg-blue-50 hover:bg-blue-100 px-3 py-1.5 rounded transition whitespace-nowrap">
+                📬 Notificaciones
+            </a>
+            <a href="{{ route('modulo2.my-reports') }}" class="text-xs bg-green-50 hover:bg-green-100 px-3 py-1.5 rounded transition whitespace-nowrap">
+                📊 Reportes
+            </a>
+        </div>
+    </div>
+    
+    <!-- Filtros compactos -->
+    <form action="{{ route('modulo2') }}" method="GET" class="flex flex-wrap items-end gap-3 bg-gray-50 p-3 rounded-lg border border-gray-200">
+        <div class="flex flex-col min-w-[160px]">
+            <label class="text-xs text-gray-600 font-semibold mb-1">Cámara</label>
+            <select name="camera_id" class="border-gray-300 rounded text-sm px-2 py-1.5 focus:ring-blue-500 focus:border-blue-500">
+                <option value="CAM_002" {{ request('camera_id') == 'CAM_002' ? 'selected' : '' }}>Skyline Cochabamba</option>
+                <option value="CAM_001" {{ request('camera_id') == 'CAM_001' ? 'selected' : '' }}>Oracle Server</option>
+            </select>
+        </div>
+
+        <div class="flex flex-col">
+            <label class="text-xs text-gray-600 font-semibold mb-1">Desde</label>
+            <input type="date" name="fecha_inicio" class="border-gray-300 rounded text-sm px-2 py-1.5 focus:ring-blue-500 focus:border-blue-500" value="{{ request('fecha_inicio', date('Y-m-01')) }}">
         </div>
         
-        <form action="{{ route('modulo2') }}" method="GET" class="flex items-center gap-3 bg-gray-50 p-2 rounded-lg border border-gray-200">
-            <div class="flex flex-col">
-                <label class="text-xs text-gray-500 font-semibold ml-1">Cámara</label>
-                <select name="camera_id" class="border-gray-300 rounded text-sm min-w-[180px] focus:ring-blue-500 focus:border-blue-500">
-                    <option value="CAM_002" {{ request('camera_id') == 'CAM_002' ? 'selected' : '' }}>Skyline Cochabamba</option>
-                    <option value="CAM_001" {{ request('camera_id') == 'CAM_001' ? 'selected' : '' }}>Oracle Server</option>
-                </select>
-            </div>
+        <div class="flex flex-col">
+            <label class="text-xs text-gray-600 font-semibold mb-1">Hasta</label>
+            <input type="date" name="fecha_fin" class="border-gray-300 rounded text-sm px-2 py-1.5 focus:ring-blue-500 focus:border-blue-500" value="{{ request('fecha_fin', date('Y-m-d')) }}">
+        </div>
 
-            <div class="h-8 w-px bg-gray-300 mx-2"></div>
+        <div class="flex flex-col min-w-[120px]">
+            <label class="text-xs text-gray-600 font-semibold mb-1">Tipo</label>
+            <select name="tipo" class="border-gray-300 rounded text-sm px-2 py-1.5 focus:ring-blue-500 focus:border-blue-500">
+                <option value="">Todos</option>
+                <option value="Auto" {{ request('tipo') == 'Auto' ? 'selected' : '' }}>Autos</option>
+                <option value="Moto" {{ request('tipo') == 'Moto' ? 'selected' : '' }}>Motos</option>
+                <option value="Bus"  {{ request('tipo') == 'Bus' ? 'selected' : '' }}>Buses</option>
+            </select>
+        </div>
 
-            <div class="flex flex-col">
-                <label class="text-xs text-gray-500 font-semibold ml-1">Rango de Fechas</label>
-                <div class="flex items-center gap-2">
-                    <input type="date" name="fecha_inicio" class="border-gray-300 rounded text-sm focus:ring-blue-500 focus:border-blue-500" value="{{ request('fecha_inicio', date('Y-m-01')) }}">
-                    <span class="text-gray-400">-</span>
-                    <input type="date" name="fecha_fin" class="border-gray-300 rounded text-sm focus:ring-blue-500 focus:border-blue-500" value="{{ request('fecha_fin', date('Y-m-d')) }}">
-                </div>
-            </div>
-
-            <div class="h-8 w-px bg-gray-300 mx-2"></div>
-
-            <div class="flex flex-col">
-                <label class="text-xs text-gray-500 font-semibold ml-1">Tipo de Vehículo</label>
-                <select name="tipo" class="border-gray-300 rounded text-sm min-w-[150px] focus:ring-blue-500 focus:border-blue-500">
-                    <option value="">Todos</option>
-                    <option value="Auto" {{ request('tipo') == 'Auto' ? 'selected' : '' }}>Autos</option>
-                    <option value="Moto" {{ request('tipo') == 'Moto' ? 'selected' : '' }}>Motos</option>
-                    <option value="Bus"  {{ request('tipo') == 'Bus' ? 'selected' : '' }}>Buses</option>
-                </select>
-            </div>
-
-            <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-1.5 rounded-md text-sm font-medium transition-colors">
-                Filtrar
-            </button>
-        </form>
-    </div>
+        <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-1.5 rounded text-sm font-medium transition-colors">
+            Filtrar
+        </button>
+    </form>
 </div>
 
 <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
     <div class="lg:col-span-2 bg-white rounded-lg shadow-lg p-6">
         <div class="flex justify-between items-center mb-6">
-            <h2 class="text-lg font-semibold text-gray-800">Vehículos Detectados por Día</h2>
+            <h2 class="text-lg font-semibold text-gray-800">Vehículos Detectados por Hora</h2>
             <button class="text-gray-400 hover:text-gray-600">
                 <i class="fas fa-ellipsis-v"></i>
             </button>
@@ -208,39 +200,41 @@
     function processAndInitCharts(data) {
         // --- PROCESAMIENTO DE DATOS ---
         
-        // 1. Agrupar por Fecha y Tipo para el Gráfico de Barras
-        // Estructura deseada: { '2025-12-01': { Auto: 2, Moto: 1, Bus: 0 }, ... }
-        const dailyCounts = {};
+        // 1. Agrupar por HORA y Tipo para el Gráfico de Barras
+        const hourlyCounts = {};
         const typesCount = { 'Auto': 0, 'Moto': 0, 'Bus': 0, 'Otro': 0 };
 
         data.forEach(item => {
-            // Extraer solo la fecha YYYY-MM-DD
-            const date = item.fecha.split(' ')[0]; 
-            const type = item.tipo; // Asumiendo que viene como "Auto", "Moto", etc.
+            // Extraer hora de la fecha (formato: "2025-12-15 09:42:58" -> "09")
+            const dateTimeParts = item.fecha.split(' ');
+            if (dateTimeParts.length >= 2) {
+                const hour = dateTimeParts[1].split(':')[0]; // Obtener solo la hora
+                const type = item.tipo;
 
-            // Inicializar objeto del día si no existe
-            if (!dailyCounts[date]) {
-                dailyCounts[date] = { 'Auto': 0, 'Moto': 0, 'Bus': 0, 'Otro': 0 };
-            }
+                // Inicializar objeto de la hora si no existe
+                if (!hourlyCounts[hour]) {
+                    hourlyCounts[hour] = { 'Auto': 0, 'Moto': 0, 'Bus': 0, 'Otro': 0 };
+                }
 
-            // Contar para el día
-            if (['Auto', 'Moto', 'Bus'].includes(type)) {
-                dailyCounts[date][type]++;
-                typesCount[type]++; // Contar global para la torta
-            } else {
-                dailyCounts[date]['Otro']++;
-                typesCount['Otro']++;
+                // Contar para la hora
+                if (['Auto', 'Moto', 'Bus'].includes(type)) {
+                    hourlyCounts[hour][type]++;
+                    typesCount[type]++; // Contar global para la torta
+                } else {
+                    hourlyCounts[hour]['Otro']++;
+                    typesCount['Otro']++;
+                }
             }
         });
 
-        // Ordenar fechas cronológicamente
-        const sortedDates = Object.keys(dailyCounts).sort();
+        // Ordenar horas numéricamente (00, 01, 02, ..., 23)
+        const sortedHours = Object.keys(hourlyCounts).sort((a, b) => parseInt(a) - parseInt(b));
 
-        // Preparar arrays para Chart.js
-        const labels = sortedDates;
-        const dataAuto = sortedDates.map(date => dailyCounts[date]['Auto']);
-        const dataMoto = sortedDates.map(date => dailyCounts[date]['Moto']);
-        const dataBus = sortedDates.map(date => dailyCounts[date]['Bus']);
+        // Preparar arrays para Chart.js con formato "00:00", "01:00", etc.
+        const labels = sortedHours.map(h => `${h}:00`);
+        const dataAuto = sortedHours.map(hour => hourlyCounts[hour]['Auto']);
+        const dataMoto = sortedHours.map(hour => hourlyCounts[hour]['Moto']);
+        const dataBus = sortedHours.map(hour => hourlyCounts[hour]['Bus']);
 
         // --- 2. CONFIGURACIÓN GRÁFICOS ---
 

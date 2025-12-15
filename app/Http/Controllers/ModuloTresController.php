@@ -10,11 +10,6 @@ use App\Models\Report;
 
 class ModuloTresController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('isAdmin');
-    }
-
     /**
      * Dashboard principal - Lista de usuarios con configuración
      */

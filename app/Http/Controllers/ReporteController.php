@@ -78,9 +78,10 @@ class ReporteController extends Controller
         return $registros;
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        return view('modulo2');
+        $registros = $this->obtenerRegistrosFiltrados($request);
+        return view('modulo2', compact('registros'));
     }
 
     /**

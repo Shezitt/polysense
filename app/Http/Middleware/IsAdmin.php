@@ -15,9 +15,14 @@ class IsAdmin
      */
     public function handle(Request $request, Closure $next): Response
     {
-        // Verificar si el usuario está autenticado y es admin
-        if (!auth()->check() || auth()->user()->role !== 'admin') {
-            return redirect()->route('modulo1')->with('error', 'No tienes permisos para acceder a esta sección');
+        // Verificar si el usuario está autenticado
+        if (!auth()->check()) {
+            return redirect()->route('login')->with('error', 'Debes iniciar sesión');
+        }
+
+        // Verificar si el usuario es administrador
+        if (auth()->user()->role !== 'admin') {
+            abort(403, 'No tienes permisos para acceder a esta sección');
         }
 
         return $next($request);
