@@ -21,7 +21,12 @@ Route::get('/modulo1', function() {
     return view('modulo1');
 })->name('modulo1');
 
-Route::get('/modulo2', [ReporteController::class, 'index'])->name('modulo2');
+Route::prefix('modulo2')->group(function() {
+    Route::get('/', [ReporteController::class, 'index'])->name('modulo2');
+    Route::get('/my-notifications', [ReporteController::class, 'myNotifications'])->name('modulo2.my-notifications');
+    Route::get('/my-reports', [ReporteController::class, 'myReports'])->name('modulo2.my-reports');
+    Route::post('/generate-report', [ReporteController::class, 'generateMyReport'])->name('modulo2.generate-report');
+});
 
 // Módulo 3 - Automatización y Gestión (Solo Administradores)
 Route::middleware(['isAdmin'])->prefix('modulo3')->group(function () {

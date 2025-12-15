@@ -78,10 +78,56 @@ class ReporteController extends Controller
         return $registros;
     }
 
-    public function index(Request $request)
+    public function index()
     {
-        $registros = $this->obtenerRegistrosFiltrados($request);
-        return view('modulo2', compact('registros'));
+        return view('modulo2');
+    }
+
+    /**
+     * Mis notificaciones (nuevo)
+     */
+    public function myNotifications()
+    {
+        $notifications = \App\Models\Notification::forUser(auth()->id())
+            ->latest()
+            ->paginate(20);
+        
+        return view('modulo2.my-notifications', compact('notifications'));
+    }
+
+    /**
+     * Mis reportes (nuevo)
+     */
+    public function myReports()
+    {
+        $reports = \App\Models\Report::forUser(auth()->id())
+            ->latest()
+            ->paginate(20);
+        
+        return view('modulo2.my-reports', compact('reports'));
+    }
+
+    /**
+     * Generar mi reporte
+     */
+    public function generateMyReport(Request $request)
+    {
+        $validated = $request->validate([
+            'type' => 'required|in:daily,weekly,monthly,custom',
+            'date_from' => 'nullable|date',
+            'date_to' => 'nullable|date',
+        ]);
+
+        $filters = [];
+        if ($validated['date_from']) $filters['date_from'] = $validated['date_from'];
+        if ($validated['date_to']) $filters['date_to'] = $validated['date_to'];
+
+        // Usar el servicio de reportes
+        $reportService = app(\App\Services\ReportService::class);
+        $report = $reportService->generate(auth()->id(), $validated['type'], $filters);
+
+        return redirect()->route('modulo2.my-reports')
+            ->with('success', 'Reporte generado exitosamente');
     }
 
     // Funcionalidad del Botón: EXPORTAR A EXCEL (Simulado con CSV)
