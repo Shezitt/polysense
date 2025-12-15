@@ -28,7 +28,7 @@
     <div class="flex justify-between items-center mb-4">
         <h1 class="text-3xl font-bold text-gray-800">Monitor de Vehículos en Tiempo Real</h1>
         <div id="connectionStatus" class="px-4 py-2 rounded-full text-white font-semibold bg-red-500">
-            🔴 Conectando...
+            Conectando...
         </div>
     </div>
 </div>
@@ -36,7 +36,7 @@
 <div class="flex flex-col lg:flex-row gap-6 mb-6">
     <!-- Video Section -->
     <div class="bg-white rounded-lg shadow-lg p-6 lg:basis-[70%]">
-        <h2 class="text-xl font-semibold text-gray-800 mb-4">📹 Transmisión en Vivo</h2>
+        <h2 class="text-xl font-semibold text-gray-800 mb-4">Transmisión en Vivo</h2>
         <div class="bg-black rounded-lg overflow-hidden">
             <canvas id="videoCanvas" width="800" height="600" class="w-full h-auto"></canvas>
         </div>
@@ -124,7 +124,7 @@
         websocket.binaryType = 'arraybuffer';
 
         websocket.onopen = () => {
-            console.log('✓ WebSocket conectado');
+            console.log('WebSocket conectado');
             updateStatus(true);
         };
 
@@ -142,7 +142,7 @@
         };
 
         websocket.onerror = (error) => {
-            console.error('✗ WebSocket error:', error);
+            console.error('WebSocket error:', error);
             updateStatus(false, 'Error en transmisión');
         };
 

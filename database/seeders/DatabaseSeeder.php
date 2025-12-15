@@ -15,11 +15,20 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        // Crear usuario administrador por defecto
+        User::create([
+            'name' => 'Administrador',
+            'email' => 'admin@polysense.com',
+            'password' => bcrypt('admin123'),
+            'role' => 'admin',
+        ]);
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+        // Crear usuario de prueba regular
+        User::create([
+            'name' => 'Usuario Test',
+            'email' => 'user@polysense.com',
+            'password' => bcrypt('user123'),
+            'role' => 'user',
         ]);
 
         // Cargar comandos de voz predeterminados

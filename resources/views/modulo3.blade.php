@@ -22,7 +22,7 @@
         <!-- Card 1: Limpieza de Datos -->
         <div class="bg-white shadow-lg rounded-xl overflow-hidden border border-gray-100">
             <div class="bg-gray-50 px-6 py-4 border-b border-gray-100 flex justify-between items-center">
-                <h3 class="text-lg font-semibold text-gray-800">🗑️ Limpieza de Datos</h3>
+                <h3 class="text-lg font-semibold text-gray-800">Limpieza de Datos</h3>
                 <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
                     DB: {{ $dbSize }}
                 </span>
@@ -222,7 +222,7 @@
                                         <span>📉 &lt; {{ $rule->min_threshold }}</span>
                                         <span>📈 &gt; {{ $rule->max_threshold }}</span>
                                         @if($rule->notify_black_screen == 'true')
-                                            <span>⚠️ Inactividad</span>
+                                            <span>Inactividad</span>
                                         @endif
                                     </div>
                                 </div>

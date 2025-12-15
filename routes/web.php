@@ -4,7 +4,15 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ReporteController;
 use App\Http\Controllers\VehicleMonitorController;
 use App\Http\Controllers\VoiceCommandController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\AuthController;
 
+// Rutas de autenticación
+Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
+Route::post('/login', [AuthController::class, 'login'])->name('login.post');
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
+// Rutas públicas (o protégelas si quieres)
 Route::get('/', function () {
     return view('modulo1');
 });
@@ -27,18 +35,18 @@ Route::get('/modulo4', function() {
     return view('modulo4');
 })->name('modulo4');
 
-Route::get('/login', function() {
-    return view('login');
-})->name('login');
-
-Route::get('/register', function() {
-    return view('register');
-})->name('register');
-
 // API para obtener datos del detector Python
 Route::get('/api/vehicle-monitor/{cameraId}', [VehicleMonitorController::class, 'getStats']);
 
 Route::get('/modulo2/exportar/excel', [ReporteController::class, 'exportarExcel'])->name('exportar.excel');
+
+// Módulo 5 - Gestión de usuarios (solo admin)
+Route::middleware(['isAdmin'])->group(function () {
+    Route::get('/modulo5', [UserController::class, 'index'])->name('modulo5');
+    Route::post('/usuarios', [UserController::class, 'store'])->name('usuarios.store');
+    Route::delete('/usuarios/{id}', [UserController::class, 'destroy'])->name('usuarios.destroy');
+    Route::put('/usuarios/{id}/role', [UserController::class, 'changeRole'])->name('usuarios.changeRole');
+});
 
 // API para comandos de voz
 Route::prefix('api/voice-commands')->group(function () {

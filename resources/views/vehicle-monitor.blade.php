@@ -241,7 +241,7 @@
 <body>
     <div class="container">
         <header>
-            <h1>🚗 Monitor de Vehículos en Tiempo Real</h1>
+            <h1>Monitor de Vehículos en Tiempo Real</h1>
             <div id="connectionStatus" class="status-indicator status-offline">
                 Conectando...
             </div>
@@ -251,7 +251,7 @@
             <!-- Sección de Video -->
             <div class="video-section">
                 <div class="video-header">
-                    <h2>📹 Transmisión en Vivo</h2>
+                    <h2>Transmisión en Vivo</h2>
                     <select id="cameraSelector" class="camera-selector">
                         <option value="">Seleccionar cámara...</option>
                     </select>
@@ -372,7 +372,7 @@
             websocket.binaryType = 'arraybuffer';
 
             websocket.onopen = () => {
-                console.log('✓ WebSocket conectado');
+                console.log('WebSocket conectado');
                 updateStatus(true);
             };
 
@@ -390,12 +390,12 @@
             };
 
             websocket.onerror = (error) => {
-                console.error('✗ WebSocket error:', error);
+                console.error('WebSocket error:', error);
                 updateStatus(false, 'Error en transmisión');
             };
 
             websocket.onclose = () => {
-                console.log('⚠ WebSocket cerrado, reconectando...');
+                console.log('WebSocket cerrado, reconectando...');
                 updateStatus(false, 'Reconectando...');
                 setTimeout(connectWebSocket, 3000);
             };
@@ -488,10 +488,10 @@
         // Actualizar estado de conexión
         function updateStatus(isOnline, message = null) {
             if (isOnline) {
-                statusIndicator.textContent = message || '🟢 En línea';
+                statusIndicator.textContent = message || 'En línea';
                 statusIndicator.className = 'status-indicator status-online';
             } else {
-                statusIndicator.textContent = message || '🔴 Desconectado';
+                statusIndicator.textContent = message || 'Desconectado';
                 statusIndicator.className = 'status-indicator status-offline';
             }
         }

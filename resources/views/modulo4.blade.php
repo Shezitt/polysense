@@ -3,34 +3,23 @@
 @section('title', 'Módulo 4 - Comandos de Voz')
 
 @section('content')
-<div class="min-h-screen bg-gray-50 py-8">
-    <div class="container mx-auto px-4 max-w-7xl">
+<div class="bg-gray-50 py-8">
+    <div class="container mx-auto px-4 max-w-6xl">
         
-        <!-- Header Section -->
-        <div class="mb-8">
-            <div class="flex items-center justify-between flex-wrap gap-4">
-                <div>
-                    <div class="flex items-center gap-4 mb-2">
-                        <div class="w-14 h-14 bg-blue-600 rounded-xl flex items-center justify-center shadow-md">
-                            <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"/>
-                            </svg>
-                        </div>
-                        <h1 class="text-4xl font-bold text-gray-900">Comandos de Voz</h1>
-                    </div>
-                    <p class="text-gray-600 ml-18">Activa, desactiva y edita las palabras clave de tus comandos</p>
+        <!-- Header -->
+        <div class="mb-6">
+            <h1 class="text-3xl font-bold text-gray-800 mb-2">Comandos de Voz</h1>
+            <p class="text-gray-600">Activa, desactiva y edita las palabras clave de tus comandos</p>
+            
+            <!-- Stats -->
+            <div class="flex gap-4 mt-4">
+                <div class="bg-white rounded px-4 py-3 border border-gray-300">
+                    <div class="text-2xl font-bold text-gray-900" id="total-commands">0</div>
+                    <div class="text-sm text-gray-600">Total</div>
                 </div>
-                
-                <!-- Stats -->
-                <div class="flex gap-4">
-                    <div class="bg-white rounded-lg px-6 py-4 shadow border border-gray-200">
-                        <div class="text-3xl font-bold text-gray-900" id="total-commands">0</div>
-                        <div class="text-sm text-gray-500 font-medium">Total</div>
-                    </div>
-                    <div class="bg-white rounded-lg px-6 py-4 shadow border border-gray-200">
-                        <div class="text-3xl font-bold text-green-600" id="active-commands">0</div>
-                        <div class="text-sm text-gray-500 font-medium">Activos</div>
-                    </div>
+                <div class="bg-white rounded px-4 py-3 border border-gray-300">
+                    <div class="text-2xl font-bold text-green-600" id="active-commands">0</div>
+                    <div class="text-sm text-gray-600">Activos</div>
                 </div>
             </div>
         </div>
@@ -38,11 +27,9 @@
         <!-- Comandos Grid -->
         <div id="commands-container">
             <!-- Loading State -->
-            <div class="flex items-center justify-center py-20">
-                <div class="text-center">
-                    <div class="inline-block animate-spin rounded-full h-12 w-12 border-4 border-gray-300 border-t-blue-600 mb-4"></div>
-                    <p class="text-gray-600 text-lg font-medium">Cargando comandos...</p>
-                </div>
+            <div class="text-center py-12">
+                <div class="inline-block animate-spin rounded-full h-10 w-10 border-4 border-gray-300 border-t-blue-600 mb-3"></div>
+                <p class="text-gray-600">Cargando comandos...</p>
             </div>
         </div>
 
@@ -51,72 +38,55 @@
 
 <!-- Modal para Editar Palabras Clave -->
 <div id="edit-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-    <div class="bg-white rounded-lg shadow-xl max-w-2xl w-full">
+    <div class="bg-white rounded shadow-lg max-w-2xl w-full">
         <!-- Modal Header -->
-        <div class="bg-blue-600 px-6 py-4 rounded-t-lg">
-            <div class="flex items-center justify-between">
-                <div>
-                    <h3 class="text-xl font-bold text-white">Editar Palabras Clave</h3>
-                    <p class="text-blue-100 text-sm mt-1">Solo puedes modificar las palabras que activan el comando</p>
-                </div>
-                <button onclick="closeModal()" class="text-white hover:bg-blue-700 rounded-lg p-2 transition-colors">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
-                    </svg>
-                </button>
-            </div>
+        <div class="bg-gray-100 px-6 py-4 border-b border-gray-300 flex items-center justify-between">
+            <h3 class="text-xl font-bold text-gray-800">Editar Palabras Clave</h3>
+            <button onclick="closeModal()" class="text-gray-600 hover:text-gray-800">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                </svg>
+            </button>
         </div>
 
         <!-- Modal Body -->
-        <form id="edit-form" class="p-6 space-y-5">
+        <form id="edit-form" class="p-6">
             <input type="hidden" id="edit-command-id">
             
             <!-- Comando Info -->
-            <div class="bg-gray-100 rounded-lg p-4 border border-gray-300">
-                <div class="flex items-center gap-3">
-                    <span id="edit-icon" class="text-3xl"></span>
-                    <div class="flex-1">
-                        <h4 id="edit-name" class="text-lg font-bold text-gray-900"></h4>
-                        <div class="flex items-center gap-2 mt-1">
-                            <span id="edit-action-badge" class="px-2 py-1 text-xs font-semibold rounded"></span>
-                            <span id="edit-module-badge" class="px-2 py-1 text-xs font-medium bg-gray-300 text-gray-800 rounded"></span>
-                        </div>
-                    </div>
+            <div class="bg-gray-100 rounded p-4 border border-gray-300 mb-4">
+                <h4 id="edit-name" class="text-lg font-bold text-gray-900 mb-2"></h4>
+                <div class="flex items-center gap-2">
+                    <span id="edit-action-badge" class="px-2 py-1 text-xs font-semibold rounded"></span>
+                    <span id="edit-module-badge" class="px-2 py-1 text-xs bg-gray-300 text-gray-800 rounded"></span>
                 </div>
             </div>
 
             <!-- Palabras Clave Input -->
-            <div>
-                <label class="block text-sm font-bold text-gray-800 mb-2">
+            <div class="mb-4">
+                <label class="block text-sm font-bold text-gray-700 mb-2">
                     Palabras Clave <span class="text-red-600">*</span>
                 </label>
                 <textarea id="edit-trigger" required rows="3"
-                    class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all resize-none text-base"
+                    class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500"
                     placeholder="inicio, home, página principal"></textarea>
-                <div class="mt-2 bg-blue-50 border border-blue-200 rounded-lg p-3">
-                    <p class="text-sm text-gray-800 font-medium mb-1">💡 Consejos:</p>
-                    <ul class="text-sm text-gray-700 space-y-1 ml-4 list-disc">
-                        <li>Separa las palabras con comas</li>
-                        <li>Usa sinónimos para mejorar el reconocimiento</li>
-                        <li>Evita palabras muy cortas</li>
-                    </ul>
-                </div>
+                <p class="text-sm text-gray-600 mt-2">Separa las palabras con comas. Usa sinónimos para mejorar el reconocimiento.</p>
             </div>
 
             <!-- Información de Destino (si aplica) -->
-            <div id="edit-target-info" class="hidden bg-gray-100 border border-gray-300 rounded-lg p-3">
+            <div id="edit-target-info" class="hidden bg-gray-100 border border-gray-300 rounded p-3 mb-4">
                 <p class="text-sm text-gray-700 font-semibold mb-2">Destino del comando:</p>
-                <code id="edit-target" class="block bg-white px-3 py-2 rounded text-sm text-gray-900 font-mono border border-gray-300"></code>
+                <code id="edit-target" class="block bg-white px-3 py-2 rounded text-sm text-gray-900 border border-gray-300"></code>
             </div>
 
             <!-- Botones -->
-            <div class="flex gap-3 pt-3">
+            <div class="flex gap-3">
                 <button type="button" onclick="closeModal()"
-                    class="flex-1 px-5 py-3 bg-white border-2 border-gray-300 rounded-lg hover:bg-gray-50 font-semibold text-gray-800 transition-colors">
+                    class="flex-1 px-4 py-2 bg-gray-200 border border-gray-300 rounded hover:bg-gray-300 text-gray-800">
                     Cancelar
                 </button>
                 <button type="submit"
-                    class="flex-1 px-5 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-semibold transition-colors shadow">
+                    class="flex-1 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded">
                     Guardar Cambios
                 </button>
             </div>
@@ -146,11 +116,8 @@ function renderCommands() {
     
     if (allCommands.length === 0) {
         container.innerHTML = `
-            <div class="text-center py-20">
-                <svg class="w-20 h-20 text-gray-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"/>
-                </svg>
-                <p class="text-lg text-gray-600 font-medium">No hay comandos configurados</p>
+            <div class="text-center py-12">
+                <p class="text-lg text-gray-600">No hay comandos configurados</p>
             </div>
         `;
         return;
@@ -173,69 +140,59 @@ function createCommandCard(cmd) {
     const isActive = cmd.enabled;
     
     return `
-        <div class="bg-white rounded-lg shadow hover:shadow-lg transition-all border ${isActive ? 'border-blue-200' : 'border-gray-300'} ${!isActive ? 'opacity-75' : ''}">
+        <div class="bg-white rounded border border-gray-300 ${!isActive ? 'opacity-60' : ''}">
             <!-- Card Header -->
-            <div class="${actionConfig.bgClass} px-5 py-4 border-b ${actionConfig.borderClass}">
-                <div class="flex items-center justify-between gap-4">
-                    <div class="flex items-center gap-3 flex-1">
-                        <span class="text-3xl">${actionConfig.icon}</span>
-                        <div class="flex-1">
-                            <h3 class="text-lg font-bold text-gray-900">${escapeHtml(cmd.name)}</h3>
-                            <div class="flex items-center gap-2 mt-1">
-                                <span class="px-2 py-0.5 ${actionConfig.badgeClass} text-xs font-semibold rounded">
-                                    ${actionConfig.label}
-                                </span>
-                                ${cmd.modules ? `
-                                    <span class="px-2 py-0.5 bg-gray-200 text-gray-700 text-xs font-medium rounded">
-                                        ${cmd.modules}
-                                    </span>
-                                ` : ''}
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Toggle Switch -->
-                    <div class="flex-shrink-0">
-                        <label class="relative inline-flex items-center cursor-pointer">
-                            <input type="checkbox" ${isActive ? 'checked' : ''} 
-                                data-command-id="${cmd.id}"
-                                class="toggle-checkbox sr-only peer">
-                            <div class="w-14 h-7 bg-gray-300 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-blue-400 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[4px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-6 after:w-6 after:transition-all peer-checked:bg-blue-600"></div>
-                        </label>
+            <div class="bg-gray-50 px-4 py-3 border-b border-gray-300 flex items-center justify-between">
+                <div class="flex-1">
+                    <h3 class="text-lg font-bold text-gray-900">${escapeHtml(cmd.name)}</h3>
+                    <div class="flex items-center gap-2 mt-1">
+                        <span class="px-2 py-0.5 ${actionConfig.badgeClass} text-xs font-semibold rounded">
+                            ${actionConfig.label}
+                        </span>
+                        ${cmd.modules ? `
+                            <span class="px-2 py-0.5 bg-gray-200 text-gray-700 text-xs rounded">
+                                ${cmd.modules}
+                            </span>
+                        ` : ''}
                     </div>
                 </div>
+                
+                <!-- Toggle Switch -->
+                <label class="relative inline-flex items-center cursor-pointer">
+                    <input type="checkbox" ${isActive ? 'checked' : ''} 
+                        data-command-id="${cmd.id}"
+                        class="toggle-checkbox sr-only peer">
+                    <div class="w-11 h-6 bg-gray-300 rounded-full peer peer-checked:bg-blue-600 peer-focus:ring-2 peer-focus:ring-blue-300 after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border after:border-gray-300 after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:after:translate-x-full peer-checked:after:border-white"></div>
+                </label>
             </div>
             
             <!-- Card Body -->
-            <div class="p-5 space-y-4">
+            <div class="p-4">
                 <!-- Palabras Clave -->
-                <div>
-                    <label class="block text-xs font-bold text-gray-600 uppercase mb-2">Palabras Clave</label>
-                    <div class="bg-gray-50 rounded p-3 border border-gray-200">
-                        <p class="text-gray-900 font-medium">"${escapeHtml(cmd.trigger)}"</p>
+                <div class="mb-3">
+                    <label class="block text-xs font-bold text-gray-600 uppercase mb-1">Palabras Clave</label>
+                    <div class="bg-gray-50 rounded p-2 border border-gray-200">
+                        <p class="text-gray-900">"${escapeHtml(cmd.trigger)}"</p>
                     </div>
                 </div>
                 
                 <!-- Destino (si aplica) -->
                 ${cmd.target ? `
-                    <div>
-                        <label class="block text-xs font-bold text-gray-600 uppercase mb-2">Destino</label>
-                        <code class="block bg-gray-50 rounded p-3 text-sm text-gray-800 font-mono border border-gray-200 break-all">${escapeHtml(cmd.target)}</code>
+                    <div class="mb-3">
+                        <label class="block text-xs font-bold text-gray-600 uppercase mb-1">Destino</label>
+                        <code class="block bg-gray-50 rounded p-2 text-sm text-gray-800 border border-gray-200 break-all">${escapeHtml(cmd.target)}</code>
                     </div>
                 ` : ''}
                 
                 <!-- Footer -->
                 <div class="flex items-center justify-between pt-3 border-t border-gray-200">
-                    <div class="flex items-center gap-2">
-                        <span class="w-2.5 h-2.5 rounded-full ${isActive ? 'bg-green-500' : 'bg-gray-400'}"></span>
-                        <span class="text-sm font-semibold ${isActive ? 'text-green-700' : 'text-gray-500'}">
-                            ${isActive ? 'Activo' : 'Inactivo'}
-                        </span>
-                    </div>
+                    <span class="text-sm ${isActive ? 'text-green-600' : 'text-gray-500'} font-semibold">
+                        ${isActive ? 'Activo' : 'Inactivo'}
+                    </span>
                     
                     <button onclick="openEditModal(${cmd.id})" 
-                        class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors font-semibold text-sm">
-                        Editar Palabras
+                        class="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded text-sm">
+                        Editar
                     </button>
                 </div>
             </div>
@@ -247,32 +204,20 @@ function createCommandCard(cmd) {
 function getActionConfig(action) {
     const configs = {
         'navigate': {
-            icon: '🔗',
             label: 'Navegación',
-            bgClass: 'bg-blue-50',
-            borderClass: 'border-blue-200',
             badgeClass: 'bg-blue-100 text-blue-800'
         },
         'alert': {
-            icon: '💬',
             label: 'Alerta',
-            bgClass: 'bg-green-50',
-            borderClass: 'border-green-200',
             badgeClass: 'bg-green-100 text-green-800'
         },
         'function': {
-            icon: '⚙️',
             label: 'Función',
-            bgClass: 'bg-purple-50',
-            borderClass: 'border-purple-200',
             badgeClass: 'bg-purple-100 text-purple-800'
         }
     };
     return configs[action] || {
-        icon: '📌',
         label: action,
-        bgClass: 'bg-gray-50',
-        borderClass: 'border-gray-200',
         badgeClass: 'bg-gray-100 text-gray-800'
     };
 }
@@ -300,7 +245,7 @@ async function toggleCommand(id, enabled) {
             }
             renderCommands();
             updateStats();
-            showNotification(enabled ? '✓ Comando activado' : '✓ Comando desactivado', 'success');
+            showNotification(enabled ? 'Comando activado' : 'Comando desactivado', 'success');
         } else {
             throw new Error('Error al cambiar estado');
         }
@@ -319,7 +264,6 @@ function openEditModal(id) {
     
     document.getElementById('edit-command-id').value = cmd.id;
     document.getElementById('edit-name').textContent = cmd.name;
-    document.getElementById('edit-icon').textContent = actionConfig.icon;
     document.getElementById('edit-trigger').value = cmd.trigger;
     
     const actionBadge = document.getElementById('edit-action-badge');
@@ -422,10 +366,8 @@ function showNotification(message, type = 'success') {
     };
     
     const notification = document.createElement('div');
-    notification.className = `fixed bottom-6 right-6 ${colors[type]} text-white px-6 py-4 rounded-lg shadow-lg z-50 flex items-center gap-3`;
-    notification.innerHTML = `
-        <span class="font-semibold">${message}</span>
-    `;
+    notification.className = `fixed bottom-4 right-4 ${colors[type]} text-white px-4 py-3 rounded shadow-lg z-50`;
+    notification.innerHTML = `<span>${message}</span>`;
     
     document.body.appendChild(notification);
     
@@ -439,12 +381,9 @@ function showError(message) {
     const container = document.getElementById('commands-container');
     container.innerHTML = `
         <div class="text-center py-20">
-            <div class="inline-flex flex-col items-center bg-red-50 rounded-lg p-8 border border-red-300">
-                <svg class="w-16 h-16 text-red-600 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                </svg>
+            <div class="bg-red-50 rounded p-6 border border-red-300 inline-block">
                 <p class="text-lg text-red-800 font-semibold mb-3">${message}</p>
-                <button onclick="loadCommands()" class="px-5 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg font-semibold transition-colors">
+                <button onclick="loadCommands()" class="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded">
                     Reintentar
                 </button>
             </div>
