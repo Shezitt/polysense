@@ -14,13 +14,13 @@ class VoiceCommandSystem {
     }
 
     init() {
-        console.log('🎤 Inicializando sistema de voz...');
+        console.log('Inicializando sistema de voz...');
         
         // Verificar soporte del navegador
         const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
         
         if (!SpeechRecognition) {
-            console.error('❌ Web Speech API no soportada');
+            console.error('Web Speech API no soportada');
             this.showNotification('Tu navegador no soporta reconocimiento de voz. Usa Chrome o Edge.', 'error');
             return;
         }
@@ -33,30 +33,30 @@ class VoiceCommandSystem {
         this.recognition.continuous = false;
         this.recognition.interimResults = false;
         
-        console.log('✅ Reconocimiento creado');
+        console.log('Reconocimiento creado');
 
         // Event listeners SIMPLES
         this.recognition.onstart = () => {
-            console.log('🎤 Micrófono activado - Habla ahora...');
+            console.log('Micrófono activado - Habla ahora...');
             this.isListening = true;
             this.showListeningIndicator();
         };
 
         this.recognition.onend = () => {
-            console.log('🎤 Micrófono desactivado');
+            console.log('Micrófono desactivado');
             this.isListening = false;
             this.hideListeningIndicator();
         };
 
         this.recognition.onerror = (event) => {
-            console.error('❌ ERROR:', event.error);
+            console.error('ERROR:', event.error);
             this.hideListeningIndicator();
             
             const errorMessages = {
-                'network': '🌐 Error de red. Prueba en modo incógnito (Ctrl+Shift+N) o desactiva extensiones.',
-                'not-allowed': '🔒 Permiso denegado. Click en el candado junto a la URL y permite el micrófono.',
-                'no-speech': '🔇 No se detectó voz. Habla más cerca del micrófono.',
-                'audio-capture': '🎤 No se encontró micrófono.',
+                'network': 'Error de red. Prueba en modo incógnito (Ctrl+Shift+N) o desactiva extensiones.',
+                'not-allowed': 'Permiso denegado. Click en el candado junto a la URL y permite el micrófono.',
+                'no-speech': 'No se detectó voz. Habla más cerca del micrófono.',
+                'audio-capture': 'No se encontró micrófono.',
                 'aborted': 'Cancelado'
             };
             
@@ -68,8 +68,8 @@ class VoiceCommandSystem {
             const transcript = event.results[0][0].transcript;
             const confidence = event.results[0][0].confidence;
             
-            console.log('✅ ESCUCHÉ:', transcript);
-            console.log('📊 Confianza:', (confidence * 100).toFixed(1) + '%');
+            console.log('ESCUCHÉ:', transcript);
+            console.log('Confianza:', (confidence * 100).toFixed(1) + '%');
             
             // Mostrar lo que se escuchó
             this.showNotification(`Escuché: "${transcript}"`, 'success');
@@ -81,7 +81,7 @@ class VoiceCommandSystem {
         // Cargar comandos desde el servidor
         this.loadCommands();
 
-        console.log('✅ Sistema de comandos de voz inicializado');
+        console.log('Sistema de comandos de voz inicializado');
     }
 
     getCurrentModule() {
@@ -102,30 +102,30 @@ class VoiceCommandSystem {
                 cmd.enabled && (cmd.modules === 'all' || cmd.modules.includes(this.currentModule))
             );
             
-            console.log(`✅ Cargados ${this.commands.length} comandos para ${this.currentModule}`);
+            console.log(`Cargados ${this.commands.length} comandos para ${this.currentModule}`);
         } catch (error) {
-            console.error('❌ Error cargando comandos:', error);
+            console.error('Error cargando comandos:', error);
         }
     }
 
     startListening(callback = null) {
         if (!this.recognition) {
-            console.error('❌ Sistema no inicializado');
+            console.error('Sistema no inicializado');
             this.showNotification('Sistema de voz no disponible', 'error');
             return;
         }
 
         if (this.isListening) {
-            console.log('⏹️ Deteniendo...');
+            console.log('Deteniendo...');
             this.recognition.stop();
             return;
         }
 
         try {
-            console.log('🎤 Iniciando micrófono...');
+            console.log('Iniciando micrófono...');
             this.recognition.start();
         } catch (error) {
-            console.error('❌ Error:', error.message);
+            console.error('Error:', error.message);
             this.showNotification('Error: ' + error.message, 'error');
         }
     }
@@ -137,22 +137,22 @@ class VoiceCommandSystem {
     }
 
     processCommand(transcript) {
-        console.log('🔍 Procesando:', transcript);
+        console.log('Procesando:', transcript);
 
         // Buscar comando
         const matchedCommand = this.findMatchingCommand(transcript);
 
         if (matchedCommand) {
-            console.log('✅ EJECUTANDO:', matchedCommand.name);
+            console.log('EJECUTANDO:', matchedCommand.name);
             this.executeCommand(matchedCommand);
         } else {
-            console.log('⚠️ Sin comando para:', transcript);
+            console.log('Sin comando para:', transcript);
             
             // Sugerencias simples
             if (transcript.includes('uno') || transcript.includes('1')) {
-                console.log('💡 ¿Querías decir "módulo uno"?');
+                console.log('¿Querías decir "módulo uno"?');
             } else if (transcript.includes('dos') || transcript.includes('2')) {
-                console.log('💡 ¿Querías decir "módulo dos"?');
+                console.log('¿Querías decir "módulo dos"?');
             }
         }
     }
@@ -232,7 +232,7 @@ class VoiceCommandSystem {
     }
 
     executeCommand(command) {
-        this.showNotification(`✅ Ejecutando: ${command.name}`, 'success');
+        this.showNotification(`Ejecutando: ${command.name}`, 'success');
 
         switch (command.action) {
             case 'navigate':
@@ -252,17 +252,17 @@ class VoiceCommandSystem {
                 break;
 
             default:
-                console.warn('⚠️ Acción no implementada:', command.action);
+                console.warn('Acción no implementada:', command.action);
         }
     }
 
     navigate(url) {
-        console.log('🔀 Navegando a:', url);
+        console.log('Navegando a:', url);
         window.location.href = url;
     }
 
     exportData() {
-        console.log('📥 Exportando datos...');
+        console.log('Exportando datos...');
         
         // Si existe la función global de exportar en el módulo actual
         if (typeof window.exportToExcel === 'function') {
@@ -270,24 +270,24 @@ class VoiceCommandSystem {
         } else if (typeof window.exportData === 'function') {
             window.exportData();
         } else {
-            console.warn('⚠️ Función de exportar no encontrada');
+            console.warn('Función de exportar no encontrada');
             this.showNotification('Función de exportar no disponible', 'warning');
         }
     }
 
     toggleFeature(feature) {
-        console.log('🔄 Alternando:', feature);
+        console.log('Alternando:', feature);
         
         // Implementar toggles específicos según el feature
         if (typeof window.toggleFeature === 'function') {
             window.toggleFeature(feature);
         } else {
-            console.warn('⚠️ Toggle no implementado para:', feature);
+            console.warn('Toggle no implementado para:', feature);
         }
     }
 
     executeCustomFunction(functionName) {
-        console.log('⚡ Ejecutando función personalizada:', functionName);
+        console.log('Ejecutando función personalizada:', functionName);
         
         try {
             // Buscar función en el scope global
@@ -298,7 +298,7 @@ class VoiceCommandSystem {
                 eval(functionName);
             }
         } catch (error) {
-            console.error('❌ Error ejecutando función:', error);
+            console.error('Error ejecutando función:', error);
             this.showNotification('Error ejecutando comando', 'error');
         }
     }
@@ -369,16 +369,16 @@ document.addEventListener('keydown', (e) => {
 
 // Monitorear estado de conexión
 window.addEventListener('online', () => {
-    console.log('✅ Conexión a internet restaurada');
+    console.log('Conexión a internet restaurada');
 });
 
 window.addEventListener('offline', () => {
-    console.warn('⚠️ Sin conexión a internet. Los comandos de voz no funcionarán.');
+    console.warn('Sin conexión a internet. Los comandos de voz no funcionarán.');
 });
 
 // Mostrar estado al cargar
 if (navigator.onLine) {
-    console.log('🎤 Sistema de comandos de voz cargado. Usa Ctrl+Shift+V para activar.');
+    console.log('Sistema de comandos de voz cargado. Usa Ctrl+Shift+V para activar.');
 } else {
-    console.warn('⚠️ Sistema de comandos de voz cargado pero sin conexión a internet.');
+    console.warn('Sistema de comandos de voz cargado pero sin conexión a internet.');
 }

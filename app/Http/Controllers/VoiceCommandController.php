@@ -160,8 +160,8 @@ class VoiceCommandController extends Controller
     {
         $defaults = [
             [
-                'name' => 'Ir al Módulo 1',
-                'trigger' => 'módulo uno,ir al monitor,monitoreo',
+                'name' => 'Ir a Deteccion',
+                'trigger' => 'detección,deteccion,ir al monitor,monitoreo,módulo uno',
                 'action' => 'navigate',
                 'target' => '/modulo1',
                 'modules' => 'all',
@@ -170,8 +170,8 @@ class VoiceCommandController extends Controller
                 'updated_at' => now()
             ],
             [
-                'name' => 'Ir al Módulo 2',
-                'trigger' => 'módulo dos,ir al historial,estadísticas',
+                'name' => 'Ir a Reportes',
+                'trigger' => 'reportes,ir al historial,estadísticas,módulo dos',
                 'action' => 'navigate',
                 'target' => '/modulo2',
                 'modules' => 'all',
@@ -180,8 +180,8 @@ class VoiceCommandController extends Controller
                 'updated_at' => now()
             ],
             [
-                'name' => 'Ir al Módulo 4',
-                'trigger' => 'módulo cuatro,configurar voz,comandos de voz',
+                'name' => 'Ir a Accesibilidad',
+                'trigger' => 'accesibilidad,comandos de voz,módulo cuatro',
                 'action' => 'navigate',
                 'target' => '/modulo4',
                 'modules' => 'all',

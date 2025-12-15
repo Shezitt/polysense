@@ -27,19 +27,19 @@ class VoiceRecognitionServer:
         
         # Cargar modelo
         model_dir = Path(__file__).parent / model_path
-        print(f"⏳ Cargando modelo desde {model_dir}...")
+        print(f"Cargando modelo desde {model_dir}...")
         self.model = vosk.Model(str(model_dir))
-        print("✅ Modelo cargado")
+        print("Modelo cargado")
         
     def audio_callback(self, indata, frames, time, status):
         """Callback de audio"""
         if status:
-            print(f"⚠️  {status}")
+            print(f"Warning: {status}")
         self.q.put(bytes(indata))
     
     def process_audio(self):
         """Procesa el audio y emite resultados por WebSocket"""
-        print("🎤 Iniciando captura de audio...")
+        print("Iniciando captura de audio...")
         
         # Crear nuevo recognizer para este hilo
         recognizer = vosk.KaldiRecognizer(self.model, self.sample_rate)
@@ -53,7 +53,7 @@ class VoiceRecognitionServer:
                 channels=1,
                 callback=self.audio_callback
             ):
-                print("✅ Stream de audio iniciado")
+                print("Stream de audio iniciado")
                 
                 while self.is_listening:
                     try:
@@ -64,7 +64,7 @@ class VoiceRecognitionServer:
                             text = result.get('text', '').strip()
                             
                             if text:
-                                print(f"💬 Reconocido: {text}")
+                                print(f"Reconocido: {text}")
                                 socketio.emit('voice_command', {'text': text, 'confidence': 1.0})
                         else:
                             partial = json.loads(recognizer.PartialResult())
@@ -76,11 +76,11 @@ class VoiceRecognitionServer:
                     except queue.Empty:
                         continue
                     except Exception as e:
-                        print(f"❌ Error: {e}")
+                        print(f"Error: {e}")
                         continue
                         
         except Exception as e:
-            print(f"❌ Error en stream de audio: {e}")
+            print(f"Error en stream de audio: {e}")
         finally:
             # Limpiar cola
             while not self.q.empty():
@@ -88,7 +88,7 @@ class VoiceRecognitionServer:
                     self.q.get_nowait()
                 except:
                     pass
-            print("⏹️  Audio detenido")
+            print("Audio detenido")
 
 # Instancia global
 voice_server = VoiceRecognitionServer()
@@ -97,13 +97,13 @@ voice_server = VoiceRecognitionServer()
 def handle_connect():
     """Cliente conectado"""
     voice_server.clients.add(request.sid)
-    print(f"✅ Cliente conectado (Total: {len(voice_server.clients)})")
+    print(f"Cliente conectado (Total: {len(voice_server.clients)})")
 
 @socketio.on('disconnect')
 def handle_disconnect():
     """Cliente desconectado"""
     voice_server.clients.discard(request.sid)
-    print(f"❌ Cliente desconectado (Total: {len(voice_server.clients)})")
+    print(f"Cliente desconectado (Total: {len(voice_server.clients)})")
 
 @app.route('/')
 def index():
@@ -124,8 +124,8 @@ def index():
         </style>
     </head>
     <body>
-        <h1>🎙️ Voice Recognition Server</h1>
-        <div id="status" class="status disconnected">❌ Desconectado</div>
+        <h1>Voice Recognition Server</h1>
+        <div id="status" class="status disconnected">Desconectado</div>
         
         <h2>Comandos Reconocidos:</h2>
         <div id="commands"></div>
@@ -138,24 +138,24 @@ def index():
             
             socket.on('connect', () => {
                 document.getElementById('status').className = 'status connected';
-                document.getElementById('status').textContent = '✅ Conectado - Escuchando...';
+                document.getElementById('status').textContent = 'Conectado - Escuchando...';
             });
             
             socket.on('disconnect', () => {
                 document.getElementById('status').className = 'status disconnected';
-                document.getElementById('status').textContent = '❌ Desconectado';
+                document.getElementById('status').textContent = 'Desconectado';
             });
             
             socket.on('voice_command', (data) => {
                 const div = document.createElement('div');
                 div.className = 'command';
-                div.innerHTML = `<strong>💬 ${data.text}</strong> <small>(confianza: ${(data.confidence * 100).toFixed(0)}%)</small>`;
+                div.innerHTML = `<strong>${data.text}</strong> <small>(confianza: ${(data.confidence * 100).toFixed(0)}%)</small>`;
                 document.getElementById('commands').insertBefore(div, document.getElementById('commands').firstChild);
                 document.getElementById('partial').textContent = '';
             });
             
             socket.on('voice_partial', (data) => {
-                document.getElementById('partial').textContent = '🎤 ' + data.text + '...';
+                document.getElementById('partial').textContent = data.text + '...';
             });
         </script>
     </body>
@@ -164,16 +164,16 @@ def index():
 
 if __name__ == '__main__':
     print("=" * 60)
-    print("🚀 SERVIDOR DE RECONOCIMIENTO DE VOZ")
+    print("SERVIDOR DE RECONOCIMIENTO DE VOZ")
     print("=" * 60)
-    print("📡 WebSocket: http://localhost:5001")
-    print("🧪 Página de prueba: http://localhost:5001")
+    print("WebSocket: http://localhost:5001")
+    print("Pagina de prueba: http://localhost:5001")
     print("=" * 60)
     
     # Iniciar audio inmediatamente
     voice_server.is_listening = True
     voice_server.audio_thread = threading.Thread(target=voice_server.process_audio, daemon=True)
     voice_server.audio_thread.start()
-    print("🎤 Audio iniciado - siempre activo")
+    print("Audio iniciado - siempre activo")
     
     socketio.run(app, host='0.0.0.0', port=5001, debug=False, allow_unsafe_werkzeug=True)

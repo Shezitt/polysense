@@ -183,7 +183,7 @@ HTML_TEMPLATE = """
     </style>
 </head>
 <body>
-    <h1>⚡ ESP32-CAM ULTRA-FAST STREAMING ⚡</h1>
+    <h1>ESP32-CAM ULTRA-FAST STREAMING</h1>
     
     <div class="stats-bar">
         <div class="stat">
@@ -486,17 +486,17 @@ def health():
 
 if __name__ == '__main__':
     print("\n" + "="*70)
-    print("⚡ SERVIDOR UDP ULTRA-OPTIMIZADO ESP32-CAM")
+    print("SERVIDOR UDP ULTRA-OPTIMIZADO ESP32-CAM")
     print("="*70)
     print(f"UDP Recepción: {UDP_IP}:{UDP_PORT} (buffer: {SOCKET_BUFFER_SIZE/1024/1024:.0f}MB)")
     print(f"Web Interface: http://144.22.56.85:{WEB_PORT}/")
     print(f"WebSocket: ws://144.22.56.85:{WEB_PORT}/ws/<cam_id>")
     print(f"Threads: {NUM_RECEIVER_THREADS} receptores UDP")
     print("="*70)
-    print("\n📦 Dependencias: pip3 install flask flask-sock simple-websocket")
-    print("🔥 Firewall UDP: sudo iptables -I INPUT 6 -p udp --dport 5001 -j ACCEPT")
-    print("🔥 Firewall TCP: sudo iptables -I INPUT 6 -p tcp --dport 5000 -j ACCEPT")
-    print(f"\n✅ Acceso Web: http://144.22.56.85:{WEB_PORT}/\n")
+    print("\nDependencias: pip3 install flask flask-sock simple-websocket")
+    print("Firewall UDP: sudo iptables -I INPUT 6 -p udp --dport 5001 -j ACCEPT")
+    print("Firewall TCP: sudo iptables -I INPUT 6 -p tcp --dport 5000 -j ACCEPT")
+    print(f"\nAcceso Web: http://144.22.56.85:{WEB_PORT}/\n")
     
     # Iniciar threads UDP receptores
     for i in range(NUM_RECEIVER_THREADS):

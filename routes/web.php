@@ -28,7 +28,7 @@ Route::prefix('modulo2')->group(function() {
     Route::post('/generate-report', [ReporteController::class, 'generateMyReport'])->name('modulo2.generate-report');
 });
 
-// Módulo 3 - Automatización y Gestión (Solo Administradores)
+// Automatizaciones - Automatización y Gestión (Solo Administradores)
 Route::middleware(['isAdmin'])->prefix('modulo3')->group(function () {
     Route::get('/', [App\Http\Controllers\ModuloTresController::class, 'index'])->name('modulo3');
     Route::get('/user/{userId}/configure', [App\Http\Controllers\ModuloTresController::class, 'configureUser'])->name('modulo3.configure');
@@ -48,7 +48,7 @@ Route::get('/api/vehicle-monitor/{cameraId}', [VehicleMonitorController::class, 
 
 Route::get('/modulo2/exportar/excel', [ReporteController::class, 'exportarExcel'])->name('exportar.excel');
 
-// Módulo 5 - Gestión de usuarios (solo admin)
+// Gestion - Gestión de usuarios (solo admin)
 Route::middleware(['isAdmin'])->group(function () {
     Route::get('/modulo5', [UserController::class, 'index'])->name('modulo5');
     Route::post('/usuarios', [UserController::class, 'store'])->name('usuarios.store');

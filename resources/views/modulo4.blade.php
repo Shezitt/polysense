@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Módulo 4 - Comandos de Voz')
+@section('title', 'Accesibilidad')
 
 @section('content')
 <div class="bg-gray-50 py-8">

@@ -23,7 +23,7 @@ class NotificationSeeder extends Seeder
         // Crear notificaciones de ejemplo
         Notification::create([
             'user_id' => $userId,
-            'title' => 'Bienvenido al Módulo 3',
+            'title' => 'Bienvenido a Automatizaciones',
             'message' => 'Sistema de notificaciones y reportes configurado correctamente.',
             'type' => 'success',
             'priority' => 'low',

@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Validator;
 class UserController extends Controller
 {
     /**
-     * Muestra la vista del módulo 5 con la lista de usuarios
+     * Muestra la vista de Gestion con la lista de usuarios
      */
     public function index()
     {

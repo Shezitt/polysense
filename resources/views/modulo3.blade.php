@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Módulo 3: Automatización')
+@section('title', 'Automatizaciones')
 
 @section('content')
 <div class="space-y-8">
@@ -8,7 +8,7 @@
     <div class="bg-white shadow-lg rounded-xl p-6 mb-8 border border-gray-100">
         <div>
             <h2 class="text-xl font-bold text-gray-900">
-                Módulo 3: Automatización y Gestión
+                Automatizaciones: Automatización y Gestión
             </h2>
             <p class="mt-1 text-sm text-gray-500">
                 Optimización y Reglas de Negocio
@@ -79,7 +79,7 @@
         <!-- Card 2: Suscripción a Reportes -->
         <div class="bg-white shadow-lg rounded-xl overflow-hidden border border-gray-100">
             <div class="bg-gray-50 px-6 py-4 border-b border-gray-100">
-                <h3 class="text-lg font-semibold text-gray-800">📧 Distribución de Reportes</h3>
+                <h3 class="text-lg font-semibold text-gray-800">Distribución de Reportes</h3>
             </div>
             <div class="p-6">
                 <!-- Add User Form -->
@@ -125,7 +125,7 @@
                         <form action="{{ route('modulo3.sendReport') }}" method="POST">
                             @csrf
                             <button type="submit" class="text-xs bg-indigo-50 text-indigo-700 hover:bg-indigo-100 px-3 py-1 rounded-full font-medium transition-colors">
-                                📤 Simular Envío
+                                Simular Envío
                             </button>
                         </form>
                     </div>
@@ -165,7 +165,7 @@
         <!-- Card 3: Reglas de Notificación -->
         <div class="bg-white shadow-lg rounded-xl overflow-hidden border border-gray-100 md:col-span-2 lg:col-span-1">
             <div class="bg-gray-50 px-6 py-4 border-b border-gray-100">
-                <h3 class="text-lg font-semibold text-gray-800">🔔 Reglas de Alerta</h3>
+                <h3 class="text-lg font-semibold text-gray-800">Reglas de Alerta</h3>
             </div>
             <div class="p-6">
                 <form action="{{ route('modulo3.notify') }}" method="POST" class="space-y-4">
@@ -219,8 +219,8 @@
                                         <span class="text-xs text-indigo-500 bg-white px-2 py-0.5 rounded-full border border-indigo-200">{{ $rule->camera }}</span>
                                     </div>
                                     <div class="mt-1 text-indigo-700 text-xs flex gap-2">
-                                        <span>📉 &lt; {{ $rule->min_threshold }}</span>
-                                        <span>📈 &gt; {{ $rule->max_threshold }}</span>
+                                        <span>&lt; {{ $rule->min_threshold }}</span>
+                                        <span>&gt; {{ $rule->max_threshold }}</span>
                                         @if($rule->notify_black_screen == 'true')
                                             <span>Inactividad</span>
                                         @endif
@@ -238,7 +238,7 @@
         <!-- Card 4: Estado de Dispositivos (Resumen) -->
         <div class="bg-white shadow-lg rounded-xl overflow-hidden border border-gray-100 md:col-span-2 lg:col-span-1">
             <div class="bg-gray-50 px-6 py-4 border-b border-gray-100">
-                <h3 class="text-lg font-semibold text-gray-800">📡 Estado de Dispositivos</h3>
+                <h3 class="text-lg font-semibold text-gray-800">Estado de Dispositivos</h3>
             </div>
             <div class="p-6">
                 <div class="space-y-4">

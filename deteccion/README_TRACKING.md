@@ -1,12 +1,12 @@
 # Sistema de Tracking de Vehículos Únicos
 
-## 🎯 Problema Resuelto
+## Problema Resuelto
 
 **Antes:** El sistema contaba cada detección en cada fotograma como un vehículo nuevo, causando que el contador "Total Detectados" aumentara a la velocidad de los FPS.
 
 **Ahora:** Sistema de tracking inteligente que identifica vehículos únicos y los cuenta solo una vez.
 
-## 🔧 Cómo Funciona
+## Cómo Funciona
 
 ### 1. **Asignación de ID Único**
 - Cada vehículo detectado por primera vez recibe un ID único (1, 2, 3, ...)
@@ -22,14 +22,14 @@
 - Si un vehículo no se detecta por 30 frames consecutivos, se elimina del tracking
 - Esto permite que vehículos que salen y vuelven a entrar se cuenten nuevamente
 
-## ⚙️ Parámetros Configurables
+## Parámetros Configurables
 
 ```python
 'max_distance': 100      # Distancia máxima (px) para considerar mismo vehículo
 'max_frames_missing': 30 # Frames sin ver antes de eliminar del tracking
 ```
 
-## 📊 Nuevos Datos en el API
+## Nuevos Datos en el API
 
 ```json
 {
@@ -39,7 +39,7 @@
 }
 ```
 
-## 🔄 Endpoint de Reset
+## Endpoint de Reset
 
 Para resetear el contador si es necesario:
 
@@ -47,7 +47,7 @@ Para resetear el contador si es necesario:
 curl -X POST http://localhost:8080/api/reset
 ```
 
-## 📈 Flujo de Detección
+## Flujo de Detección
 
 ```
 Frame N: Detecta vehículo en (100, 200)
@@ -67,7 +67,7 @@ Frame N+2: Detecta vehículo en (105, 210) y (500, 300)
   └─> total_detected = 2
 ```
 
-## 🎨 Visualización
+## Visualización
 
 En el video procesado verás:
 - **Bounding boxes** verdes alrededor de cada vehículo
@@ -75,17 +75,17 @@ En el video procesado verás:
 - **Tipo y color**: `car (blanco)`, `motorcycle (negro)`
 - **Confianza**: `0.85` (85% de certeza)
 
-## 🔍 Verificación
+## Verificación
 
 Para verificar que funciona correctamente:
 
 1. Inicia el detector: `python vehiculo_detector.py`
-2. Observa el video en Laravel (Módulo 1)
+2. Observa el video en Laravel (Deteccion)
 3. Verás que los vehículos mantienen su ID mientras están en pantalla
 4. El contador "Total Detectados" solo aumenta cuando aparece un vehículo NUEVO
 5. Si un vehículo sale y vuelve después de 30 frames, se contará como nuevo
 
-## 💡 Mejoras Futuras Posibles
+## Mejoras Futuras Posibles
 
 - **Tracking más sofisticado**: Usar algoritmos como DeepSORT o ByteTrack
 - **Líneas de conteo**: Contar solo cuando cruzan una línea específica

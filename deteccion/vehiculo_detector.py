@@ -30,7 +30,7 @@ logger = logging.getLogger('DETECTOR')
 try:
     from playwright.sync_api import sync_playwright
 except ImportError:
-    logger.error("❌ ERROR: Playwright no está instalado.")
+    logger.error("ERROR: Playwright no está instalado.")
     print("Ejecuta: pip install playwright && playwright install chromium")
     exit(1)
 
@@ -118,9 +118,9 @@ data_lock = threading.Lock()
 websocket_clients = defaultdict(list)  # {camera_id: [ws1, ws2, ...]}
 
 # Cargar YOLO
-logger.info("🔄 Cargando modelo YOLOv8...")
+logger.info("Cargando modelo YOLOv8...")
 model = YOLO(YOLO_MODEL)
-logger.info("✅ Modelo YOLO cargado!")
+logger.info("Modelo YOLO cargado!")
 
 # ===========================
 # FUNCIONES DE XML
@@ -134,7 +134,7 @@ def init_xml_database():
         tree = ET.ElementTree(root)
         ET.indent(tree, space='  ')
         tree.write(XML_DB_PATH, encoding='utf-8', xml_declaration=True)
-        logger.info(f"✅ XML creado: {XML_DB_PATH}")
+        logger.info(f"XML creado: {XML_DB_PATH}")
 
 def save_detection_to_xml(vehicle, camera_id='CAM_002'):
     """Guarda detección con identificación de cámara"""
@@ -156,7 +156,7 @@ def save_detection_to_xml(vehicle, camera_id='CAM_002'):
         tree.write(XML_DB_PATH, encoding='utf-8', xml_declaration=True)
         return True
     except Exception as e:
-        logger.error(f"❌ Error XML: {e}")
+        logger.error(f"Error XML: {e}")
         return False
 
 # ===========================
@@ -258,13 +258,13 @@ def detect_vehicles(frame, tracked_vehicles=None):
 
 def get_skyline_stream_url_robust():
     """Extrae m3u8 con Playwright"""
-    logger.info("🕵️  Skyline: Iniciando Playwright...")
+    logger.info("Skyline: Iniciando Playwright...")
     found_url = None
     
     def handle_request(request):
         nonlocal found_url
         if ".m3u8" in request.url and "live" in request.url:
-            logger.info(f"🎯 Skyline: URL capturada")
+            logger.info(f"Skyline: URL capturada")
             found_url = request.url
 
     try:
@@ -276,7 +276,7 @@ def get_skyline_stream_url_robust():
             page = context.new_page()
             page.on("request", handle_request)
             
-            logger.info("🌍 Skyline: Navegando...")
+            logger.info("Skyline: Navegando...")
             try:
                 page.goto(CAMERAS_CONFIG['CAM_002']['url'], timeout=60000, wait_until="domcontentloaded")
             except: pass
@@ -304,7 +304,7 @@ def get_skyline_stream_url_robust():
             return None
 
     except Exception as e:
-        logger.error(f"❌ Skyline Playwright: {e}")
+        logger.error(f"Skyline Playwright: {e}")
         return None
 
 # ===========================
@@ -361,15 +361,15 @@ def process_frame_generic(frame, camera_id):
                 state['vehicle_colors'][v['color']] += 1
                 
                 # Guardar en XML con logs
-                logger.info(f"🚗 Nuevo vehículo detectado: {v['type']} {v['color']} (confianza: {v['confidence']:.2f})")
+                logger.info(f"Nuevo vehículo detectado: {v['type']} {v['color']} (confianza: {v['confidence']:.2f})")
                 if v['confidence'] > 0.5:
                     result = save_detection_to_xml(v, camera_id)
                     if result:
-                        logger.info(f"✅ Guardado en XML exitoso")
+                        logger.info(f"Guardado en XML exitoso")
                     else:
-                        logger.error(f"❌ Error al guardar en XML")
+                        logger.error(f"Error al guardar en XML")
                 else:
-                    logger.warning(f"⚠️ Confianza muy baja ({v['confidence']:.2f}), no se guarda en XML")
+                    logger.warning(f"Confianza muy baja ({v['confidence']:.2f}), no se guarda en XML")
         
         # Cleanup
         to_remove = []
@@ -394,7 +394,7 @@ def process_frame_generic(frame, camera_id):
                     
                     # Log: enviando frame a esta cámara
                     if state['frame_count'] % 100 == 0:  # Log cada 100 frames
-                        logger.info(f"📤 {camera_id}: Enviando frame ({len(frame_bytes)} bytes) a {clients_count} cliente(s)")
+                        logger.info(f"{camera_id}: Enviando frame ({len(frame_bytes)} bytes) a {clients_count} cliente(s)")
                     
                     for ws in websocket_clients[camera_id]:
                         try:
@@ -407,13 +407,13 @@ def process_frame_generic(frame, camera_id):
                         if d in websocket_clients[camera_id]:
                             websocket_clients[camera_id].remove(d)
                 except Exception as e:
-                    logger.warning(f"⚠️ {camera_id}: Error en broadcast WebSocket - {str(e)[:80]}")
+                    logger.warning(f"{camera_id}: Error en broadcast WebSocket - {str(e)[:80]}")
     
     return processed_frame, vehicles
 
 def worker_oracle():
     """Worker para CAM_001 (Oracle) - Consumidor de WebSocket del servidor Oracle"""
-    logger.info("🚀 CAM_001 (Oracle): Iniciando worker...")
+    logger.info("CAM_001 (Oracle): Iniciando worker...")
     
     import asyncio
     import websockets
@@ -422,15 +422,15 @@ def worker_oracle():
         """Loop principal de reconexión"""
         while True:
             uri = CAMERAS_CONFIG['CAM_001']['url']
-            logger.info(f"🔄 CAM_001: Conectando a {uri}...")
+            logger.info(f"CAM_001: Conectando a {uri}...")
             
             try:
                 async with websockets.connect(uri, ping_interval=None) as websocket:
-                    logger.info("✅ CAM_001: ¡Conectado al servidor Oracle!")
+                    logger.info("CAM_001: ¡Conectado al servidor Oracle!")
                     
                     with data_lock:
                         camera_states['CAM_001']['status'] = 'online'
-                    logger.info("✅ CAM_001: Status actualizado a ONLINE")
+                    logger.info("CAM_001: Status actualizado a ONLINE")
                     
                     frame_counter = 0
                     consecutive_errors = 0
@@ -446,7 +446,7 @@ def worker_oracle():
                             if frame_counter % 30 == 0:
                                 with data_lock:
                                     status_check = camera_states['CAM_001']['status']
-                                logger.info(f"📦 CAM_001: Recibidos {frame_counter} frames | Status={status_check}")
+                                logger.info(f"CAM_001: Recibidos {frame_counter} frames | Status={status_check}")
                             
                             # Decodificar JPEG
                             try:
@@ -457,55 +457,55 @@ def worker_oracle():
                                     # Procesar el frame (YOLO + tracking + broadcast)
                                     process_frame_generic(frame, 'CAM_001')
                                 else:
-                                    logger.warning("⚠️ CAM_001: Frame corrupto (decode error)")
+                                    logger.warning("CAM_001: Frame corrupto (decode error)")
                                     consecutive_errors += 1
                             except Exception as e:
-                                logger.warning(f"⚠️ CAM_001: Error procesando frame - {str(e)[:80]}")
+                                logger.warning(f"CAM_001: Error procesando frame - {str(e)[:80]}")
                                 consecutive_errors += 1
                                 
                                 if consecutive_errors > 10:
                                     raise Exception("Demasiados errores decodificando frames")
                             
                         except asyncio.TimeoutError:
-                            logger.warning("⚠️ CAM_001: Timeout esperando frames (30s)")
+                            logger.warning("CAM_001: Timeout esperando frames (30s)")
                             with data_lock:
                                 camera_states['CAM_001']['status'] = 'offline'
                             break
                         except websockets.exceptions.ConnectionClosed:
-                            logger.warning("⚠️ CAM_001: Conexión cerrada por servidor")
+                            logger.warning("CAM_001: Conexión cerrada por servidor")
                             with data_lock:
                                 camera_states['CAM_001']['status'] = 'offline'
                             break
                         except Exception as e:
-                            logger.warning(f"⚠️ CAM_001: {str(e)[:80]}")
+                            logger.warning(f"CAM_001: {str(e)[:80]}")
                             with data_lock:
                                 camera_states['CAM_001']['status'] = 'offline'
                             break
                 
             except Exception as e:
-                logger.error(f"❌ CAM_001: Error en websocket.connect - {str(e)[:120]}")
+                logger.error(f"CAM_001: Error en websocket.connect - {str(e)[:120]}")
                 with data_lock:
                     camera_states['CAM_001']['status'] = 'offline'
             
-            logger.info("⏳ CAM_001: Esperando 5s antes de reconectar...")
+            logger.info("CAM_001: Esperando 5s antes de reconectar...")
             await asyncio.sleep(5)
     
     # Ejecutar el loop async
     try:
-        logger.info("🔧 CAM_001: Iniciando asyncio.run()...")
+        logger.info("CAM_001: Iniciando asyncio.run()...")
         asyncio.run(main())
     except KeyboardInterrupt:
-        logger.info("⏹️ CAM_001: Detenido por usuario")
+        logger.info("CAM_001: Detenido por usuario")
         with data_lock:
             camera_states['CAM_001']['status'] = 'offline'
     except Exception as e:
-        logger.error(f"❌ CAM_001: Error fatal en worker - {str(e)[:150]}")
+        logger.error(f"CAM_001: Error fatal en worker - {str(e)[:150]}")
         with data_lock:
             camera_states['CAM_001']['status'] = 'offline'
 
 def worker_skyline():
     """Worker para CAM_002 (Skyline)"""
-    logger.info("🚀 CAM_002 (Skyline): Iniciando...")
+    logger.info("CAM_002 (Skyline): Iniciando...")
     
     while True:
         stream_url = get_skyline_stream_url_robust()
@@ -515,15 +515,15 @@ def worker_skyline():
             time.sleep(10)
             continue
         
-        logger.info(f"🎥 CAM_002: Abriendo OpenCV...")
+        logger.info(f"CAM_002: Abriendo OpenCV...")
         cap = cv2.VideoCapture(stream_url)
         
         if not cap.isOpened():
-            logger.error("❌ CAM_002: OpenCV no abrió")
+            logger.error("CAM_002: OpenCV no abrió")
             time.sleep(10)
             continue
         
-        logger.info("✅ CAM_002: Streaming activo")
+        logger.info("CAM_002: Streaming activo")
         with data_lock:
             camera_states['CAM_002']['status'] = 'online'
         
@@ -536,7 +536,7 @@ def worker_skyline():
             if not ret:
                 consecutive_errors += 1
                 if consecutive_errors > 30:
-                    logger.warning("⚠️ CAM_002: Stream perdido")
+                    logger.warning("CAM_002: Stream perdido")
                     with data_lock:
                         camera_states['CAM_002']['status'] = 'offline'
                     break
@@ -551,7 +551,7 @@ def worker_skyline():
             process_frame_generic(frame, 'CAM_002')
             
             if frame_counter % 60 == 0:
-                logger.info(f"📦 CAM_002: {frame_counter} frames")
+                logger.info(f"CAM_002: {frame_counter} frames")
         
         cap.release()
         time.sleep(1)
@@ -566,7 +566,7 @@ def index():
     <html>
     <head><title>Detector Multi-Cámara</title></head>
     <body style="background: #1a1a1a; color: #00ff00; font-family: monospace; padding: 20px;">
-        <h1>🚗 Detector Multi-Cámara</h1>
+        <h1>Detector Multi-Cámara</h1>
         <h2>Cámaras Disponibles:</h2>
         <ul>
             <li><strong>CAM_001:</strong> {CAMERAS_CONFIG['CAM_001']['name']}</li>
@@ -578,7 +578,7 @@ def index():
             <li><code>/stats?camera_id=CAM_002</code></li>
             <li><code>ws://localhost:8080/ws/stream?camera_id=CAM_002</code></li>
         </ul>
-        <h3>Estado: ✅ Online</h3>
+        <h3>Estado: Online</h3>
     </body>
     </html>
     """
@@ -598,7 +598,7 @@ def api_vehicles():
         
         # Debug logging
         if camera_id == 'CAM_001':
-            logger.info(f"🔍 API CAM_001: status={status_value}, frames={frame_count}, vehicle_count={state['vehicle_count']}")
+            logger.info(f"API CAM_001: status={status_value}, frames={frame_count}, vehicle_count={state['vehicle_count']}")
         
         avg_v = (sum(state['vehicle_history'])/len(state['vehicle_history'])) if state['vehicle_history'] else 0
         
@@ -659,20 +659,20 @@ def reset_counter():
 @sock.route('/ws/stream')
 def websocket_stream(ws):
     """WebSocket con parámetro camera_id - envía frames de la cámara seleccionada"""
-    logger.info(f"📡 WebSocket REQUEST RECIBIDO!")
+    logger.info(f"WebSocket REQUEST RECIBIDO!")
     logger.info(f"   Args: {request.args}")
     logger.info(f"   URL: {request.url}")
     
     camera_id = request.args.get('camera_id', 'CAM_002')
     
-    logger.info(f"📡 camera_id extraído: {camera_id}")
+    logger.info(f"camera_id extraído: {camera_id}")
     
     if camera_id not in camera_states:
-        logger.error(f"❌ WebSocket: camera_id inválido: {camera_id}")
+        logger.error(f"WebSocket: camera_id inválido: {camera_id}")
         ws.close()
         return
     
-    logger.info(f"🔌 {camera_id}: Cliente WebSocket conectado! (enviando frames...)")
+    logger.info(f"{camera_id}: Cliente WebSocket conectado! (enviando frames...)")
     websocket_clients[camera_id].append(ws)
     
     try:
@@ -709,11 +709,11 @@ def websocket_stream(ws):
                         # Log cada 30 frames enviados
                         now = time.time()
                         if now - last_log_time >= 5:
-                            logger.info(f"📤 {camera_id} WebSocket: {frame_count} frames enviados en 5s")
+                            logger.info(f"{camera_id} WebSocket: {frame_count} frames enviados en 5s")
                             frame_count = 0
                             last_log_time = now
                     except Exception as send_err:
-                        logger.warning(f"⚠️ {camera_id}: Error enviando frame WebSocket - {str(send_err)[:50]}")
+                        logger.warning(f"{camera_id}: Error enviando frame WebSocket - {str(send_err)[:50]}")
                         break
                 else:
                     # Si la cámara está offline, enviar placeholder
@@ -732,11 +732,11 @@ def websocket_stream(ws):
                 time.sleep(frame_send_interval)
                     
             except Exception as e:
-                logger.warning(f"⚠️ {camera_id}: Error en WebSocket loop - {str(e)[:80]}")
+                logger.warning(f"{camera_id}: Error en WebSocket loop - {str(e)[:80]}")
                 break
                 
     except Exception as e:
-        logger.error(f"❌ {camera_id}: Error en WebSocket - {str(e)[:100]}")
+        logger.error(f"{camera_id}: Error en WebSocket - {str(e)[:100]}")
     finally:
         if ws in websocket_clients[camera_id]:
             websocket_clients[camera_id].remove(ws)
@@ -748,7 +748,7 @@ def websocket_stream(ws):
 
 if __name__ == '__main__':
     logger.info("\n" + "="*70)
-    logger.info("🚗 DETECTOR MULTI-CÁMARA")
+    logger.info("DETECTOR MULTI-CÁMARA")
     logger.info("="*70)
     for cam_id, config in CAMERAS_CONFIG.items():
         logger.info(f"{cam_id}: {config['name']}")

@@ -297,7 +297,7 @@
             </div>
 
             <div class="vehicle-list">
-                <div class="list-title">🎨 Colores Detectados</div>
+                <div class="list-title">Colores Detectados</div>
                 <div id="vehicleColors">
                     <div class="loading">Esperando datos...</div>
                 </div>

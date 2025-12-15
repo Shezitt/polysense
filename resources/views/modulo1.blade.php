@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Monitor de Vehículos')
+@section('title', 'Deteccion')
 
 @push('styles')
 <style>
@@ -82,14 +82,14 @@
 <!-- Vehicle Types and Colors -->
 <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
     <div class="bg-white rounded-lg shadow-lg p-6">
-        <h3 class="text-lg font-semibold text-gray-800 mb-4 pb-3 border-b">🚙 Tipos de Vehículos</h3>
+        <h3 class="text-lg font-semibold text-gray-800 mb-4 pb-3 border-b">Tipos de Vehículos</h3>
         <div id="vehicleTypes">
             <div class="text-center text-gray-500 py-8">Esperando datos...</div>
         </div>
     </div>
 
     <div class="bg-white rounded-lg shadow-lg p-6">
-        <h3 class="text-lg font-semibold text-gray-800 mb-4 pb-3 border-b">🎨 Colores Detectados</h3>
+        <h3 class="text-lg font-semibold text-gray-800 mb-4 pb-3 border-b">Colores Detectados</h3>
         <div id="vehicleColors">
             <div class="text-center text-gray-500 py-8">Esperando datos...</div>
         </div>
@@ -136,9 +136,9 @@
 
     // Desconectar WebSocket anterior
     function reconnectWebSocket() {
-        console.log(`🔄 Reconectando a ${currentCamera}...`);
+        console.log(`Reconectando a ${currentCamera}...`);
         if (websocket) {
-            console.log(`❌ Cerrando WebSocket anterior`);
+            console.log(`Cerrando WebSocket anterior`);
             websocket.close();
             websocket = null;
         }
@@ -149,8 +149,8 @@
     // Conectar WebSocket para video
     function connectWebSocket() {
         const wsUrl = `ws://localhost:8080/ws/stream?camera_id=${currentCamera}`;
-        console.log(`🔌 Conectando a: ${wsUrl}`);
-        console.log(`📸 Camera actual: ${currentCamera}`);
+        console.log(`Conectando a: ${wsUrl}`);
+        console.log(`Camera actual: ${currentCamera}`);
         
         websocket = new WebSocket(wsUrl);
         websocket.binaryType = 'arraybuffer';
@@ -158,15 +158,15 @@
         // Agregar ID único para este WebSocket para debugging
         websocket._debug_camera = currentCamera;
         websocket._debug_id = Math.random().toString(36).substr(2, 9);
-        console.log(`🆔 WebSocket ID: ${websocket._debug_id} para ${websocket._debug_camera}`);
+        console.log(`WebSocket ID: ${websocket._debug_id} para ${websocket._debug_camera}`);
 
         websocket.onopen = () => {
-            console.log(`✅ WebSocket abierto para ${websocket._debug_camera}`);
+            console.log(`WebSocket abierto para ${websocket._debug_camera}`);
             updateStatus(true);
         };
 
         websocket.onmessage = (event) => {
-            console.log(`📦 Frame recibido de ${websocket._debug_camera} (${event.data.byteLength} bytes)`);
+            console.log(`Frame recibido de ${websocket._debug_camera} (${event.data.byteLength} bytes)`);
             
             const blob = new Blob([event.data], {type: 'image/jpeg'});
             const url = URL.createObjectURL(blob);
@@ -175,26 +175,26 @@
             img.onload = () => {
                 // Verificar que currentCamera sigue siendo el mismo
                 if (websocket._debug_camera !== currentCamera) {
-                    console.warn(`⚠️ Cámara cambió! Era ${websocket._debug_camera}, ahora es ${currentCamera}`);
+                    console.warn(`Cámara cambió! Era ${websocket._debug_camera}, ahora es ${currentCamera}`);
                 }
                 ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
                 URL.revokeObjectURL(url);
             };
 
             img.onerror = () => {
-                console.error(`❌ Error cargando frame de ${websocket._debug_camera}`);
+                console.error(`Error cargando frame de ${websocket._debug_camera}`);
             };
 
             img.src = url;
         };
 
         websocket.onerror = (error) => {
-            console.error(`❌ WebSocket error para ${websocket._debug_camera}:`, error);
+            console.error(`WebSocket error para ${websocket._debug_camera}:`, error);
             updateStatus(false, 'Error en transmisión');
         };
 
         websocket.onclose = () => {
-            console.log(`👋 WebSocket cerrado para ${websocket._debug_camera}, reconectando...`);
+            console.log(`WebSocket cerrado para ${websocket._debug_camera}, reconectando...`);
             updateStatus(false, 'Reconectando...');
             setTimeout(connectWebSocket, 3000);
         };

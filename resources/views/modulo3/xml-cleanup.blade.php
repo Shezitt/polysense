@@ -43,7 +43,7 @@
 
             <div class="bg-yellow-50 border border-yellow-200 rounded p-4 mb-6">
                 <p class="text-sm text-yellow-800">
-                    <strong>⚠️ Advertencia:</strong> La limpieza eliminará permanentemente los registros antiguos del XML. 
+                    <strong>Advertencia:</strong> La limpieza eliminará permanentemente los registros antiguos del XML. 
                     Asegúrate de tener respaldos si es necesario.
                 </p>
             </div>

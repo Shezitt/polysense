@@ -14,8 +14,8 @@ class VoiceCommandSeeder extends Seeder
     {
         $commands = [
             [
-                'name' => 'Ir al Módulo 1',
-                'trigger' => 'módulo uno,ir al monitor,monitoreo,módulo 1',
+                'name' => 'Ir a Deteccion',
+                'trigger' => 'detección,deteccion,ir al monitor,monitoreo,módulo uno,módulo 1',
                 'action' => 'navigate',
                 'target' => '/modulo1',
                 'function_name' => null,
@@ -25,8 +25,8 @@ class VoiceCommandSeeder extends Seeder
                 'updated_at' => now(),
             ],
             [
-                'name' => 'Ir al Módulo 2',
-                'trigger' => 'módulo dos,ir al historial,estadísticas,módulo 2',
+                'name' => 'Ir a Reportes',
+                'trigger' => 'reportes,ir al historial,estadísticas,módulo dos,módulo 2',
                 'action' => 'navigate',
                 'target' => '/modulo2',
                 'function_name' => null,
@@ -36,8 +36,8 @@ class VoiceCommandSeeder extends Seeder
                 'updated_at' => now(),
             ],
             [
-                'name' => 'Ir al Módulo 3',
-                'trigger' => 'módulo tres,configurar voz,comandos de voz,módulo 3',
+                'name' => 'Ir a Automatizaciones',
+                'trigger' => 'automatizaciones,automatización,configurar voz,módulo tres,módulo 3',
                 'action' => 'navigate',
                 'target' => '/modulo3',
                 'function_name' => null,
@@ -47,8 +47,8 @@ class VoiceCommandSeeder extends Seeder
                 'updated_at' => now(),
             ],
             [
-                'name' => 'Ir al Módulo 4',
-                'trigger' => 'módulo cuatro,módulo 4,ir al módulo cuatro',
+                'name' => 'Ir a Accesibilidad',
+                'trigger' => 'accesibilidad,comandos de voz,módulo cuatro,módulo 4',
                 'action' => 'navigate',
                 'target' => '/modulo4',
                 'function_name' => null,
@@ -58,8 +58,8 @@ class VoiceCommandSeeder extends Seeder
                 'updated_at' => now(),
             ],
             [
-                'name' => 'Ir al Módulo 5',
-                'trigger' => 'módulo cinco,módulo 5,ir al módulo cinco',
+                'name' => 'Ir a Gestion',
+                'trigger' => 'gestión,gestion,usuarios,módulo cinco,módulo 5',
                 'action' => 'navigate',
                 'target' => '/modulo5',
                 'function_name' => null,

@@ -1,21 +1,21 @@
 @extends('layouts.app')
 
-@section('title', 'Módulo 2: Analítica y Reportes')
+@section('title', 'Reportes')
 
 @section('content')
 <div class="bg-white rounded-lg shadow-lg p-6 mb-6">
     <!-- Título y botones en la misma línea -->
     <div class="flex justify-between items-start mb-4">
         <div>
-            <h1 class="text-2xl font-bold text-gray-800">Módulo 2: Analítica y Reportes Viales</h1>
+            <h1 class="text-2xl font-bold text-gray-800">Reportes: Analítica y Reportes Viales</h1>
             <p class="text-gray-500 text-sm mt-1">Visualización de datos históricos y estadísticas</p>
         </div>
         <div class="flex gap-2">
             <a href="{{ route('modulo2.my-notifications') }}" class="text-xs bg-blue-50 hover:bg-blue-100 px-3 py-1.5 rounded transition whitespace-nowrap">
-                📬 Notificaciones
+                Notificaciones
             </a>
             <a href="{{ route('modulo2.my-reports') }}" class="text-xs bg-green-50 hover:bg-green-100 px-3 py-1.5 rounded transition whitespace-nowrap">
-                📊 Reportes
+                Reportes
             </a>
         </div>
     </div>
