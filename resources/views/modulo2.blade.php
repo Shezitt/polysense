@@ -3,6 +3,21 @@
 @section('title', 'Módulo 2: Analítica y Reportes')
 
 @section('content')
+<div class="container mx-auto px-4 py-6">
+    <h1 class="text-2xl font-bold mb-4">Módulo 2: Reportes y Estadísticas</h1>
+
+    <!-- Accesos rápidos -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+        <a href="{{ route('modulo2.my-notifications') }}" class="bg-blue-50 hover:bg-blue-100 p-4 rounded-lg transition">
+            <h3 class="font-bold text-lg mb-2">📬 Mis Notificaciones</h3>
+            <p class="text-sm text-gray-600">Ver mis notificaciones del sistema</p>
+        </a>
+        <a href="{{ route('modulo2.my-reports') }}" class="bg-green-50 hover:bg-green-100 p-4 rounded-lg transition">
+            <h3 class="font-bold text-lg mb-2">📊 Mis Reportes</h3>
+            <p class="text-sm text-gray-600">Generar y ver mis reportes personalizados</p>
+        </a>
+    </div>
+</div>
 <div class="bg-white rounded-lg shadow-lg p-6 mb-6">
     <div class="flex flex-col md:flex-row justify-between items-center gap-4">
         <div>

@@ -8,4 +8,20 @@
     <camara>CAM_002</camara>
     <nombre_camara>Skyline Cochabamba</nombre_camara>
   </deteccion>
+  <deteccion>
+    <fecha>2025-12-15 09:28:56</fecha>
+    <tipo>Moto</tipo>
+    <confianza>72.22</confianza>
+    <color>negro</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-15 09:30:28</fecha>
+    <tipo>Moto</tipo>
+    <confianza>80.55</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
 </detecciones>
