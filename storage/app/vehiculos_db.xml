@@ -1,3 +1,11 @@
 <?xml version='1.0' encoding='utf-8'?>
 <detecciones>
+  <deteccion>
+    <fecha>2025-12-15 09:20:48</fecha>
+    <tipo>Moto</tipo>
+    <confianza>72.51</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
 </detecciones>

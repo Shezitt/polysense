@@ -23,11 +23,15 @@ Route::get('/modulo1', function() {
 
 Route::get('/modulo2', [ReporteController::class, 'index'])->name('modulo2');
 
-// Módulo 3 - Solo para administradores
-Route::middleware(['isAdmin'])->group(function () {
-    Route::get('/modulo3', [App\Http\Controllers\ModuloTresController::class, 'index'])->name('modulo3');
-    Route::get('/modulo3/notifications', [App\Http\Controllers\ModuloTresController::class, 'notifications'])->name('modulo3.notifications');
-    Route::get('/modulo3/reports', [App\Http\Controllers\ModuloTresController::class, 'reports'])->name('modulo3.reports');
+// Módulo 3 - Automatización y Gestión (Solo Administradores)
+Route::middleware(['isAdmin'])->prefix('modulo3')->group(function () {
+    Route::get('/', [App\Http\Controllers\ModuloTresController::class, 'index'])->name('modulo3');
+    Route::get('/user/{userId}/configure', [App\Http\Controllers\ModuloTresController::class, 'configureUser'])->name('modulo3.configure');
+    Route::post('/user/{userId}/configure', [App\Http\Controllers\ModuloTresController::class, 'saveConfiguration'])->name('modulo3.save-config');
+    Route::get('/notifications/all', [App\Http\Controllers\ModuloTresController::class, 'allNotifications'])->name('modulo3.all-notifications');
+    Route::get('/reports/all', [App\Http\Controllers\ModuloTresController::class, 'allReports'])->name('modulo3.all-reports');
+    Route::get('/xml-cleanup', [App\Http\Controllers\ModuloTresController::class, 'xmlCleanupConfig'])->name('modulo3.xml-cleanup');
+    Route::post('/xml-cleanup', [App\Http\Controllers\ModuloTresController::class, 'saveXmlCleanupConfig'])->name('modulo3.save-xml-cleanup');
 });
 
 Route::get('/modulo4', function() {

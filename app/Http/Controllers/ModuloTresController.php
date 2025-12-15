@@ -3,49 +3,141 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Facades\NotificationFacade as Notification;
-use App\Facades\ReportFacade as Report;
+use App\Models\User;
+use App\Models\AutomationConfig;
+use App\Models\Notification;
+use App\Models\Report;
 
 class ModuloTresController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('isAdmin');
+    }
+
     /**
-     * Dashboard principal del módulo 3
+     * Dashboard principal - Lista de usuarios con configuración
      */
     public function index()
     {
-        $unreadCount = Notification::getUnreadCount(auth()->id());
-        $recentNotifications = Notification::getUnread(auth()->id())->take(5);
+        $users = User::with('automationConfig')->get();
         
-        // Obtener reportes recientes
-        $recentReports = Report::getHistory(auth()->id(), [])->take(5);
+        // Estadísticas generales
+        $totalNotifications = Notification::count();
+        $totalReports = Report::count();
+        $activeUsers = User::where('role', '!=', 'admin')->count();
         
-        // Estadísticas rápidas
-        $quickStats = Report::getQuickStats([
-            'date_from' => now()->subWeek()->toDateString(),
-            'date_to' => now()->toDateString(),
+        return view('modulo3.index', compact('users', 'totalNotifications', 'totalReports', 'activeUsers'));
+    }
+
+    /**
+     * Formulario de configuración para un usuario
+     */
+    public function configureUser($userId)
+    {
+        $user = User::with('automationConfig')->findOrFail($userId);
+        $config = $user->automationConfig ?? AutomationConfig::getOrCreateForUser($userId);
+        
+        return view('modulo3.configure', compact('user', 'config'));
+    }
+
+    /**
+     * Guardar configuración de usuario
+     */
+    public function saveConfiguration(Request $request, $userId)
+    {
+        $validated = $request->validate([
+            'traffic_threshold' => 'required|integer|min:1|max:1000',
+            'traffic_minutes' => 'required|integer|min:1|max:60',
+            'notify_high_traffic' => 'boolean',
+            'notify_camera_offline' => 'boolean',
+            'camera_offline_minutes' => 'required|integer|min:1|max:120',
+            'report_frequency' => 'required|in:daily,weekly,monthly,disabled',
+            'report_generation_time' => 'required|date_format:H:i',
+            'auto_generate_reports' => 'boolean',
         ]);
 
-        return view('modulo3.index', compact(
-            'unreadCount',
-            'recentNotifications',
-            'recentReports',
-            'quickStats'
-        ));
+        $config = AutomationConfig::getOrCreateForUser($userId);
+        $config->update($validated);
+
+        return redirect()->route('modulo3')
+            ->with('success', 'Configuración actualizada exitosamente');
     }
 
     /**
-     * Vista de notificaciones
+     * Ver todas las notificaciones (de todos los usuarios)
      */
-    public function notifications()
+    public function allNotifications(Request $request)
     {
-        return view('modulo3.notifications');
+        $query = Notification::with('user')->latest();
+        
+        // Filtros
+        if ($request->has('user_id') && $request->user_id) {
+            $query->where('user_id', $request->user_id);
+        }
+        
+        if ($request->has('type') && $request->type) {
+            $query->where('type', $request->type);
+        }
+        
+        $notifications = $query->paginate(20);
+        $users = User::all();
+        
+        return view('modulo3.notifications', compact('notifications', 'users'));
     }
 
     /**
-     * Vista de reportes
+     * Ver todos los reportes (de todos los usuarios)
      */
-    public function reports()
+    public function allReports(Request $request)
     {
-        return view('modulo3.reports');
+        $query = Report::with('user')->latest();
+        
+        // Filtros
+        if ($request->has('user_id') && $request->user_id) {
+            $query->where('user_id', $request->user_id);
+        }
+        
+        if ($request->has('type') && $request->type) {
+            $query->where('type', $request->type);
+        }
+        
+        $reports = $query->paginate(20);
+        $users = User::all();
+        
+        return view('modulo3.reports', compact('reports', 'users'));
+    }
+
+    /**
+     * Configuración global de limpieza XML
+     */
+    public function xmlCleanupConfig()
+    {
+        // Obtener configuración del primer admin o crear una global
+        $adminUser = User::where('role', 'admin')->first();
+        $config = $adminUser ? AutomationConfig::getOrCreateForUser($adminUser->id) : null;
+        
+        return view('modulo3.xml-cleanup', compact('config'));
+    }
+
+    /**
+     * Guardar configuración de limpieza XML
+     */
+    public function saveXmlCleanupConfig(Request $request)
+    {
+        $validated = $request->validate([
+            'xml_cleanup_frequency' => 'required|in:daily,weekly,monthly,never',
+            'xml_retention_days' => 'required|integer|min:1|max:365',
+        ]);
+
+        $adminUser = User::where('role', 'admin')->first();
+        if ($adminUser) {
+            $config = AutomationConfig::getOrCreateForUser($adminUser->id);
+            $config->update($validated);
+        }
+
+        return redirect()->route('modulo3')
+            ->with('success', 'Configuración de limpieza XML actualizada');
     }
 }
+
