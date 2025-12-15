@@ -23,13 +23,12 @@ Route::get('/modulo1', function() {
 
 Route::get('/modulo2', [ReporteController::class, 'index'])->name('modulo2');
 
-Route::get('/modulo3', [App\Http\Controllers\AutomationController::class, 'index'])->name('modulo3');
-Route::post('/modulo3/clean', [App\Http\Controllers\AutomationController::class, 'cleanData'])->name('modulo3.clean');
-Route::post('/modulo3/user', [App\Http\Controllers\AutomationController::class, 'saveUser'])->name('modulo3.saveUser');
-Route::post('/modulo3/notify', [App\Http\Controllers\AutomationController::class, 'updateNotification'])->name('modulo3.notify');
-Route::post('/modulo3/sendReport', function() {
-    return redirect()->back()->with('success', 'Reporte enviado (Simulado) - TODO: Implementar envío real.');
-})->name('modulo3.sendReport');
+// Módulo 3 - Solo para administradores
+Route::middleware(['isAdmin'])->group(function () {
+    Route::get('/modulo3', [App\Http\Controllers\ModuloTresController::class, 'index'])->name('modulo3');
+    Route::get('/modulo3/notifications', [App\Http\Controllers\ModuloTresController::class, 'notifications'])->name('modulo3.notifications');
+    Route::get('/modulo3/reports', [App\Http\Controllers\ModuloTresController::class, 'reports'])->name('modulo3.reports');
+});
 
 Route::get('/modulo4', function() {
     return view('modulo4');
@@ -58,4 +57,19 @@ Route::prefix('api/voice-commands')->group(function () {
     Route::delete('/{id}', [VoiceCommandController::class, 'destroy']);
     Route::post('/{id}/toggle', [VoiceCommandController::class, 'toggle']);
     Route::post('/defaults', [VoiceCommandController::class, 'createDefaults']);
+});
+
+// API para notificaciones y reportes - Solo para administradores
+Route::middleware(['isAdmin'])->prefix('api')->group(function () {
+    Route::get('/notifications', [App\Http\Controllers\NotificationController::class, 'index']);
+    Route::get('/notifications/unread', [App\Http\Controllers\NotificationController::class, 'unread']);
+    Route::post('/notifications/{id}/read', [App\Http\Controllers\NotificationController::class, 'markAsRead']);
+    Route::post('/notifications/read-all', [App\Http\Controllers\NotificationController::class, 'markAllAsRead']);
+    Route::delete('/notifications/{id}', [App\Http\Controllers\NotificationController::class, 'destroy']);
+    
+    Route::get('/reports', [App\Http\Controllers\ReportController::class, 'index']);
+    Route::post('/reports/generate', [App\Http\Controllers\ReportController::class, 'generate']);
+    Route::get('/reports/{id}', [App\Http\Controllers\ReportController::class, 'show']);
+    Route::delete('/reports/{id}', [App\Http\Controllers\ReportController::class, 'destroy']);
+    Route::get('/reports/quick-stats', [App\Http\Controllers\ReportController::class, 'quickStats']);
 });

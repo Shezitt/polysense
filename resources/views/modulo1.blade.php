@@ -33,6 +33,15 @@
     </div>
 </div>
 
+<!-- Camera Selector -->
+<div class="bg-white rounded-lg shadow-lg p-6 mb-6">
+    <label class="block text-sm font-medium text-gray-700 mb-2">Seleccionar Cámara</label>
+    <select id="cameraSelect" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+        <option value="CAM_002">Skyline Cochabamba</option>
+        <option value="CAM_001">Oracle Server</option>
+    </select>
+</div>
+
 <div class="flex flex-col lg:flex-row gap-6 mb-6">
     <!-- Video Section -->
     <div class="bg-white rounded-lg shadow-lg p-6 lg:basis-[70%]">
@@ -93,10 +102,12 @@
     const LOCAL_DETECTOR = 'http://localhost:8080';
     let websocket = null;
     let statsInterval = null;
+    let currentCamera = 'CAM_002'; // Default
 
     const canvas = document.getElementById('videoCanvas');
     const ctx = canvas.getContext('2d');
     const statusIndicator = document.getElementById('connectionStatus');
+    const cameraSelect = document.getElementById('cameraSelect');
 
     // Colores para badges
     const colorMap = {
@@ -111,43 +122,79 @@
         'morado': '#a855f7'
     };
 
+    // Event listener para cambio de cámara
+    cameraSelect.addEventListener('change', (e) => {
+        currentCamera = e.target.value;
+        reconnectWebSocket();
+    });
+
     // Inicializar
     function init() {
         connectWebSocket();
         startStatsPolling();
     }
 
+    // Desconectar WebSocket anterior
+    function reconnectWebSocket() {
+        console.log(`🔄 Reconectando a ${currentCamera}...`);
+        if (websocket) {
+            console.log(`❌ Cerrando WebSocket anterior`);
+            websocket.close();
+            websocket = null;
+        }
+        // Pequeño delay para asegurar que se cierre antes de reconectar
+        setTimeout(connectWebSocket, 500);
+    }
+
     // Conectar WebSocket para video
     function connectWebSocket() {
-        const wsUrl = `ws://localhost:8080/ws/stream`;
+        const wsUrl = `ws://localhost:8080/ws/stream?camera_id=${currentCamera}`;
+        console.log(`🔌 Conectando a: ${wsUrl}`);
+        console.log(`📸 Camera actual: ${currentCamera}`);
+        
         websocket = new WebSocket(wsUrl);
         websocket.binaryType = 'arraybuffer';
+        
+        // Agregar ID único para este WebSocket para debugging
+        websocket._debug_camera = currentCamera;
+        websocket._debug_id = Math.random().toString(36).substr(2, 9);
+        console.log(`🆔 WebSocket ID: ${websocket._debug_id} para ${websocket._debug_camera}`);
 
         websocket.onopen = () => {
-            console.log('WebSocket conectado');
+            console.log(`✅ WebSocket abierto para ${websocket._debug_camera}`);
             updateStatus(true);
         };
 
         websocket.onmessage = (event) => {
+            console.log(`📦 Frame recibido de ${websocket._debug_camera} (${event.data.byteLength} bytes)`);
+            
             const blob = new Blob([event.data], {type: 'image/jpeg'});
             const url = URL.createObjectURL(blob);
             const img = new Image();
 
             img.onload = () => {
+                // Verificar que currentCamera sigue siendo el mismo
+                if (websocket._debug_camera !== currentCamera) {
+                    console.warn(`⚠️ Cámara cambió! Era ${websocket._debug_camera}, ahora es ${currentCamera}`);
+                }
                 ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
                 URL.revokeObjectURL(url);
+            };
+
+            img.onerror = () => {
+                console.error(`❌ Error cargando frame de ${websocket._debug_camera}`);
             };
 
             img.src = url;
         };
 
         websocket.onerror = (error) => {
-            console.error('WebSocket error:', error);
+            console.error(`❌ WebSocket error para ${websocket._debug_camera}:`, error);
             updateStatus(false, 'Error en transmisión');
         };
 
         websocket.onclose = () => {
-            console.log('⚠ WebSocket cerrado, reconectando...');
+            console.log(`👋 WebSocket cerrado para ${websocket._debug_camera}, reconectando...`);
             updateStatus(false, 'Reconectando...');
             setTimeout(connectWebSocket, 3000);
         };
@@ -166,8 +213,28 @@
     // Actualizar estadísticas
     async function updateStats() {
         try {
-            const response = await fetch('/api/vehicle-monitor/camera_01');
+            const response = await fetch(`/api/vehicle-monitor/${currentCamera}`);
             const data = await response.json();
+
+            // Verificar status de la cámara
+            if (data.status === 'offline') {
+                document.getElementById('connectionStatus').textContent = 'OFFLINE';
+                document.getElementById('connectionStatus').className = 'px-3 py-1 rounded text-sm font-semibold bg-red-100 text-red-800';
+                
+                // Mostrar mensaje en canvas
+                const canvas = document.getElementById('videoCanvas');
+                const ctx = canvas.getContext('2d');
+                ctx.fillStyle = '#1a1a1a';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                ctx.fillStyle = '#ff0000';
+                ctx.font = 'bold 48px Arial';
+                ctx.textAlign = 'center';
+                ctx.fillText(`${data.camera_name || 'Cámara'}`, canvas.width/2, canvas.height/2 - 50);
+                ctx.fillText('OFFLINE', canvas.width/2, canvas.height/2 + 50);
+            } else {
+                document.getElementById('connectionStatus').textContent = 'En línea';
+                document.getElementById('connectionStatus').className = 'px-3 py-1 rounded text-sm font-semibold bg-green-100 text-green-800';
+            }
 
             document.getElementById('currentVehicles').textContent = data.current_vehicles || 0;
             document.getElementById('totalVehicles').textContent = data.total_detected || 0;
@@ -184,6 +251,8 @@
 
         } catch (error) {
             console.error('Error updating stats:', error);
+            document.getElementById('connectionStatus').textContent = 'Error';
+            document.getElementById('connectionStatus').className = 'px-3 py-1 rounded text-sm font-semibold bg-orange-100 text-orange-800';
         }
     }
 

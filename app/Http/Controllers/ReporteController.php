@@ -24,11 +24,20 @@ class ReporteController extends Controller
                     'fecha' => (string)$det->fecha,
                     'tipo'  => (string)$det->tipo,
                     'confianza' => (float)$det->confianza,
-                    'color' => isset($det->color) ? (string)$det->color : 'desconocido'
+                    'color' => isset($det->color) ? (string)$det->color : 'desconocido',
+                    'camara' => isset($det->camara) ? (string)$det->camara : 'CAM_002',
+                    'nombre_camara' => isset($det->nombre_camara) ? (string)$det->nombre_camara : 'Skyline Cochabamba'
                 ];
                 
                 // Aplicar filtros si existen
                 $incluir = true;
+                
+                // Filtrar por cámara
+                if ($request->has('camera_id') && $request->camera_id != '') {
+                    if ($registro['camara'] != $request->camera_id) {
+                        $incluir = false;
+                    }
+                }
                 
                 // Filtrar por tipo
                 if ($request->has('tipo') && $request->tipo != '') {

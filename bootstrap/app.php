@@ -15,6 +15,10 @@ return Application::configure(basePath: dirname(__DIR__))
             'isAdmin' => \App\Http\Middleware\IsAdmin::class,
         ]);
     })
+    ->withProviders([
+        \App\Providers\NotificationServiceProvider::class,
+        \App\Providers\ReportServiceProvider::class,
+    ])
     ->withExceptions(function (Exceptions $exceptions): void {
         //
     })->create();

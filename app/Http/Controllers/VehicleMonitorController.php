@@ -12,10 +12,18 @@ class VehicleMonitorController extends Controller
     /**
      * Obtiene estadísticas del detector Python
      */
-    public function getStats($cameraId = 'camera_01')
+    public function getStats($cameraId = 'CAM_002')
     {
         try {
-            $response = Http::timeout(5)->get("{$this->detectorUrl}/api/vehicles");
+            // Asegurar que cameraId tiene el formato correcto
+            $cameraId = strtoupper($cameraId);
+            if (!in_array($cameraId, ['CAM_001', 'CAM_002'])) {
+                $cameraId = 'CAM_002';
+            }
+            
+            // IMPORTANTE: Pasar camera_id como parámetro a la API del detector
+            $url = "{$this->detectorUrl}/api/vehicles?camera_id={$cameraId}";
+            $response = Http::timeout(5)->get($url);
             
             if ($response->successful()) {
                 return response()->json($response->json());
@@ -23,6 +31,7 @@ class VehicleMonitorController extends Controller
             
             return response()->json([
                 'error' => 'No se pudo conectar con el detector',
+                'camera_id' => $cameraId,
                 'current_vehicles' => 0,
                 'total_detected' => 0,
                 'fps' => 0,
@@ -35,6 +44,7 @@ class VehicleMonitorController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'error' => 'Error de conexión: ' . $e->getMessage(),
+                'camera_id' => $cameraId ?? 'CAM_002',
                 'current_vehicles' => 0,
                 'total_detected' => 0,
                 'fps' => 0,

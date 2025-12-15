@@ -34,6 +34,8 @@ class DatabaseSeeder extends Seeder
         // Cargar comandos de voz predeterminados
         $this->call([
             VoiceCommandSeeder::class,
+            NotificationSeeder::class,
+            ReportSeeder::class,
         ]);
     }
 }
