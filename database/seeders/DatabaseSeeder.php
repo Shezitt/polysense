@@ -21,5 +21,10 @@ class DatabaseSeeder extends Seeder
             'name' => 'Test User',
             'email' => 'test@example.com',
         ]);
+
+        // Cargar comandos de voz predeterminados
+        $this->call([
+            VoiceCommandSeeder::class,
+        ]);
     }
 }
