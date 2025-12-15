@@ -46,4 +46,28 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    /**
+     * Relación con configuración de automatización
+     */
+    public function automationConfig()
+    {
+        return $this->hasOne(\App\Models\AutomationConfig::class);
+    }
+
+    /**
+     * Relación con notificaciones
+     */
+    public function notifications()
+    {
+        return $this->hasMany(\App\Models\Notification::class);
+    }
+
+    /**
+     * Relación con reportes
+     */
+    public function reports()
+    {
+        return $this->hasMany(\App\Models\Report::class);
+    }
 }
