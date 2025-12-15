@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
 """
-Detector de Vehículos MULTI-CÁMARA
-- Soporte para Oracle (CAM_001) + Skyline Cochabamba (CAM_002)
-- API con parámetro ?camera_id=CAM_001 o ?camera_id=CAM_002
-- WebSocket con parámetro /ws/stream?camera_id=CAM_002
+Detector de Vehículos MULTI-CÁMARA - Worker Pool Pattern
+- Soporte para Oracle + múltiples cámaras Skyline
+- API con parámetro ?camera_id=CAM_XXX
+- WebSocket con parámetro /ws/stream?camera_id=CAM_XXX
 - Tracking único + Color + FPS por cámara
 - XML persistente con identificación de cámara
+- Worker Pool Pattern para evitar sobrecarga
 """
 
 import cv2
@@ -17,8 +18,10 @@ import os
 import re
 from collections import defaultdict, deque
 from datetime import datetime
+from concurrent.futures import ThreadPoolExecutor
 from flask import Flask, jsonify, request
 from flask_sock import Sock
+from flask_cors import CORS
 from ultralytics import YOLO
 import xml.etree.ElementTree as ET
 
@@ -35,6 +38,7 @@ except ImportError:
     exit(1)
 
 app = Flask(__name__)
+CORS(app)  # Habilitar CORS para todas las rutas
 sock = Sock(app)
 
 # ===========================
@@ -44,13 +48,109 @@ CAMERAS_CONFIG = {
     'CAM_001': {
         'name': 'Oracle Server',
         'type': 'websocket',
-        'url': 'ws://144.22.56.85:5000/ws/CAM_001'  # Endpoint correcto (con mayúsculas)
+        'url': 'ws://144.22.56.85:5000/ws/CAM_001'
     },
+    # BOLIVIA
     'CAM_002': {
         'name': 'Skyline Cochabamba',
         'type': 'skyline',
         'url': 'https://www.skylinewebcams.com/es/webcam/bolivia/cercado/cochabamba/plaza-14-de-septiembre.html'
-    }
+    },
+    # BRASIL
+    'CAM_003': {
+        'name': 'Maceió Pájucara',
+        'type': 'skyline',
+        'url': 'https://www.skylinewebcams.com/es/webcam/brasil/alagoas/maceio/pajucara.html'
+    },
+    'CAM_004': {
+        'name': 'Balneario Camboriú Avenida Brasil',
+        'type': 'skyline',
+        'url': 'https://www.skylinewebcams.com/es/webcam/brasil/santa-catarina/balneario-camboriu/avenida-brasil.html'
+    },
+    'CAM_005': {
+        'name': 'São Paulo Avenida Paulista',
+        'type': 'skyline',
+        'url': 'https://www.skylinewebcams.com/es/webcam/brasil/sao-paulo/sao-paulo/avenida-paulista.html'
+    },
+    'CAM_006': {
+        'name': 'Balneario Camboriú Avenue dos Estados',
+        'type': 'skyline',
+        'url': 'https://www.skylinewebcams.com/es/webcam/brasil/santa-catarina/balneario-camboriu/avenue-dos-estados.html'
+    },
+    # CANADÁ
+    'CAM_007': {
+        'name': 'Canmore Alberta',
+        'type': 'skyline',
+        'url': 'https://www.skylinewebcams.com/es/webcam/canada/alberta/canmore/canmore.html'
+    },
+    'CAM_008': {
+        'name': 'Calgary Streets',
+        'type': 'skyline',
+        'url': 'https://www.skylinewebcams.com/es/webcam/canada/alberta/calgary/strees.html'
+    },
+    'CAM_009': {
+        'name': 'Collingwood Hurontario Street',
+        'type': 'skyline',
+        'url': 'https://www.skylinewebcams.com/es/webcam/canada/ontario/collingwood/collingwood-hurontario-street.html'
+    },
+    'CAM_010': {
+        'name': 'Surrey Border',
+        'type': 'skyline',
+        'url': 'https://www.skylinewebcams.com/es/webcam/canada/british-columbia/surrey/border.html'
+    },
+    # PERÚ
+    'CAM_011': {
+        'name': 'Cusco Plaza Mayor',
+        'type': 'skyline',
+        'url': 'https://www.skylinewebcams.com/es/webcam/peru/cusco/cusco/plaza-mayor.html'
+    },
+    'CAM_012': {
+        'name': 'Chachapoyas Plaza Mayor',
+        'type': 'skyline',
+        'url': 'https://www.skylinewebcams.com/es/webcam/peru/amazonas/chachapoyas/plaza-mayor.html'
+    },
+    'CAM_013': {
+        'name': 'Oxapampa Plaza de Armas',
+        'type': 'skyline',
+        'url': 'https://www.skylinewebcams.com/es/webcam/peru/pasco/oxapampa/plaza-de-armas.html'
+    },
+    # CHILE
+    'CAM_014': {
+        'name': 'Punta Arenas Magallanes',
+        'type': 'skyline',
+        'url': 'https://www.skylinewebcams.com/es/webcam/chile/magallanes-region/punta-arenas/punta-arenas.html'
+    },
+    'CAM_015': {
+        'name': 'San Antonio Avenida Llolleo',
+        'type': 'skyline',
+        'url': 'https://www.skylinewebcams.com/es/webcam/chile/valparaiso/san-antonio/avenida-llolleo.html'
+    },
+    # USA
+    'CAM_016': {
+        'name': 'Las Vegas Nevada',
+        'type': 'skyline',
+        'url': 'https://www.skylinewebcams.com/es/webcam/united-states/nevada/las-vegas/las-vegas.html'
+    },
+    'CAM_017': {
+        'name': 'Virginia City Nevada',
+        'type': 'skyline',
+        'url': 'https://www.skylinewebcams.com/es/webcam/united-states/nevada/virginia-city/virginia-city.html'
+    },
+    'CAM_018': {
+        'name': 'Idyllwild Pine Cove',
+        'type': 'skyline',
+        'url': 'https://www.skylinewebcams.com/es/webcam/united-states/california/idyllwild-pine-cove/idyllwild-pine-cove.html'
+    },
+    'CAM_019': {
+        'name': 'Tehachapi Railroad',
+        'type': 'skyline',
+        'url': 'https://www.skylinewebcams.com/es/webcam/united-states/california/tehachapi/tehachapi-railroad.html'
+    },
+    'CAM_020': {
+        'name': 'Lee Vining California',
+        'type': 'skyline',
+        'url': 'https://www.skylinewebcams.com/es/webcam/united-states/california/lee-vining/lee-vining.html'
+    },
 }
 
 LOCAL_PORT = 8080
@@ -71,28 +171,9 @@ COCO_CLASSES = {
 # ===========================
 # ESTADO GLOBAL (por cámara)
 # ===========================
-camera_states = {
-    'CAM_001': {
-        'raw_frame': None,
-        'processed_frame': None,
-        'last_update': 0,
-        'frame_count': 0,
-        'fps': 0,
-        'last_fps_time': time.time(),
-        'fps_buffer': deque(maxlen=30),
-        'vehicle_count': 0,
-        'total_vehicles_detected': 0,
-        'vehicle_history': deque(maxlen=100),
-        'vehicle_colors': defaultdict(int),
-        'vehicle_types': defaultdict(int),
-        'detected_vehicles': [],
-        'tracked_vehicles': {},
-        'next_vehicle_id': 1,
-        'max_distance': 100,
-        'max_frames_missing': 30,
-        'status': 'offline'
-    },
-    'CAM_002': {
+def init_camera_state(camera_id):
+    """Inicializa el estado para una cámara"""
+    return {
         'raw_frame': None,
         'processed_frame': None,
         'last_update': 0,
@@ -112,7 +193,9 @@ camera_states = {
         'max_frames_missing': 30,
         'status': 'offline'
     }
-}
+
+# Inicializar estados para todas las cámaras
+camera_states = {cam_id: init_camera_state(cam_id) for cam_id in CAMERAS_CONFIG.keys()}
 
 data_lock = threading.Lock()
 websocket_clients = defaultdict(list)  # {camera_id: [ws1, ws2, ...]}
@@ -256,16 +339,29 @@ def detect_vehicles(frame, tracked_vehicles=None):
 # EXTRACCIÓN SKYLINE (Playwright)
 # ===========================
 
-def get_skyline_stream_url_robust():
-    """Extrae m3u8 con Playwright"""
-    logger.info("🕵️  Skyline: Iniciando Playwright...")
+def get_skyline_stream_url_robust(camera_id='CAM_002'):
+    """Extrae m3u8 o YouTube embed con Playwright para cualquier cámara Skyline"""
+    cam_url = CAMERAS_CONFIG[camera_id]['url']
+    cam_name = CAMERAS_CONFIG[camera_id]['name']
+    
+    logger.info(f"🕵️  {camera_id} ({cam_name}): Iniciando Playwright...")
     found_url = None
+    found_youtube = None
     
     def handle_request(request):
-        nonlocal found_url
-        if ".m3u8" in request.url and "live" in request.url:
-            logger.info(f"🎯 Skyline: URL capturada")
-            found_url = request.url
+        nonlocal found_url, found_youtube
+        url = request.url
+        
+        # Detectar m3u8 (cualquier variación)
+        if ".m3u8" in url:
+            logger.info(f"🎯 {camera_id}: URL m3u8 capturada: {url[:100]}")
+            found_url = url
+        
+        # Detectar YouTube embeds
+        if "youtube.com" in url or "youtu.be" in url:
+            if "/embed/" in url or "/watch" in url or "/live/" in url:
+                logger.info(f"📺 {camera_id}: YouTube URL detectada: {url[:100]}")
+                found_youtube = url
 
     try:
         with sync_playwright() as p:
@@ -276,35 +372,100 @@ def get_skyline_stream_url_robust():
             page = context.new_page()
             page.on("request", handle_request)
             
-            logger.info("🌍 Skyline: Navegando...")
+            logger.info(f"🌍 {camera_id}: Navegando a {cam_name}...")
             try:
-                page.goto(CAMERAS_CONFIG['CAM_002']['url'], timeout=60000, wait_until="domcontentloaded")
+                page.goto(cam_url, timeout=60000, wait_until="domcontentloaded")
             except: pass
 
+            # Intentar activar el reproductor
             try:
-                page.wait_for_timeout(2000)
-                selectors = ["#player", ".play-btn", "video", ".jw-display-icon-container"]
+                page.wait_for_timeout(3000)  # Aumentado a 3s para dar tiempo a cargar
+                
+                # Buscar iframes de YouTube primero
+                try:
+                    iframes = page.query_selector_all("iframe")
+                    for iframe in iframes:
+                        src = iframe.get_attribute("src")
+                        if src and ("youtube.com" in src or "youtu.be" in src):
+                            logger.info(f"📺 {camera_id}: YouTube iframe encontrado: {src[:100]}")
+                            found_youtube = src
+                            break
+                except: pass
+                
+                # Intentar clicks en el reproductor
+                selectors = ["#player", ".play-btn", "video", ".jw-display-icon-container", ".video-js", "button[aria-label*='Play']"]
                 for sel in selectors:
                     try:
                         if page.is_visible(sel):
                             page.click(sel, force=True)
                             page.wait_for_timeout(500)
                     except: pass
+                
+                # Click en el centro de la página
                 page.mouse.click(640, 360)
+                page.wait_for_timeout(1000)
             except: pass
 
+            # Esperar a que se capture la URL
             start_t = time.time()
             while time.time() - start_t < 45:
+                # Priorizar m3u8 sobre YouTube
                 if found_url:
+                    logger.info(f"✅ {camera_id}: m3u8 URL encontrada!")
                     browser.close()
                     return found_url
+                
+                # Si encontramos YouTube pero no m3u8, seguir esperando un poco más
+                if found_youtube and time.time() - start_t > 30:
+                    logger.info(f"✅ {camera_id}: Usando YouTube URL (no se encontró m3u8)")
+                    browser.close()
+                    # Extraer el video ID de YouTube y convertir a formato embed
+                    return convert_youtube_to_stream(found_youtube, camera_id)
+                
                 page.wait_for_timeout(1000)
             
+            # Si después de 45s solo tenemos YouTube, usarlo
+            if found_youtube:
+                logger.info(f"✅ {camera_id}: Usando YouTube URL (timeout m3u8)")
+                browser.close()
+                return convert_youtube_to_stream(found_youtube, camera_id)
+            
+            logger.warning(f"⚠️ {camera_id}: Timeout - no se encontró stream")
             browser.close()
             return None
 
     except Exception as e:
-        logger.error(f"❌ Skyline Playwright: {e}")
+        logger.error(f"❌ {camera_id} Playwright: {e}")
+        return None
+
+def convert_youtube_to_stream(youtube_url, camera_id):
+    """Convierte URL de YouTube a formato utilizable para streaming"""
+    try:
+        # Extraer video ID
+        video_id = None
+        
+        if "/embed/" in youtube_url:
+            video_id = youtube_url.split("/embed/")[1].split("?")[0]
+        elif "watch?v=" in youtube_url:
+            video_id = youtube_url.split("watch?v=")[1].split("&")[0]
+        elif "/live/" in youtube_url:
+            video_id = youtube_url.split("/live/")[1].split("?")[0]
+        elif "youtu.be/" in youtube_url:
+            video_id = youtube_url.split("youtu.be/")[1].split("?")[0]
+        
+        if video_id:
+            # Usar yt-dlp para obtener el stream directo
+            logger.info(f"🔄 {camera_id}: Extrayendo stream de YouTube ID: {video_id}")
+            
+            # Retornar URL de YouTube que OpenCV puede manejar con yt-dlp
+            # Nota: Requiere que yt-dlp esté instalado
+            return f"https://www.youtube.com/watch?v={video_id}"
+        
+        logger.warning(f"⚠️ {camera_id}: No se pudo extraer video ID de YouTube")
+        return None
+        
+    except Exception as e:
+        logger.error(f"❌ {camera_id}: Error convirtiendo YouTube URL: {e}")
         return None
 
 # ===========================
@@ -426,14 +587,16 @@ def worker_oracle():
                     
                     frame_counter = 0
                     consecutive_errors = 0
+                    last_valid_frame_time = time.time()
                     
                     while True:
                         try:
-                            # Recibir frame del servidor Oracle
-                            frame_data = await asyncio.wait_for(websocket.recv(), timeout=30)
+                            # Recibir frame del servidor Oracle (timeout aumentado a 60s para tolerar latencias)
+                            frame_data = await asyncio.wait_for(websocket.recv(), timeout=60)
                             
                             consecutive_errors = 0
                             frame_counter += 1
+                            last_valid_frame_time = time.time()  # Actualizar tiempo del último frame válido
                             
                             if frame_counter % 30 == 0:
                                 with data_lock:
@@ -455,14 +618,21 @@ def worker_oracle():
                                 logger.warning(f"⚠️ CAM_001: Error procesando frame - {str(e)[:80]}")
                                 consecutive_errors += 1
                                 
-                                if consecutive_errors > 10:
+                                if consecutive_errors > 20:  # Aumentado de 10 a 20 para ser más tolerante
                                     raise Exception("Demasiados errores decodificando frames")
                             
                         except asyncio.TimeoutError:
-                            logger.warning("⚠️ CAM_001: Timeout esperando frames (30s)")
-                            with data_lock:
-                                camera_states['CAM_001']['status'] = 'offline'
-                            break
+                            # Timeout: esperar 90s (3x timeout) antes de marcar como offline
+                            time_since_last_frame = time.time() - last_valid_frame_time
+                            if time_since_last_frame > 90:
+                                logger.warning(f"⚠️ CAM_001: Timeout esperando frames (90s sin datos)")
+                                with data_lock:
+                                    camera_states['CAM_001']['status'] = 'offline'
+                                break
+                            else:
+                                logger.info(f"⏱️ CAM_001: Sin datos por {time_since_last_frame:.1f}s, esperando... (límite: 90s)")
+                                # Mantener el último frame válido visible
+                                continue
                         except websockets.exceptions.ConnectionClosed:
                             logger.warning("⚠️ CAM_001: Conexión cerrada por servidor")
                             with data_lock:
@@ -479,8 +649,8 @@ def worker_oracle():
                 with data_lock:
                     camera_states['CAM_001']['status'] = 'offline'
             
-            logger.info("⏳ CAM_001: Esperando 5s antes de reconectar...")
-            await asyncio.sleep(5)
+            logger.info("⏳ CAM_001: Esperando 10s antes de reconectar...")
+            await asyncio.sleep(10)
     
     # Ejecutar el loop async
     try:
@@ -495,29 +665,85 @@ def worker_oracle():
         with data_lock:
             camera_states['CAM_001']['status'] = 'offline'
 
-def worker_skyline():
-    """Worker para CAM_002 (Skyline)"""
-    logger.info("🚀 CAM_002 (Skyline): Iniciando...")
+def worker_skyline_camera(camera_id):
+    """Worker genérico para cámaras Skyline"""
+    cam_config = CAMERAS_CONFIG[camera_id]
+    cam_name = cam_config['name']
+    
+    logger.info(f"🚀 {camera_id} ({cam_name}): Iniciando worker...")
     
     while True:
-        stream_url = get_skyline_stream_url_robust()
+        # Usar el método robusto para TODAS las cámaras Skyline
+        logger.info(f"🔍 {camera_id}: Extrayendo URL de streaming...")
+        stream_url = get_skyline_stream_url_robust(camera_id)
         
         if not stream_url:
-            logger.warning("💤 CAM_002: No URL. Reintentando en 10s...")
-            time.sleep(10)
+            logger.warning(f"💤 {camera_id}: No se pudo extraer URL. Reintentando en 30s...")
+            with data_lock:
+                camera_states[camera_id]['status'] = 'offline'
+            time.sleep(30)
             continue
         
-        logger.info(f"🎥 CAM_002: Abriendo OpenCV...")
+        # Si es YouTube, usar yt-dlp para obtener el stream directo
+        if "youtube.com" in stream_url or "youtu.be" in stream_url:
+            logger.info(f"📺 {camera_id}: Detectado YouTube, extrayendo stream con yt-dlp...")
+            try:
+                import subprocess
+                import json
+                
+                # Usar yt-dlp para obtener la mejor URL de stream
+                cmd = [
+                    'yt-dlp',
+                    '-f', 'best[ext=mp4]/best',  # Mejor calidad en mp4
+                    '-g',  # Obtener URL directa
+                    '--no-warnings',
+                    stream_url
+                ]
+                
+                result = subprocess.run(cmd, capture_output=True, text=True, timeout=30)
+                
+                if result.returncode == 0 and result.stdout.strip():
+                    stream_url = result.stdout.strip().split('\n')[0]  # Primera URL (video)
+                    logger.info(f"✅ {camera_id}: Stream directo extraído de YouTube")
+                else:
+                    logger.error(f"❌ {camera_id}: yt-dlp falló: {result.stderr[:200]}")
+                    with data_lock:
+                        camera_states[camera_id]['status'] = 'offline'
+                    time.sleep(30)
+                    continue
+                    
+            except subprocess.TimeoutExpired:
+                logger.error(f"❌ {camera_id}: yt-dlp timeout")
+                with data_lock:
+                    camera_states[camera_id]['status'] = 'offline'
+                time.sleep(30)
+                continue
+            except FileNotFoundError:
+                logger.error(f"❌ {camera_id}: yt-dlp no está instalado. Instala con: pip install yt-dlp")
+                with data_lock:
+                    camera_states[camera_id]['status'] = 'offline'
+                time.sleep(60)
+                continue
+            except Exception as e:
+                logger.error(f"❌ {camera_id}: Error con yt-dlp: {str(e)[:100]}")
+                with data_lock:
+                    camera_states[camera_id]['status'] = 'offline'
+                time.sleep(30)
+                continue
+        
+        logger.info(f"🎥 {camera_id}: Abriendo stream con OpenCV...")
         cap = cv2.VideoCapture(stream_url)
         
         if not cap.isOpened():
-            logger.error("❌ CAM_002: OpenCV no abrió")
+            logger.error(f"❌ {camera_id}: OpenCV no pudo abrir el stream")
+            with data_lock:
+                camera_states[camera_id]['status'] = 'offline'
             time.sleep(10)
             continue
         
-        logger.info("✅ CAM_002: Streaming activo")
+        logger.info(f"✅ {camera_id}: Streaming activo!")
         with data_lock:
-            camera_states['CAM_002']['status'] = 'online'
+            camera_states[camera_id]['status'] = 'online'
         
         frame_counter = 0
         consecutive_errors = 0
@@ -528,9 +754,9 @@ def worker_skyline():
             if not ret:
                 consecutive_errors += 1
                 if consecutive_errors > 30:
-                    logger.warning("⚠️ CAM_002: Stream perdido")
+                    logger.warning(f"⚠️ {camera_id}: Stream perdido (30 errores consecutivos)")
                     with data_lock:
-                        camera_states['CAM_002']['status'] = 'offline'
+                        camera_states[camera_id]['status'] = 'offline'
                     break
                 time.sleep(0.01)
                 continue
@@ -538,15 +764,24 @@ def worker_skyline():
             consecutive_errors = 0
             frame_counter += 1
             
-            if frame_counter % 3 != 0: continue  # Procesar 1 de cada 3
+            # Procesar 1 de cada 3 frames para reducir carga
+            if frame_counter % 3 != 0: 
+                continue
             
-            process_frame_generic(frame, 'CAM_002')
+            process_frame_generic(frame, camera_id)
             
-            if frame_counter % 60 == 0:
-                logger.info(f"📦 CAM_002: {frame_counter} frames")
+            # Log cada 100 frames
+            if frame_counter % 100 == 0:
+                logger.info(f"📦 {camera_id}: {frame_counter} frames procesados")
         
         cap.release()
-        time.sleep(1)
+        logger.info(f"🔄 {camera_id}: Stream cerrado, reintentando en 5s...")
+        time.sleep(5)
+
+# LEGADO - mantener para compatibilidad
+def worker_skyline():
+    """Worker para CAM_002 (Skyline) - Legado"""
+    worker_skyline_camera('CAM_002')
 
 # ===========================
 # API FLASK
@@ -574,6 +809,21 @@ def index():
     </body>
     </html>
     """
+
+@app.route('/api/cameras')
+def api_cameras():
+    """Retorna lista de todas las cámaras disponibles"""
+    cameras = []
+    for cam_id, config in CAMERAS_CONFIG.items():
+        with data_lock:
+            status = camera_states[cam_id]['status']
+        cameras.append({
+            'id': cam_id,
+            'name': config['name'],
+            'type': config['type'],
+            'status': status
+        })
+    return jsonify({'cameras': cameras})
 
 @app.route('/api/vehicles')
 def api_vehicles():
@@ -608,6 +858,31 @@ def api_vehicles():
             'vehicle_colors': dict(state['vehicle_colors']),
             'history': list(state['vehicle_history']),
             'detected_vehicles': state['detected_vehicles']
+        })
+
+@app.route('/api/vehicle-monitor/<camera_id>')
+def vehicle_monitor(camera_id):
+    """Endpoint para modulo1 y modulo2 - Monitoreo de vehículos en tiempo real"""
+    if camera_id not in camera_states:
+        return jsonify({'error': 'camera_id no válido'}), 400
+    
+    with data_lock:
+        state = camera_states[camera_id]
+        avg_v = (sum(state['vehicle_history'])/len(state['vehicle_history'])) if state['vehicle_history'] else 0
+        
+        return jsonify({
+            'camera_id': camera_id,
+            'camera_name': CAMERAS_CONFIG[camera_id]['name'],
+            'status': state['status'],
+            'timestamp': time.time(),
+            'current_vehicles': state['vehicle_count'],
+            'total_detected': state['total_vehicles_detected'],
+            'unique_tracked': len(state['tracked_vehicles']),
+            'fps': round(state['fps'], 2),
+            'avg_vehicles': round(avg_v, 2),
+            'vehicle_types': dict(state['vehicle_types']),
+            'vehicle_colors': dict(state['vehicle_colors']),
+            'history': list(state['vehicle_history'])
         })
 
 @app.route('/stats')
@@ -740,19 +1015,48 @@ def websocket_stream(ws):
 
 if __name__ == '__main__':
     logger.info("\n" + "="*70)
-    logger.info("🚗 DETECTOR MULTI-CÁMARA")
+    logger.info("🚗 DETECTOR MULTI-CÁMARA - WORKER POOL PATTERN")
     logger.info("="*70)
-    for cam_id, config in CAMERAS_CONFIG.items():
-        logger.info(f"{cam_id}: {config['name']}")
+    logger.info(f"📊 Total de cámaras configuradas: {len(CAMERAS_CONFIG)}")
+    logger.info("")
+    
+    # Mostrar cámaras por tipo
+    websocket_cams = [cam_id for cam_id, config in CAMERAS_CONFIG.items() if config['type'] == 'websocket']
+    skyline_cams = [cam_id for cam_id, config in CAMERAS_CONFIG.items() if config['type'] == 'skyline']
+    
+    logger.info(f"📡 Cámaras WebSocket ({len(websocket_cams)}):")
+    for cam_id in websocket_cams:
+        logger.info(f"   {cam_id}: {CAMERAS_CONFIG[cam_id]['name']}")
+    
+    logger.info(f"\n📺 Cámaras Skyline ({len(skyline_cams)}):")
+    for cam_id in skyline_cams:
+        logger.info(f"   {cam_id}: {CAMERAS_CONFIG[cam_id]['name']}")
+    
     logger.info("="*70)
     
     init_xml_database()
     
-    # Workers para cada cámara
-    t1 = threading.Thread(target=worker_oracle, daemon=True)
-    t2 = threading.Thread(target=worker_skyline, daemon=True)
-    t1.start()
-    t2.start()
+    # Worker Pool Pattern: máximo 10 workers concurrentes (aumentado de 5)
+    max_workers = min(10, len(CAMERAS_CONFIG))
+    logger.info(f"🔧 Iniciando Worker Pool con {max_workers} workers concurrentes...")
+    logger.info(f"⚠️  Nota: Solo {max_workers} cámaras procesarán simultáneamente")
+    logger.info("")
     
-    # Flask
-    app.run(host='0.0.0.0', port=LOCAL_PORT, threaded=True, debug=False, use_reloader=False)
+    with ThreadPoolExecutor(max_workers=max_workers) as executor:
+        # Enviar workers al pool según tipo de cámara
+        futures = {}
+        for cam_id, config in CAMERAS_CONFIG.items():
+            if config['type'] == 'websocket':
+                logger.info(f"📡 {cam_id}: Asignado a WebSocket worker")
+                future = executor.submit(worker_oracle)
+            else:  # skyline
+                logger.info(f"📺 {cam_id}: Asignado a Skyline worker pool")
+                future = executor.submit(worker_skyline_camera, cam_id)
+            futures[cam_id] = future
+        
+        # Flask en el thread principal
+        logger.info("")
+        logger.info("="*70)
+        logger.info("🌐 Iniciando Flask server en http://0.0.0.0:8080")
+        logger.info("="*70)
+        app.run(host='0.0.0.0', port=LOCAL_PORT, threaded=True, debug=False, use_reloader=False)
