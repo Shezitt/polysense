@@ -4,13 +4,17 @@
 
 @section('content')
 <div class="bg-white rounded-lg shadow-lg p-6 mb-6">
-    <div class="flex flex-col md:flex-row justify-between items-center gap-4">
-        <div>
-            <h1 class="text-3xl font-bold text-gray-800">Módulo 2: Analítica y Reportes Viales</h1>
-            <p class="text-gray-500 mt-1">Visualización de datos históricos y estadísticas de detección.</p>
-        </div>
+    <div>
+        <h1 class="text-3xl font-bold text-gray-800">Módulo 2: Analítica y Reportes Viales</h1>
+        <p class="text-gray-500 mt-1">Visualización de datos históricos y estadísticas de detección.</p>
+    </div>
+</div>
+
+<!-- Filtros y Selector de Cámara -->
+<div class="bg-white rounded-lg shadow-lg p-6 mb-6">
+    <div class="flex items-center gap-3 flex-wrap">
         
-        <div class="flex items-center gap-3 bg-gray-50 p-3 rounded-lg border border-gray-200 flex-wrap">
+
             <div class="flex flex-col flex-1 min-w-[250px]">
                 <label class="text-xs text-gray-500 font-semibold ml-1 mb-1">🎥 Cámara</label>
                 <input 
@@ -51,7 +55,6 @@
             <button onclick="aplicarFiltros()" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-1.5 rounded-md text-sm font-medium transition-colors">
                 Filtrar
             </button>
-        </div>
     </div>
 </div>
 

@@ -1036,10 +1036,10 @@ if __name__ == '__main__':
     
     init_xml_database()
     
-    # Worker Pool Pattern: máximo 10 workers concurrentes (aumentado de 5)
-    max_workers = min(10, len(CAMERAS_CONFIG))
+    # Worker Pool Pattern: 20 workers concurrentes para soportar TODAS las cámaras
+    max_workers = len(CAMERAS_CONFIG)  # 20 cámaras = 20 workers
     logger.info(f"🔧 Iniciando Worker Pool con {max_workers} workers concurrentes...")
-    logger.info(f"⚠️  Nota: Solo {max_workers} cámaras procesarán simultáneamente")
+    logger.info(f"✅ Todas las {max_workers} cámaras tendrán workers activos")
     logger.info("")
     
     with ThreadPoolExecutor(max_workers=max_workers) as executor:
