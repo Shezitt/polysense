@@ -1,18 +1,18 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html lang="<?php echo e(str_replace('_', '-', app()->getLocale())); ?>">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta name="csrf-token" content="<?php echo e(csrf_token()); ?>">
 
-    <title>{{ config('app.name', 'Polysense') }} - @yield('title')</title>
+    <title><?php echo e(config('app.name', 'Polysense')); ?> - <?php echo $__env->yieldContent('title'); ?></title>
 
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
 
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <?php echo app('Illuminate\Foundation\Vite')(['resources/css/app.css', 'resources/js/app.js']); ?>
 
-    @stack('styles')
+    <?php echo $__env->yieldPushContent('styles'); ?>
     
     <style>
         /* Header positioning styles generic */
@@ -171,76 +171,76 @@
     </style>
 </head>
 <body class="bg-gray-100">
-    @php
+    <?php
         $headerPosition = Auth::check() ? (Auth::user()->header_position ?? 'top') : 'top';
-    @endphp
+    ?>
     
-    <div class="layout-container header-{{ $headerPosition }}">
+    <div class="layout-container header-<?php echo e($headerPosition); ?>">
         <nav class="bg-white shadow-sm">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="flex justify-between h-16">
                     <div class="flex">
                         <div class="flex-shrink-0 flex items-center">
-                            <a href="{{ url('/') }}" class="text-xl font-bold text-indigo-600 flex items-center gap-2">
+                            <a href="<?php echo e(url('/')); ?>" class="text-xl font-bold text-indigo-600 flex items-center gap-2">
                                 Polysense
                             </a>
                         </div>
 
                         <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
 
-                            <a href="{{ route('modulo1') }}" 
+                            <a href="<?php echo e(route('modulo1')); ?>" 
                                class="inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium transition-colors
-                               {{ request()->routeIs('modulo1') ? 'border-indigo-500 text-gray-900' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300' }}">
+                               <?php echo e(request()->routeIs('modulo1') ? 'border-indigo-500 text-gray-900' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'); ?>">
                                 Deteccion
                             </a>
 
-                            <a href="{{ route('modulo2') }}" 
+                            <a href="<?php echo e(route('modulo2')); ?>" 
                                class="inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium transition-colors
-                               {{ request()->routeIs('modulo2') ? 'border-indigo-500 text-gray-900' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300' }}">
+                               <?php echo e(request()->routeIs('modulo2') ? 'border-indigo-500 text-gray-900' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'); ?>">
                                 Reportes
                             </a>
 
-                            <a href="{{ route('modulo3') }}" 
+                            <a href="<?php echo e(route('modulo3')); ?>" 
                                class="inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium transition-colors
-                               {{ request()->routeIs('modulo3') ? 'border-indigo-500 text-gray-900' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300' }}">
+                               <?php echo e(request()->routeIs('modulo3') ? 'border-indigo-500 text-gray-900' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'); ?>">
                                 Automatizaciones
                             </a>
 
-                            <a href="{{ route('modulo4') }}" 
+                            <a href="<?php echo e(route('modulo4')); ?>" 
                                class="inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium transition-colors
-                               {{ request()->routeIs('modulo4') ? 'border-indigo-500 text-gray-900' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300' }}">
+                               <?php echo e(request()->routeIs('modulo4') ? 'border-indigo-500 text-gray-900' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'); ?>">
                                 Accesibilidad
                             </a>
 
-                            @auth
-                                @if(Auth::user()->role === 'admin')
-                                    <a href="{{ route('modulo5') }}" 
+                            <?php if(auth()->guard()->check()): ?>
+                                <?php if(Auth::user()->role === 'admin'): ?>
+                                    <a href="<?php echo e(route('modulo5')); ?>" 
                                        class="inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium transition-colors
-                                       {{ request()->routeIs('modulo5') ? 'border-indigo-500 text-gray-900' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300' }}">
+                                       <?php echo e(request()->routeIs('modulo5') ? 'border-indigo-500 text-gray-900' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'); ?>">
                                         Gestion
                                     </a>
-                                @endif
-                            @endauth
+                                <?php endif; ?>
+                            <?php endif; ?>
                         </div>
                     </div>
 
                     <div class="hidden sm:flex sm:items-center sm:ml-6">
-                        @auth
+                        <?php if(auth()->guard()->check()): ?>
                             <div class="ml-3 relative flex items-center gap-4">
-                                @include('components.header-position-selector')
-                                <span class="text-sm text-gray-700 font-medium">{{ Auth::user()->name }}</span>
-                                <form method="POST" action="{{ route('logout') }}" class="inline">
-                                    @csrf
+                                <?php echo $__env->make('components.header-position-selector', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
+                                <span class="text-sm text-gray-700 font-medium"><?php echo e(Auth::user()->name); ?></span>
+                                <form method="POST" action="<?php echo e(route('logout')); ?>" class="inline">
+                                    <?php echo csrf_field(); ?>
                                     <button type="submit" class="text-sm text-red-600 hover:text-red-800 font-semibold">
                                         Cerrar Sesión
                                     </button>
                                 </form>
                             </div>
-                        @else
+                        <?php else: ?>
                             <div class="space-x-4">
-                                <a href="{{ route('login') }}" class="text-sm text-gray-700 hover:text-indigo-600 font-medium">Iniciar Sesión</a>
+                                <a href="<?php echo e(route('login')); ?>" class="text-sm text-gray-700 hover:text-indigo-600 font-medium">Iniciar Sesión</a>
                             </div>
-                        @endauth
+                        <?php endif; ?>
                     </div>
 
                     <div class="flex items-center sm:hidden">
@@ -255,10 +255,10 @@
 
             <div id="mobile-menu" class="hidden sm:hidden bg-white border-t border-gray-200">
                 <div class="pt-2 pb-3 space-y-1">
-                    <a href="{{ route('modulo1') }}" class="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800">Deteccion</a>
-                    <a href="{{ route('modulo2') }}" class="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800">Reportes</a>
-                    <a href="{{ route('modulo3') }}" class="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800">Automatizaciones</a>
-                    <a href="{{ route('modulo4') }}" class="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800">Accesibilidad</a>
+                    <a href="<?php echo e(route('modulo1')); ?>" class="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800">Deteccion</a>
+                    <a href="<?php echo e(route('modulo2')); ?>" class="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800">Reportes</a>
+                    <a href="<?php echo e(route('modulo3')); ?>" class="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800">Automatizaciones</a>
+                    <a href="<?php echo e(route('modulo4')); ?>" class="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800">Accesibilidad</a>
                 </div>
             </div>
         </nav>
@@ -266,19 +266,20 @@
         <div class="main-wrapper">
             <main class="py-8 flex-1">
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    @if (session('success'))
+                    <?php if(session('success')): ?>
                         <div class="mb-4 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative">
-                            {{ session('success') }}
+                            <?php echo e(session('success')); ?>
+
                         </div>
-                    @endif
-                    @yield('content')
+                    <?php endif; ?>
+                    <?php echo $__env->yieldContent('content'); ?>
                 </div>
             </main>
 
             <footer class="bg-white mt-12 border-t border-gray-200">
                 <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
                     <p class="text-center text-gray-500 text-sm">
-                        &copy; {{ date('Y') }} {{ config('app.name', 'Polysense') }}.
+                        &copy; <?php echo e(date('Y')); ?> <?php echo e(config('app.name', 'Polysense')); ?>.
                     </p>
                 </div>
             </footer>
@@ -286,8 +287,8 @@
     </div>
 
     <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
-    <script src="{{ asset('js/voice-websocket.js') }}"></script>
+    <script src="<?php echo e(asset('js/voice-websocket.js')); ?>"></script>
 
-    @stack('scripts')
+    <?php echo $__env->yieldPushContent('scripts'); ?>
 </body>
-</html>
+</html><?php /**PATH C:\xampp\htdocs\ProyectoFinal\polysense\resources\views/layouts/app.blade.php ENDPATH**/ ?>

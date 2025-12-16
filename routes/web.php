@@ -6,11 +6,17 @@ use App\Http\Controllers\VehicleMonitorController;
 use App\Http\Controllers\VoiceCommandController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\UserPreferencesController;
 
 // Rutas de autenticación
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
 Route::post('/login', [AuthController::class, 'login'])->name('login.post');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
+// Rutas de preferencias de usuario (requiere autenticación)
+Route::middleware(['auth'])->group(function () {
+    Route::post('/preferences/header-position', [UserPreferencesController::class, 'updateHeaderPosition'])->name('preferences.header-position');
+});
 
 // Rutas públicas (o protégelas si quieres)
 Route::get('/', function () {
