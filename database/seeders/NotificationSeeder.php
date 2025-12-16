@@ -10,17 +10,14 @@ class NotificationSeeder extends Seeder
 {
     public function run(): void
     {
-        // Obtener el primer admin
         $admin = User::where('role', 'admin')->first();
         
         if (!$admin) {
-            $this->command->warn('No se encontró ningún usuario admin. Creando notificaciones para user_id=1');
             $userId = 1;
         } else {
             $userId = $admin->id;
         }
 
-        // Crear notificaciones de ejemplo
         Notification::create([
             'user_id' => $userId,
             'title' => 'Bienvenido a Automatizaciones',
@@ -52,7 +49,6 @@ class NotificationSeeder extends Seeder
             'type' => 'info',
             'priority' => 'medium',
         ]);
-
-        $this->command->info('Notificaciones de ejemplo creadas exitosamente.');
+        
     }
 }

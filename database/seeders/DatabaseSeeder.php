@@ -10,12 +10,8 @@ class DatabaseSeeder extends Seeder
 {
     use WithoutModelEvents;
 
-    /**
-     * Seed the application's database.
-     */
     public function run(): void
     {
-        // Crear usuario administrador por defecto
         User::create([
             'name' => 'Administrador',
             'email' => 'admin@polysense.com',
@@ -23,7 +19,6 @@ class DatabaseSeeder extends Seeder
             'role' => 'admin',
         ]);
 
-        // Crear usuario de prueba regular
         User::create([
             'name' => 'Usuario Test',
             'email' => 'user@polysense.com',
@@ -31,7 +26,6 @@ class DatabaseSeeder extends Seeder
             'role' => 'user',
         ]);
 
-        // Seeders para notificaciones y reportes
         $this->call([
             NotificationSeeder::class,
             ReportSeeder::class,

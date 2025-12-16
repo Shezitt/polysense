@@ -10,17 +10,14 @@ class ReportSeeder extends Seeder
 {
     public function run(): void
     {
-        // Obtener el primer admin
         $admin = User::where('role', 'admin')->first();
         
         if (!$admin) {
-            $this->command->warn('No se encontró ningún usuario admin. Creando reportes para user_id=1');
             $userId = 1;
         } else {
             $userId = $admin->id;
         }
 
-        // Crear reportes de ejemplo
         Report::create([
             'user_id' => $userId,
             'title' => 'Reporte Diario de Detecciones',
@@ -74,6 +71,5 @@ class ReportSeeder extends Seeder
             'generated_at' => now()->subDay(),
         ]);
 
-        $this->command->info('Reportes de ejemplo creados exitosamente.');
     }
 }

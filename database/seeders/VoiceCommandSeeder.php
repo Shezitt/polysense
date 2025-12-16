@@ -7,9 +7,6 @@ use Illuminate\Support\Facades\DB;
 
 class VoiceCommandSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
     public function run(): void
     {
         $commands = [
@@ -89,18 +86,7 @@ class VoiceCommandSeeder extends Seeder
                 'enabled' => true,
                 'created_at' => now(),
                 'updated_at' => now(),
-            ],
-            [
-                'name' => 'Detener Reconocimiento',
-                'trigger' => 'detener,parar,stop,desactivar voz',
-                'action' => 'custom',
-                'target' => null,
-                'function_name' => 'stopVoiceRecognition',
-                'modules' => 'all',
-                'enabled' => true,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
+            ]
         ];
 
         DB::table('voice_commands')->insert($commands);
