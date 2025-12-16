@@ -3456,4 +3456,3812 @@
     <camara>CAM_002</camara>
     <nombre_camara>Skyline Cochabamba</nombre_camara>
   </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 07:02:25</fecha>
+    <tipo>Auto</tipo>
+    <confianza>53.08</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 07:02:34</fecha>
+    <tipo>Auto</tipo>
+    <confianza>56.33</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 07:02:35</fecha>
+    <tipo>Auto</tipo>
+    <confianza>60.78</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 07:02:47</fecha>
+    <tipo>Auto</tipo>
+    <confianza>51.22</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 07:03:08</fecha>
+    <tipo>Auto</tipo>
+    <confianza>50.53</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 07:03:31</fecha>
+    <tipo>Auto</tipo>
+    <confianza>51.81</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 07:03:50</fecha>
+    <tipo>Auto</tipo>
+    <confianza>51.11</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 07:04:02</fecha>
+    <tipo>Moto</tipo>
+    <confianza>53.30</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 07:04:17</fecha>
+    <tipo>Auto</tipo>
+    <confianza>54.03</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 07:04:22</fecha>
+    <tipo>Auto</tipo>
+    <confianza>50.99</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 07:04:22</fecha>
+    <tipo>Auto</tipo>
+    <confianza>68.25</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 07:04:22</fecha>
+    <tipo>Auto</tipo>
+    <confianza>60.28</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:20:14</fecha>
+    <tipo>Auto</tipo>
+    <confianza>90.97</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:20:14</fecha>
+    <tipo>Auto</tipo>
+    <confianza>80.09</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:20:14</fecha>
+    <tipo>Auto</tipo>
+    <confianza>77.34</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:20:14</fecha>
+    <tipo>Auto</tipo>
+    <confianza>55.05</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:20:15</fecha>
+    <tipo>Auto</tipo>
+    <confianza>53.17</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:20:21</fecha>
+    <tipo>Auto</tipo>
+    <confianza>51.95</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:20:23</fecha>
+    <tipo>Auto</tipo>
+    <confianza>50.61</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:20:26</fecha>
+    <tipo>Auto</tipo>
+    <confianza>86.98</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:20:43</fecha>
+    <tipo>Auto</tipo>
+    <confianza>79.27</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:20:43</fecha>
+    <tipo>Auto</tipo>
+    <confianza>74.10</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:20:43</fecha>
+    <tipo>Auto</tipo>
+    <confianza>54.15</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:20:58</fecha>
+    <tipo>Auto</tipo>
+    <confianza>50.65</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:21:09</fecha>
+    <tipo>Auto</tipo>
+    <confianza>50.45</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:21:23</fecha>
+    <tipo>Auto</tipo>
+    <confianza>57.14</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:21:47</fecha>
+    <tipo>Auto</tipo>
+    <confianza>52.41</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:22:01</fecha>
+    <tipo>Auto</tipo>
+    <confianza>50.39</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:22:20</fecha>
+    <tipo>Auto</tipo>
+    <confianza>54.49</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:22:33</fecha>
+    <tipo>Auto</tipo>
+    <confianza>55.26</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:22:33</fecha>
+    <tipo>Auto</tipo>
+    <confianza>54.04</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:22:53</fecha>
+    <tipo>Auto</tipo>
+    <confianza>50.49</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:22:54</fecha>
+    <tipo>Auto</tipo>
+    <confianza>50.65</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:23:09</fecha>
+    <tipo>Moto</tipo>
+    <confianza>50.52</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:23:09</fecha>
+    <tipo>Auto</tipo>
+    <confianza>50.30</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:23:10</fecha>
+    <tipo>Moto</tipo>
+    <confianza>71.22</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:23:10</fecha>
+    <tipo>Auto</tipo>
+    <confianza>52.89</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:23:10</fecha>
+    <tipo>Moto</tipo>
+    <confianza>51.88</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:23:11</fecha>
+    <tipo>Moto</tipo>
+    <confianza>51.39</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:23:11</fecha>
+    <tipo>Moto</tipo>
+    <confianza>50.76</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:23:12</fecha>
+    <tipo>Moto</tipo>
+    <confianza>72.26</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:23:13</fecha>
+    <tipo>Moto</tipo>
+    <confianza>56.50</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:23:22</fecha>
+    <tipo>Auto</tipo>
+    <confianza>71.29</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:23:27</fecha>
+    <tipo>Moto</tipo>
+    <confianza>56.75</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:23:28</fecha>
+    <tipo>Moto</tipo>
+    <confianza>54.97</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:23:29</fecha>
+    <tipo>Auto</tipo>
+    <confianza>52.50</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:23:37</fecha>
+    <tipo>Auto</tipo>
+    <confianza>68.01</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:23:37</fecha>
+    <tipo>Auto</tipo>
+    <confianza>57.59</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:23:43</fecha>
+    <tipo>Auto</tipo>
+    <confianza>79.08</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:23:44</fecha>
+    <tipo>Moto</tipo>
+    <confianza>51.41</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:23:57</fecha>
+    <tipo>Auto</tipo>
+    <confianza>62.61</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:23:59</fecha>
+    <tipo>Auto</tipo>
+    <confianza>58.90</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:24:04</fecha>
+    <tipo>Auto</tipo>
+    <confianza>63.42</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:24:07</fecha>
+    <tipo>Moto</tipo>
+    <confianza>52.54</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:24:07</fecha>
+    <tipo>Moto</tipo>
+    <confianza>52.79</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:24:17</fecha>
+    <tipo>Moto</tipo>
+    <confianza>51.90</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:24:21</fecha>
+    <tipo>Auto</tipo>
+    <confianza>54.72</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:24:27</fecha>
+    <tipo>Auto</tipo>
+    <confianza>51.56</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:24:27</fecha>
+    <tipo>Auto</tipo>
+    <confianza>62.26</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:24:28</fecha>
+    <tipo>Auto</tipo>
+    <confianza>52.19</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:24:28</fecha>
+    <tipo>Auto</tipo>
+    <confianza>67.22</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:24:35</fecha>
+    <tipo>Auto</tipo>
+    <confianza>62.60</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:24:36</fecha>
+    <tipo>Auto</tipo>
+    <confianza>54.31</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:24:36</fecha>
+    <tipo>Moto</tipo>
+    <confianza>51.76</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:25:06</fecha>
+    <tipo>Auto</tipo>
+    <confianza>81.30</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:25:08</fecha>
+    <tipo>Auto</tipo>
+    <confianza>50.38</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:25:08</fecha>
+    <tipo>Auto</tipo>
+    <confianza>51.61</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:25:08</fecha>
+    <tipo>Moto</tipo>
+    <confianza>53.30</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:25:09</fecha>
+    <tipo>Moto</tipo>
+    <confianza>67.77</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:25:10</fecha>
+    <tipo>Auto</tipo>
+    <confianza>56.83</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:25:14</fecha>
+    <tipo>Auto</tipo>
+    <confianza>53.43</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:25:16</fecha>
+    <tipo>Auto</tipo>
+    <confianza>55.91</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:25:20</fecha>
+    <tipo>Auto</tipo>
+    <confianza>51.54</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:25:24</fecha>
+    <tipo>Auto</tipo>
+    <confianza>50.48</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:25:35</fecha>
+    <tipo>Moto</tipo>
+    <confianza>54.19</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:25:47</fecha>
+    <tipo>Auto</tipo>
+    <confianza>56.78</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:25:52</fecha>
+    <tipo>Auto</tipo>
+    <confianza>52.76</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:25:57</fecha>
+    <tipo>Auto</tipo>
+    <confianza>53.72</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:26:05</fecha>
+    <tipo>Auto</tipo>
+    <confianza>55.95</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:26:09</fecha>
+    <tipo>Auto</tipo>
+    <confianza>52.85</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:26:13</fecha>
+    <tipo>Auto</tipo>
+    <confianza>50.72</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:26:27</fecha>
+    <tipo>Moto</tipo>
+    <confianza>52.86</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:26:34</fecha>
+    <tipo>Moto</tipo>
+    <confianza>50.52</confianza>
+    <color>morado</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:26:42</fecha>
+    <tipo>Auto</tipo>
+    <confianza>60.37</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:26:43</fecha>
+    <tipo>Auto</tipo>
+    <confianza>69.52</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:26:43</fecha>
+    <tipo>Auto</tipo>
+    <confianza>78.01</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:26:43</fecha>
+    <tipo>Auto</tipo>
+    <confianza>65.16</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:26:56</fecha>
+    <tipo>Auto</tipo>
+    <confianza>58.31</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:26:57</fecha>
+    <tipo>Auto</tipo>
+    <confianza>50.16</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:26:58</fecha>
+    <tipo>Auto</tipo>
+    <confianza>50.35</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:27:06</fecha>
+    <tipo>Auto</tipo>
+    <confianza>77.69</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:27:06</fecha>
+    <tipo>Auto</tipo>
+    <confianza>50.24</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:27:07</fecha>
+    <tipo>Bus</tipo>
+    <confianza>87.75</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:27:07</fecha>
+    <tipo>Auto</tipo>
+    <confianza>51.67</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:27:07</fecha>
+    <tipo>Auto</tipo>
+    <confianza>66.57</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:27:50</fecha>
+    <tipo>Moto</tipo>
+    <confianza>62.91</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:27:50</fecha>
+    <tipo>Moto</tipo>
+    <confianza>52.32</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:27:51</fecha>
+    <tipo>Moto</tipo>
+    <confianza>75.54</confianza>
+    <color>gris</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:27:51</fecha>
+    <tipo>Auto</tipo>
+    <confianza>67.56</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:27:51</fecha>
+    <tipo>Auto</tipo>
+    <confianza>56.67</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:27:55</fecha>
+    <tipo>Moto</tipo>
+    <confianza>55.71</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:27:56</fecha>
+    <tipo>Moto</tipo>
+    <confianza>56.43</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:28:00</fecha>
+    <tipo>Camión</tipo>
+    <confianza>54.72</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:28:01</fecha>
+    <tipo>Auto</tipo>
+    <confianza>52.23</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:28:26</fecha>
+    <tipo>Auto</tipo>
+    <confianza>50.76</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:28:27</fecha>
+    <tipo>Auto</tipo>
+    <confianza>52.62</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:28:28</fecha>
+    <tipo>Auto</tipo>
+    <confianza>50.27</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:28:28</fecha>
+    <tipo>Camión</tipo>
+    <confianza>56.21</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:28:28</fecha>
+    <tipo>Camión</tipo>
+    <confianza>62.77</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:28:29</fecha>
+    <tipo>Auto</tipo>
+    <confianza>61.42</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:28:34</fecha>
+    <tipo>Auto</tipo>
+    <confianza>62.14</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:28:40</fecha>
+    <tipo>Auto</tipo>
+    <confianza>52.17</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:28:42</fecha>
+    <tipo>Moto</tipo>
+    <confianza>54.59</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:28:42</fecha>
+    <tipo>Auto</tipo>
+    <confianza>51.23</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:28:50</fecha>
+    <tipo>Moto</tipo>
+    <confianza>50.85</confianza>
+    <color>morado</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:29:00</fecha>
+    <tipo>Auto</tipo>
+    <confianza>78.56</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:29:09</fecha>
+    <tipo>Moto</tipo>
+    <confianza>56.16</confianza>
+    <color>morado</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:29:10</fecha>
+    <tipo>Auto</tipo>
+    <confianza>50.37</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:29:15</fecha>
+    <tipo>Auto</tipo>
+    <confianza>50.78</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:29:16</fecha>
+    <tipo>Auto</tipo>
+    <confianza>77.24</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:29:24</fecha>
+    <tipo>Moto</tipo>
+    <confianza>52.20</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:29:25</fecha>
+    <tipo>Moto</tipo>
+    <confianza>69.38</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:29:28</fecha>
+    <tipo>Auto</tipo>
+    <confianza>53.64</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:29:29</fecha>
+    <tipo>Camión</tipo>
+    <confianza>60.01</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:29:34</fecha>
+    <tipo>Camión</tipo>
+    <confianza>56.65</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:29:34</fecha>
+    <tipo>Moto</tipo>
+    <confianza>55.37</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:29:43</fecha>
+    <tipo>Auto</tipo>
+    <confianza>55.05</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:29:47</fecha>
+    <tipo>Auto</tipo>
+    <confianza>51.45</confianza>
+    <color>morado</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:29:49</fecha>
+    <tipo>Auto</tipo>
+    <confianza>56.84</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:29:56</fecha>
+    <tipo>Auto</tipo>
+    <confianza>70.75</confianza>
+    <color>verde</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:30:04</fecha>
+    <tipo>Camión</tipo>
+    <confianza>50.27</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:30:06</fecha>
+    <tipo>Auto</tipo>
+    <confianza>51.18</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:30:19</fecha>
+    <tipo>Moto</tipo>
+    <confianza>53.88</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:30:20</fecha>
+    <tipo>Moto</tipo>
+    <confianza>58.90</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:30:21</fecha>
+    <tipo>Auto</tipo>
+    <confianza>83.35</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:30:22</fecha>
+    <tipo>Auto</tipo>
+    <confianza>88.87</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:30:30</fecha>
+    <tipo>Auto</tipo>
+    <confianza>57.48</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:30:32</fecha>
+    <tipo>Auto</tipo>
+    <confianza>53.09</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:30:32</fecha>
+    <tipo>Auto</tipo>
+    <confianza>59.64</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:30:37</fecha>
+    <tipo>Auto</tipo>
+    <confianza>53.46</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:30:42</fecha>
+    <tipo>Auto</tipo>
+    <confianza>57.63</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:30:42</fecha>
+    <tipo>Auto</tipo>
+    <confianza>69.80</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:30:56</fecha>
+    <tipo>Auto</tipo>
+    <confianza>53.04</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:31:00</fecha>
+    <tipo>Auto</tipo>
+    <confianza>55.43</confianza>
+    <color>verde</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:31:01</fecha>
+    <tipo>Camión</tipo>
+    <confianza>66.57</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:31:04</fecha>
+    <tipo>Bus</tipo>
+    <confianza>69.60</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:31:10</fecha>
+    <tipo>Moto</tipo>
+    <confianza>57.46</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:31:11</fecha>
+    <tipo>Moto</tipo>
+    <confianza>62.38</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:31:11</fecha>
+    <tipo>Auto</tipo>
+    <confianza>50.78</confianza>
+    <color>verde</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:31:12</fecha>
+    <tipo>Moto</tipo>
+    <confianza>55.85</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:31:18</fecha>
+    <tipo>Auto</tipo>
+    <confianza>87.11</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:31:23</fecha>
+    <tipo>Auto</tipo>
+    <confianza>50.66</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:31:35</fecha>
+    <tipo>Auto</tipo>
+    <confianza>69.46</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:31:46</fecha>
+    <tipo>Auto</tipo>
+    <confianza>50.49</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:31:49</fecha>
+    <tipo>Auto</tipo>
+    <confianza>56.80</confianza>
+    <color>verde</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:31:55</fecha>
+    <tipo>Auto</tipo>
+    <confianza>75.09</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:32:00</fecha>
+    <tipo>Auto</tipo>
+    <confianza>53.60</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:32:11</fecha>
+    <tipo>Auto</tipo>
+    <confianza>65.32</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:32:15</fecha>
+    <tipo>Auto</tipo>
+    <confianza>75.80</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:32:17</fecha>
+    <tipo>Auto</tipo>
+    <confianza>55.46</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:32:17</fecha>
+    <tipo>Auto</tipo>
+    <confianza>76.81</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:32:19</fecha>
+    <tipo>Auto</tipo>
+    <confianza>64.03</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:32:19</fecha>
+    <tipo>Auto</tipo>
+    <confianza>51.93</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:32:31</fecha>
+    <tipo>Auto</tipo>
+    <confianza>75.91</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:33:21</fecha>
+    <tipo>Auto</tipo>
+    <confianza>56.07</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:33:23</fecha>
+    <tipo>Auto</tipo>
+    <confianza>52.62</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:33:31</fecha>
+    <tipo>Auto</tipo>
+    <confianza>59.38</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:33:32</fecha>
+    <tipo>Bus</tipo>
+    <confianza>58.41</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:33:32</fecha>
+    <tipo>Auto</tipo>
+    <confianza>53.00</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:33:36</fecha>
+    <tipo>Auto</tipo>
+    <confianza>61.53</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:33:41</fecha>
+    <tipo>Auto</tipo>
+    <confianza>53.33</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:33:49</fecha>
+    <tipo>Auto</tipo>
+    <confianza>82.70</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:33:49</fecha>
+    <tipo>Auto</tipo>
+    <confianza>87.74</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:33:55</fecha>
+    <tipo>Auto</tipo>
+    <confianza>57.46</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:33:55</fecha>
+    <tipo>Auto</tipo>
+    <confianza>52.33</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:33:58</fecha>
+    <tipo>Auto</tipo>
+    <confianza>77.47</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:33:58</fecha>
+    <tipo>Auto</tipo>
+    <confianza>85.71</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:33:58</fecha>
+    <tipo>Auto</tipo>
+    <confianza>84.08</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:33:58</fecha>
+    <tipo>Moto</tipo>
+    <confianza>63.13</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:34:03</fecha>
+    <tipo>Moto</tipo>
+    <confianza>73.75</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:34:05</fecha>
+    <tipo>Auto</tipo>
+    <confianza>66.47</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:34:09</fecha>
+    <tipo>Auto</tipo>
+    <confianza>74.94</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:34:13</fecha>
+    <tipo>Auto</tipo>
+    <confianza>59.59</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:34:16</fecha>
+    <tipo>Moto</tipo>
+    <confianza>65.12</confianza>
+    <color>gris</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:34:17</fecha>
+    <tipo>Auto</tipo>
+    <confianza>58.86</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:34:26</fecha>
+    <tipo>Auto</tipo>
+    <confianza>50.92</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:34:31</fecha>
+    <tipo>Auto</tipo>
+    <confianza>51.63</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:34:45</fecha>
+    <tipo>Auto</tipo>
+    <confianza>53.60</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:34:52</fecha>
+    <tipo>Auto</tipo>
+    <confianza>74.04</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:34:52</fecha>
+    <tipo>Auto</tipo>
+    <confianza>83.76</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:34:52</fecha>
+    <tipo>Auto</tipo>
+    <confianza>77.19</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:34:52</fecha>
+    <tipo>Auto</tipo>
+    <confianza>52.36</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:34:53</fecha>
+    <tipo>Auto</tipo>
+    <confianza>70.09</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:34:54</fecha>
+    <tipo>Auto</tipo>
+    <confianza>78.65</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:35:02</fecha>
+    <tipo>Auto</tipo>
+    <confianza>51.77</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:35:03</fecha>
+    <tipo>Auto</tipo>
+    <confianza>51.62</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:35:04</fecha>
+    <tipo>Auto</tipo>
+    <confianza>54.17</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:35:08</fecha>
+    <tipo>Moto</tipo>
+    <confianza>64.42</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:35:12</fecha>
+    <tipo>Auto</tipo>
+    <confianza>51.02</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:35:12</fecha>
+    <tipo>Auto</tipo>
+    <confianza>52.33</confianza>
+    <color>verde</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:35:14</fecha>
+    <tipo>Auto</tipo>
+    <confianza>53.46</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:35:31</fecha>
+    <tipo>Auto</tipo>
+    <confianza>56.93</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:35:40</fecha>
+    <tipo>Auto</tipo>
+    <confianza>57.40</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:35:43</fecha>
+    <tipo>Auto</tipo>
+    <confianza>57.77</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:35:44</fecha>
+    <tipo>Moto</tipo>
+    <confianza>52.29</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:35:44</fecha>
+    <tipo>Moto</tipo>
+    <confianza>61.93</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:35:44</fecha>
+    <tipo>Moto</tipo>
+    <confianza>53.17</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:35:45</fecha>
+    <tipo>Moto</tipo>
+    <confianza>62.57</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:35:45</fecha>
+    <tipo>Auto</tipo>
+    <confianza>52.94</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:35:46</fecha>
+    <tipo>Auto</tipo>
+    <confianza>59.03</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:35:54</fecha>
+    <tipo>Auto</tipo>
+    <confianza>60.97</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:35:55</fecha>
+    <tipo>Auto</tipo>
+    <confianza>50.72</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:36:02</fecha>
+    <tipo>Auto</tipo>
+    <confianza>52.67</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:36:03</fecha>
+    <tipo>Auto</tipo>
+    <confianza>55.42</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:36:03</fecha>
+    <tipo>Auto</tipo>
+    <confianza>52.61</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:36:16</fecha>
+    <tipo>Auto</tipo>
+    <confianza>79.84</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:36:34</fecha>
+    <tipo>Auto</tipo>
+    <confianza>53.08</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:36:38</fecha>
+    <tipo>Auto</tipo>
+    <confianza>70.89</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:36:40</fecha>
+    <tipo>Moto</tipo>
+    <confianza>53.81</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:36:40</fecha>
+    <tipo>Auto</tipo>
+    <confianza>52.04</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:36:52</fecha>
+    <tipo>Auto</tipo>
+    <confianza>57.24</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:36:59</fecha>
+    <tipo>Auto</tipo>
+    <confianza>79.22</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:37:03</fecha>
+    <tipo>Auto</tipo>
+    <confianza>51.82</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:37:12</fecha>
+    <tipo>Auto</tipo>
+    <confianza>52.43</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:37:15</fecha>
+    <tipo>Moto</tipo>
+    <confianza>52.27</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:37:20</fecha>
+    <tipo>Moto</tipo>
+    <confianza>60.18</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:37:25</fecha>
+    <tipo>Auto</tipo>
+    <confianza>56.49</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:37:35</fecha>
+    <tipo>Auto</tipo>
+    <confianza>52.98</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:37:39</fecha>
+    <tipo>Camión</tipo>
+    <confianza>59.33</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:37:39</fecha>
+    <tipo>Auto</tipo>
+    <confianza>76.12</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:37:40</fecha>
+    <tipo>Moto</tipo>
+    <confianza>52.10</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:37:40</fecha>
+    <tipo>Moto</tipo>
+    <confianza>50.76</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:37:40</fecha>
+    <tipo>Moto</tipo>
+    <confianza>51.07</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:37:41</fecha>
+    <tipo>Moto</tipo>
+    <confianza>55.11</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:37:45</fecha>
+    <tipo>Auto</tipo>
+    <confianza>57.02</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:37:58</fecha>
+    <tipo>Auto</tipo>
+    <confianza>60.58</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:37:59</fecha>
+    <tipo>Auto</tipo>
+    <confianza>50.66</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:38:04</fecha>
+    <tipo>Auto</tipo>
+    <confianza>50.42</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:38:08</fecha>
+    <tipo>Auto</tipo>
+    <confianza>51.23</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:38:38</fecha>
+    <tipo>Auto</tipo>
+    <confianza>50.67</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:38:41</fecha>
+    <tipo>Auto</tipo>
+    <confianza>57.99</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:38:42</fecha>
+    <tipo>Auto</tipo>
+    <confianza>81.62</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:38:42</fecha>
+    <tipo>Auto</tipo>
+    <confianza>93.73</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:38:43</fecha>
+    <tipo>Auto</tipo>
+    <confianza>74.42</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:38:44</fecha>
+    <tipo>Auto</tipo>
+    <confianza>52.74</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:38:46</fecha>
+    <tipo>Auto</tipo>
+    <confianza>53.19</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:38:49</fecha>
+    <tipo>Moto</tipo>
+    <confianza>63.34</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:38:52</fecha>
+    <tipo>Auto</tipo>
+    <confianza>51.05</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:38:58</fecha>
+    <tipo>Auto</tipo>
+    <confianza>53.82</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:38:58</fecha>
+    <tipo>Auto</tipo>
+    <confianza>52.27</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:39:18</fecha>
+    <tipo>Auto</tipo>
+    <confianza>51.16</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:39:28</fecha>
+    <tipo>Auto</tipo>
+    <confianza>57.02</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:39:28</fecha>
+    <tipo>Auto</tipo>
+    <confianza>53.03</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:39:34</fecha>
+    <tipo>Auto</tipo>
+    <confianza>84.74</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:39:35</fecha>
+    <tipo>Auto</tipo>
+    <confianza>53.03</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:39:36</fecha>
+    <tipo>Auto</tipo>
+    <confianza>56.80</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:39:39</fecha>
+    <tipo>Auto</tipo>
+    <confianza>54.03</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:39:40</fecha>
+    <tipo>Auto</tipo>
+    <confianza>51.86</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:40:04</fecha>
+    <tipo>Auto</tipo>
+    <confianza>51.32</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:40:16</fecha>
+    <tipo>Auto</tipo>
+    <confianza>68.25</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:40:19</fecha>
+    <tipo>Moto</tipo>
+    <confianza>51.21</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:40:19</fecha>
+    <tipo>Auto</tipo>
+    <confianza>51.41</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:40:20</fecha>
+    <tipo>Moto</tipo>
+    <confianza>50.90</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:40:20</fecha>
+    <tipo>Moto</tipo>
+    <confianza>58.41</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:40:21</fecha>
+    <tipo>Auto</tipo>
+    <confianza>55.95</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:40:24</fecha>
+    <tipo>Auto</tipo>
+    <confianza>52.50</confianza>
+    <color>amarillo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:40:30</fecha>
+    <tipo>Auto</tipo>
+    <confianza>51.42</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:40:38</fecha>
+    <tipo>Auto</tipo>
+    <confianza>51.73</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:40:43</fecha>
+    <tipo>Auto</tipo>
+    <confianza>50.05</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:41:14</fecha>
+    <tipo>Auto</tipo>
+    <confianza>88.01</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:41:18</fecha>
+    <tipo>Auto</tipo>
+    <confianza>50.13</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:41:19</fecha>
+    <tipo>Auto</tipo>
+    <confianza>69.97</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:41:24</fecha>
+    <tipo>Auto</tipo>
+    <confianza>50.36</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:41:29</fecha>
+    <tipo>Auto</tipo>
+    <confianza>57.56</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:41:29</fecha>
+    <tipo>Moto</tipo>
+    <confianza>54.99</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:41:33</fecha>
+    <tipo>Auto</tipo>
+    <confianza>52.04</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:41:33</fecha>
+    <tipo>Auto</tipo>
+    <confianza>54.56</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:41:57</fecha>
+    <tipo>Auto</tipo>
+    <confianza>55.29</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:42:04</fecha>
+    <tipo>Auto</tipo>
+    <confianza>50.90</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:42:14</fecha>
+    <tipo>Auto</tipo>
+    <confianza>52.01</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:42:18</fecha>
+    <tipo>Camión</tipo>
+    <confianza>67.44</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:42:18</fecha>
+    <tipo>Moto</tipo>
+    <confianza>65.49</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:42:18</fecha>
+    <tipo>Camión</tipo>
+    <confianza>51.73</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:42:19</fecha>
+    <tipo>Auto</tipo>
+    <confianza>80.62</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:42:37</fecha>
+    <tipo>Auto</tipo>
+    <confianza>50.68</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:42:45</fecha>
+    <tipo>Auto</tipo>
+    <confianza>52.50</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:42:50</fecha>
+    <tipo>Auto</tipo>
+    <confianza>62.20</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:43:09</fecha>
+    <tipo>Auto</tipo>
+    <confianza>52.25</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:43:10</fecha>
+    <tipo>Auto</tipo>
+    <confianza>57.29</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:43:11</fecha>
+    <tipo>Moto</tipo>
+    <confianza>50.69</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:43:13</fecha>
+    <tipo>Auto</tipo>
+    <confianza>51.01</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:43:15</fecha>
+    <tipo>Auto</tipo>
+    <confianza>56.82</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:43:18</fecha>
+    <tipo>Auto</tipo>
+    <confianza>51.67</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:43:19</fecha>
+    <tipo>Auto</tipo>
+    <confianza>58.59</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:43:26</fecha>
+    <tipo>Auto</tipo>
+    <confianza>60.38</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:43:26</fecha>
+    <tipo>Auto</tipo>
+    <confianza>58.27</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:43:26</fecha>
+    <tipo>Moto</tipo>
+    <confianza>52.30</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:43:38</fecha>
+    <tipo>Moto</tipo>
+    <confianza>54.36</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:43:39</fecha>
+    <tipo>Auto</tipo>
+    <confianza>58.56</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:43:49</fecha>
+    <tipo>Auto</tipo>
+    <confianza>57.02</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:43:53</fecha>
+    <tipo>Auto</tipo>
+    <confianza>51.99</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:43:58</fecha>
+    <tipo>Auto</tipo>
+    <confianza>50.16</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:44:04</fecha>
+    <tipo>Auto</tipo>
+    <confianza>51.42</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:44:09</fecha>
+    <tipo>Auto</tipo>
+    <confianza>53.34</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:44:13</fecha>
+    <tipo>Auto</tipo>
+    <confianza>60.79</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:44:18</fecha>
+    <tipo>Auto</tipo>
+    <confianza>50.10</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:44:19</fecha>
+    <tipo>Auto</tipo>
+    <confianza>61.35</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:44:24</fecha>
+    <tipo>Moto</tipo>
+    <confianza>53.75</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:44:26</fecha>
+    <tipo>Auto</tipo>
+    <confianza>50.18</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:44:41</fecha>
+    <tipo>Auto</tipo>
+    <confianza>51.24</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:44:52</fecha>
+    <tipo>Auto</tipo>
+    <confianza>52.47</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:44:56</fecha>
+    <tipo>Auto</tipo>
+    <confianza>56.29</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:44:57</fecha>
+    <tipo>Auto</tipo>
+    <confianza>50.88</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:45:11</fecha>
+    <tipo>Auto</tipo>
+    <confianza>50.74</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:45:12</fecha>
+    <tipo>Auto</tipo>
+    <confianza>58.30</confianza>
+    <color>verde</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:45:16</fecha>
+    <tipo>Auto</tipo>
+    <confianza>60.64</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:45:26</fecha>
+    <tipo>Auto</tipo>
+    <confianza>68.52</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:45:27</fecha>
+    <tipo>Auto</tipo>
+    <confianza>54.25</confianza>
+    <color>verde</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:45:55</fecha>
+    <tipo>Auto</tipo>
+    <confianza>50.28</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:46:04</fecha>
+    <tipo>Auto</tipo>
+    <confianza>69.30</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:46:06</fecha>
+    <tipo>Auto</tipo>
+    <confianza>51.20</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:46:07</fecha>
+    <tipo>Auto</tipo>
+    <confianza>55.23</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:46:19</fecha>
+    <tipo>Auto</tipo>
+    <confianza>52.75</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:46:25</fecha>
+    <tipo>Auto</tipo>
+    <confianza>52.39</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:46:52</fecha>
+    <tipo>Moto</tipo>
+    <confianza>59.02</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:46:52</fecha>
+    <tipo>Auto</tipo>
+    <confianza>50.09</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:46:57</fecha>
+    <tipo>Auto</tipo>
+    <confianza>51.47</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:47:06</fecha>
+    <tipo>Auto</tipo>
+    <confianza>51.64</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:47:06</fecha>
+    <tipo>Auto</tipo>
+    <confianza>55.22</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:47:12</fecha>
+    <tipo>Auto</tipo>
+    <confianza>64.98</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:47:21</fecha>
+    <tipo>Auto</tipo>
+    <confianza>50.57</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:47:52</fecha>
+    <tipo>Auto</tipo>
+    <confianza>51.20</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:48:00</fecha>
+    <tipo>Auto</tipo>
+    <confianza>73.49</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:48:01</fecha>
+    <tipo>Auto</tipo>
+    <confianza>53.58</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:48:02</fecha>
+    <tipo>Auto</tipo>
+    <confianza>68.62</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:48:23</fecha>
+    <tipo>Auto</tipo>
+    <confianza>50.99</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:48:25</fecha>
+    <tipo>Auto</tipo>
+    <confianza>50.20</confianza>
+    <color>verde</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:48:44</fecha>
+    <tipo>Auto</tipo>
+    <confianza>59.18</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:48:44</fecha>
+    <tipo>Auto</tipo>
+    <confianza>56.83</confianza>
+    <color>verde</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:48:56</fecha>
+    <tipo>Auto</tipo>
+    <confianza>54.84</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:48:56</fecha>
+    <tipo>Auto</tipo>
+    <confianza>61.95</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:48:58</fecha>
+    <tipo>Auto</tipo>
+    <confianza>50.17</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:48:59</fecha>
+    <tipo>Camión</tipo>
+    <confianza>50.46</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:48:59</fecha>
+    <tipo>Auto</tipo>
+    <confianza>51.46</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:49:02</fecha>
+    <tipo>Auto</tipo>
+    <confianza>51.46</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:49:07</fecha>
+    <tipo>Auto</tipo>
+    <confianza>50.83</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:49:09</fecha>
+    <tipo>Auto</tipo>
+    <confianza>50.74</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:49:10</fecha>
+    <tipo>Auto</tipo>
+    <confianza>51.72</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:49:12</fecha>
+    <tipo>Auto</tipo>
+    <confianza>50.92</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:49:22</fecha>
+    <tipo>Auto</tipo>
+    <confianza>51.73</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:49:27</fecha>
+    <tipo>Moto</tipo>
+    <confianza>51.29</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:49:27</fecha>
+    <tipo>Moto</tipo>
+    <confianza>77.26</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:49:27</fecha>
+    <tipo>Moto</tipo>
+    <confianza>74.72</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:49:46</fecha>
+    <tipo>Auto</tipo>
+    <confianza>55.71</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:49:54</fecha>
+    <tipo>Auto</tipo>
+    <confianza>57.21</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:49:55</fecha>
+    <tipo>Auto</tipo>
+    <confianza>58.50</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:50:12</fecha>
+    <tipo>Auto</tipo>
+    <confianza>55.36</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:50:13</fecha>
+    <tipo>Auto</tipo>
+    <confianza>51.76</confianza>
+    <color>gris</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:50:13</fecha>
+    <tipo>Auto</tipo>
+    <confianza>59.76</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:50:13</fecha>
+    <tipo>Camión</tipo>
+    <confianza>50.47</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:50:27</fecha>
+    <tipo>Auto</tipo>
+    <confianza>53.44</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:50:28</fecha>
+    <tipo>Auto</tipo>
+    <confianza>50.01</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:50:36</fecha>
+    <tipo>Auto</tipo>
+    <confianza>53.37</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:50:47</fecha>
+    <tipo>Auto</tipo>
+    <confianza>61.17</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:50:59</fecha>
+    <tipo>Auto</tipo>
+    <confianza>51.99</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:51:04</fecha>
+    <tipo>Auto</tipo>
+    <confianza>52.40</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:51:10</fecha>
+    <tipo>Auto</tipo>
+    <confianza>76.15</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:51:10</fecha>
+    <tipo>Camión</tipo>
+    <confianza>50.95</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:51:12</fecha>
+    <tipo>Auto</tipo>
+    <confianza>50.99</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:51:13</fecha>
+    <tipo>Auto</tipo>
+    <confianza>59.83</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:51:20</fecha>
+    <tipo>Auto</tipo>
+    <confianza>69.80</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:51:21</fecha>
+    <tipo>Camión</tipo>
+    <confianza>55.97</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:51:22</fecha>
+    <tipo>Auto</tipo>
+    <confianza>75.35</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:51:29</fecha>
+    <tipo>Auto</tipo>
+    <confianza>52.47</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:51:36</fecha>
+    <tipo>Camión</tipo>
+    <confianza>51.73</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:51:53</fecha>
+    <tipo>Moto</tipo>
+    <confianza>68.98</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:51:56</fecha>
+    <tipo>Moto</tipo>
+    <confianza>63.55</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:51:56</fecha>
+    <tipo>Moto</tipo>
+    <confianza>56.62</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:51:57</fecha>
+    <tipo>Moto</tipo>
+    <confianza>60.39</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:51:57</fecha>
+    <tipo>Moto</tipo>
+    <confianza>57.40</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:51:59</fecha>
+    <tipo>Auto</tipo>
+    <confianza>53.85</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:52:00</fecha>
+    <tipo>Camión</tipo>
+    <confianza>50.51</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:52:01</fecha>
+    <tipo>Auto</tipo>
+    <confianza>53.73</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:52:01</fecha>
+    <tipo>Auto</tipo>
+    <confianza>77.57</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:52:01</fecha>
+    <tipo>Bus</tipo>
+    <confianza>58.17</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:52:01</fecha>
+    <tipo>Bus</tipo>
+    <confianza>77.97</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:52:05</fecha>
+    <tipo>Bus</tipo>
+    <confianza>50.36</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:52:05</fecha>
+    <tipo>Bus</tipo>
+    <confianza>73.29</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:52:05</fecha>
+    <tipo>Auto</tipo>
+    <confianza>65.04</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:52:06</fecha>
+    <tipo>Moto</tipo>
+    <confianza>56.68</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:52:48</fecha>
+    <tipo>Auto</tipo>
+    <confianza>50.14</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:52:54</fecha>
+    <tipo>Auto</tipo>
+    <confianza>74.43</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:52:55</fecha>
+    <tipo>Auto</tipo>
+    <confianza>72.65</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:52:55</fecha>
+    <tipo>Auto</tipo>
+    <confianza>81.31</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:52:56</fecha>
+    <tipo>Auto</tipo>
+    <confianza>57.97</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:53:02</fecha>
+    <tipo>Moto</tipo>
+    <confianza>52.85</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:53:02</fecha>
+    <tipo>Auto</tipo>
+    <confianza>50.11</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:53:04</fecha>
+    <tipo>Camión</tipo>
+    <confianza>51.43</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:53:07</fecha>
+    <tipo>Moto</tipo>
+    <confianza>65.27</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:53:08</fecha>
+    <tipo>Moto</tipo>
+    <confianza>50.94</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:53:12</fecha>
+    <tipo>Moto</tipo>
+    <confianza>52.35</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:53:12</fecha>
+    <tipo>Moto</tipo>
+    <confianza>68.73</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:53:12</fecha>
+    <tipo>Moto</tipo>
+    <confianza>66.28</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:53:12</fecha>
+    <tipo>Moto</tipo>
+    <confianza>59.04</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:53:13</fecha>
+    <tipo>Auto</tipo>
+    <confianza>54.00</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:53:17</fecha>
+    <tipo>Auto</tipo>
+    <confianza>53.93</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:53:27</fecha>
+    <tipo>Auto</tipo>
+    <confianza>53.38</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:53:27</fecha>
+    <tipo>Camión</tipo>
+    <confianza>52.29</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:53:28</fecha>
+    <tipo>Camión</tipo>
+    <confianza>64.83</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:53:28</fecha>
+    <tipo>Auto</tipo>
+    <confianza>60.59</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:53:43</fecha>
+    <tipo>Auto</tipo>
+    <confianza>57.08</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:53:43</fecha>
+    <tipo>Auto</tipo>
+    <confianza>75.59</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:53:44</fecha>
+    <tipo>Camión</tipo>
+    <confianza>51.50</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:53:58</fecha>
+    <tipo>Camión</tipo>
+    <confianza>53.02</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:54:03</fecha>
+    <tipo>Auto</tipo>
+    <confianza>52.00</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:54:04</fecha>
+    <tipo>Camión</tipo>
+    <confianza>54.30</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:54:13</fecha>
+    <tipo>Auto</tipo>
+    <confianza>75.17</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:54:22</fecha>
+    <tipo>Camión</tipo>
+    <confianza>52.09</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:54:33</fecha>
+    <tipo>Camión</tipo>
+    <confianza>52.94</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:54:41</fecha>
+    <tipo>Auto</tipo>
+    <confianza>54.57</confianza>
+    <color>morado</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:54:52</fecha>
+    <tipo>Auto</tipo>
+    <confianza>54.64</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:55:22</fecha>
+    <tipo>Bus</tipo>
+    <confianza>70.38</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:55:22</fecha>
+    <tipo>Bus</tipo>
+    <confianza>51.40</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:55:32</fecha>
+    <tipo>Moto</tipo>
+    <confianza>62.72</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:55:33</fecha>
+    <tipo>Moto</tipo>
+    <confianza>73.25</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:55:33</fecha>
+    <tipo>Moto</tipo>
+    <confianza>50.66</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:55:36</fecha>
+    <tipo>Auto</tipo>
+    <confianza>71.47</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:55:37</fecha>
+    <tipo>Auto</tipo>
+    <confianza>56.88</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:55:42</fecha>
+    <tipo>Auto</tipo>
+    <confianza>63.17</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:55:50</fecha>
+    <tipo>Auto</tipo>
+    <confianza>81.53</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:56:00</fecha>
+    <tipo>Auto</tipo>
+    <confianza>51.74</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:56:21</fecha>
+    <tipo>Auto</tipo>
+    <confianza>52.11</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:56:30</fecha>
+    <tipo>Auto</tipo>
+    <confianza>76.46</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:56:31</fecha>
+    <tipo>Bus</tipo>
+    <confianza>56.18</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:56:31</fecha>
+    <tipo>Auto</tipo>
+    <confianza>67.38</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:56:31</fecha>
+    <tipo>Auto</tipo>
+    <confianza>70.05</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:56:31</fecha>
+    <tipo>Auto</tipo>
+    <confianza>59.09</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:56:31</fecha>
+    <tipo>Auto</tipo>
+    <confianza>63.72</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:56:37</fecha>
+    <tipo>Auto</tipo>
+    <confianza>58.66</confianza>
+    <color>verde</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:56:40</fecha>
+    <tipo>Auto</tipo>
+    <confianza>57.00</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:56:47</fecha>
+    <tipo>Auto</tipo>
+    <confianza>50.81</confianza>
+    <color>verde</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:56:48</fecha>
+    <tipo>Auto</tipo>
+    <confianza>51.45</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:57:11</fecha>
+    <tipo>Auto</tipo>
+    <confianza>51.43</confianza>
+    <color>verde</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:57:20</fecha>
+    <tipo>Auto</tipo>
+    <confianza>77.35</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:57:20</fecha>
+    <tipo>Auto</tipo>
+    <confianza>88.93</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:57:25</fecha>
+    <tipo>Auto</tipo>
+    <confianza>56.24</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:57:26</fecha>
+    <tipo>Auto</tipo>
+    <confianza>50.74</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:57:31</fecha>
+    <tipo>Moto</tipo>
+    <confianza>51.41</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:57:32</fecha>
+    <tipo>Auto</tipo>
+    <confianza>52.33</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:57:33</fecha>
+    <tipo>Auto</tipo>
+    <confianza>69.58</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:57:45</fecha>
+    <tipo>Moto</tipo>
+    <confianza>58.16</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:57:46</fecha>
+    <tipo>Moto</tipo>
+    <confianza>60.98</confianza>
+    <color>amarillo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:58:01</fecha>
+    <tipo>Auto</tipo>
+    <confianza>50.79</confianza>
+    <color>verde</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:58:10</fecha>
+    <tipo>Moto</tipo>
+    <confianza>50.82</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:58:14</fecha>
+    <tipo>Auto</tipo>
+    <confianza>73.53</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:58:18</fecha>
+    <tipo>Auto</tipo>
+    <confianza>52.11</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:58:21</fecha>
+    <tipo>Moto</tipo>
+    <confianza>60.16</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:58:22</fecha>
+    <tipo>Auto</tipo>
+    <confianza>74.80</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:58:28</fecha>
+    <tipo>Auto</tipo>
+    <confianza>80.23</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:58:29</fecha>
+    <tipo>Auto</tipo>
+    <confianza>57.20</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:58:34</fecha>
+    <tipo>Auto</tipo>
+    <confianza>50.43</confianza>
+    <color>verde</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:58:43</fecha>
+    <tipo>Moto</tipo>
+    <confianza>51.85</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:58:43</fecha>
+    <tipo>Moto</tipo>
+    <confianza>65.12</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:58:43</fecha>
+    <tipo>Moto</tipo>
+    <confianza>52.71</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:58:46</fecha>
+    <tipo>Moto</tipo>
+    <confianza>50.02</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:58:46</fecha>
+    <tipo>Moto</tipo>
+    <confianza>56.73</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:58:57</fecha>
+    <tipo>Auto</tipo>
+    <confianza>61.49</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:59:12</fecha>
+    <tipo>Moto</tipo>
+    <confianza>53.22</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:59:13</fecha>
+    <tipo>Moto</tipo>
+    <confianza>60.61</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:59:15</fecha>
+    <tipo>Auto</tipo>
+    <confianza>80.22</confianza>
+    <color>azul</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:59:15</fecha>
+    <tipo>Auto</tipo>
+    <confianza>74.66</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:59:16</fecha>
+    <tipo>Auto</tipo>
+    <confianza>51.03</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:59:20</fecha>
+    <tipo>Camión</tipo>
+    <confianza>55.97</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:59:20</fecha>
+    <tipo>Auto</tipo>
+    <confianza>60.45</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:59:25</fecha>
+    <tipo>Auto</tipo>
+    <confianza>57.45</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 10:59:30</fecha>
+    <tipo>Auto</tipo>
+    <confianza>70.51</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
 </detecciones>

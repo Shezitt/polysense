@@ -1,0 +1,218 @@
+\documentclass[12pt, a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage{geometry}
+\usepackage{graphicx}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{tikz}
+\usepackage{hyperref}
+\usetikzlibrary{shapes, arrows, positioning, shadows}
+
+\geometry{top=2.5cm, bottom=2.5cm, left=2.5cm, right=2.5cm}
+
+% Configuración de código
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
+
+\lstset{style=mystyle}
+
+\title{\textbf{Manual Técnico Detallado \\ Sistema Polysense}}
+\author{Documentación Generada Automáticamente}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+\newpage
+
+\section{Introducción}
+El sistema \textbf{Polysense} es una solución híbrida de monitoreo de tráfico vehicular y gestión de cámaras en tiempo real. Combina la robustez de un backend web en \textbf{Laravel (PHP)} con la potencia de procesamiento de imágenes e inteligencia artificial de \textbf{Python} utilizando \textbf{YOLOv8}.
+
+El objetivo principal es detectar, clasificar y contar vehículos de múltiples fuentes de video (Cámaras IP, Streams Web) y presentar estadísticas en tiempo real a través de una interfaz web moderna y responsiva.
+
+\section{Arquitectura del Sistema}
+La arquitectura sigue un patrón de \textbf{Microservicios Simplificado} o híbrido, donde el servicio de detección corre independientemente y se comunica con el frontend y backend principal vía HTTP y WebSockets.
+
+\subsection{Diagrama de Arquitectura Global}
+\begin{center}
+\begin{tikzpicture}[node distance=2cm, auto]
+    % Estilos
+    \tikzstyle{block} = [rectangle, draw, fill=blue!20, text width=5em, text centered, rounded corners, minimum height=4em, drop shadow]
+    \tikzstyle{cloud} = [draw, ellipse, fill=red!20, node distance=3cm, minimum height=2em]
+    \tikzstyle{line} = [draw, -latex', thick]
+    \tikzstyle{db} = [cylinder, draw, shape border rotate=90, aspect=0.25, fill=yellow!20, minimum height=3em]
+
+    % Nodos
+    \node [block] (browser) {Navegador Web (Cliente)};
+    \node [block, right=of browser, node distance=4cm] (laravel) {Backend Laravel (:8000)};
+    \node [block, below=of laravel, node distance=3cm] (python) {Detector Python (:8080)};
+    \node [db, right=of laravel] (mysql) {MySQL DB};
+    \node [db, right=of python] (xml) {XML DB};
+    \node [cloud, left=of python, node distance=4cm] (cam1) {Cámara 1 (Oracle)};
+    \node [cloud, below=of cam1] (cam2) {Cámara 2 (Skyline)};
+
+    % Conexiones
+    \path [line] (browser) -- node {HTTP Requests} (laravel);
+    \path [line] (browser) |- node [near start] {WebSocket (Video)} (python);
+    \path [line] (laravel) -- node {Proxy API (Stats)} (python);
+    \path [line] (laravel) -- (mysql);
+    \path [line] (python) -- (xml);
+    \path [line] (cam1) -- node {WebSocket/Stream} (python);
+    \path [line] (cam2) -- node {UDP/HTTP} (python);
+
+\end{tikzpicture}
+\end{center}
+
+\subsection{Flujo de Datos}
+\begin{enumerate}
+    \item \textbf{Ingesta de Video}: El script \texttt{vehiculo\_detector.py} consume streams de video de múltiples fuentes (configuradas en \texttt{CAMERAS\_CONFIG}).
+    \item \textbf{Procesamiento IA}: Cada frame es procesado por \textbf{YOLOv8} para detectar clases definidades (autos, buses, camiones).
+    \item \textbf{Persistencia}: Las detecciones se guardan en un archivo XML (\texttt{vehiculos\_db.xml}) para persistencia ligera y rápida sin bloqueo de base de datos relacional.
+    \item \textbf{Transmisión}: Los frames procesados se envían al navegador vía WebSocket en tiempo real.
+    \item \textbf{Gestión Web}: Laravel gestiona la autenticación, roles de usuario, y sirve las vistas que consumen tanto los datos de Laravel (MySQL) como los del detector (API Python).
+\end{enumerate}
+
+\section{Patrones de Diseño Identificados}
+
+\subsection{En el Backend (Laravel)}
+\begin{itemize}
+    \item \textbf{MVC (Model-View-Controller)}: Estructura fundamental. La lógica de negocio está en Controladores (\texttt{app/Http/Controllers}), la presentación en Vistas (\texttt{resources/views}), y los datos en Modelos (\texttt{app/Models}).
+    \item \textbf{Facade Pattern}: Utilizado ampliamente por Laravel (\texttt{Auth::check()}, \texttt{Route::get()}) y personalizado en el sistema (posiblemente \texttt{ReportFacade}).
+    \item \textbf{Service Layer}: Se identificaron servicios como \texttt{ReportService} y \texttt{NotificationService} para desacoplar lógica compleja de los controladores.
+    \item \textbf{Dependency Injection}: Inyección de dependencias en constructores y métodos de controladores (ej. \texttt{Request \$request}).
+\end{itemize}
+
+\subsection{En el Detector (Python)}
+\begin{itemize}
+    \item \textbf{Observer / Pub-Sub}: Implementado mediante WebSockets. Los clientes se suscriben a un feed de video y el servidor publica los frames procesados a todos los suscriptores activos.
+    \item \textbf{Worker Thread Pattern}: Uso de hilos (\texttt{threading.Thread}) para procesar cada cámara de forma concurrente sin bloquear el hilo principal de Flask.
+    \item \textbf{Singleton (Implícito)}: El modelo YOLO se carga una sola vez y es compartido por los threads.
+\end{itemize}
+
+\section{Análisis Detallado de Controladores}
+
+\subsection{AuthController.php}
+Gestiona el ciclo de vida de la autenticación de usuarios.
+\begin{itemize}
+    \item \textbf{Métodos Clave}:
+    \begin{itemize}
+        \item \texttt{login(Request \$request)}: Valida credenciales e inicia sesión con \texttt{Auth::attempt}. 
+        \item \texttt{register(Request \$request)}: Crea nuevos usuarios con rol por defecto 'user'.
+        \item \texttt{logout()}: Invalida la sesión y regenera el token CSRF por seguridad.
+    \end{itemize}
+\end{itemize}
+
+\subsection{VehicleMonitorController.php}
+Actúa como un \textbf{Proxy} o \textbf{Gateway} hacia el microservicio de Python. Evita que el cliente JS tenga que conocer la lógica interna de la API de Python para ciertos datos estadísticos.
+\begin{itemize}
+    \item \textbf{Variable}: \texttt{\$detectorUrl = 'http://localhost:8080'} define la dirección del servicio Python.
+    \item \textbf{Función getStats(\$cameraId)}:
+    \begin{enumerate}
+        \item Recibe el ID de la cámara.
+        \item Realiza una petición HTTP interna (\texttt{Http::get}) a la API de Python.
+        \item Retorna JSON estandarizado al frontend, manejando errores de conexión (try-catch) para que la UI no se rompa si Python está caído.
+    \end{enumerate}
+\end{itemize}
+
+\subsection{ReporteController.php}
+Controlador principal para la visualización y exportación de datos históricos.
+\begin{itemize}
+    \item \textbf{Persistencia XML}: Lee directamente de \texttt{storage/app/vehiculos\_db.xml} usando \texttt{simplexml\_load\_string}.
+    \item \textbf{Método obtenerRegistrosFiltrados()}:
+    \begin{itemize}
+        \item Aplica filtros de fecha, tipo de vehículo y cámara sobre el XML.
+        \item Realiza ordenamiento en memoria (usort) por fecha descendente.
+    \end{itemize}
+    \item \textbf{Exportación CSV}: Genera archivos CSV al vuelo (\texttt{php://output}) con cabeceras correctas para descarga directa.
+\end{itemize}
+
+\subsection{ModuloTresController.php (Administración)}
+Panel de control para administradores.
+\begin{itemize}
+    \item \textbf{Gestión de Automatización}: Permite configurar umbrales de tráfico y alertas de cámaras offline por usuario, interactuando con \texttt{AutomationConfig}.
+    \item \textbf{Limpieza de XML}: Configura la retención de datos del archivo XML para evitar crecimiento descontrolado, esencial para el mantenimiento a largo plazo.
+    \item \textbf{Visibilidad Global}: Acceso a todas las notificaciones y reportes generados en el sistema.
+\end{itemize}
+
+\subsection{VoiceCommandController.php}
+Permite la gestión (CRUD) de comandos de voz para la accesibilidad del sistema.
+\begin{itemize}
+    \item \textbf{Base de Datos}: Interactúa con la tabla \texttt{voice\_commands}.
+    \item \textbf{Método createDefaults()}: Seed de comandos útiles como "Ir a Detección" o "Exportar Excel", facilitando la configuración inicial.
+    \item \textbf{API REST}: Provee endpoints JSON para que el frontend (JS) sepa qué comandos escuchar.
+\end{itemize}
+
+\section{Servicios y Lógica de Negocio}
+
+\subsection{NotificationService.php}
+Servicio centralizado para la gestión de alertas.
+\begin{itemize}
+    \item \textbf{checkAndNotifyHighTraffic()}: Analiza el XML buscando picos de tráfico en los últimos minutos. Implementa lógica de "debounce" para no saturar al usuario con alertas repetidas (ej. 30 mins).
+    \item \textbf{checkAndNotifyCameraOffline()}: Verifica si la última detección en el XML supera un umbral de tiempo, indicando posible fallo de cámara.
+    \item \textbf{Notificaciones Masivas}: Capacidad de enviar mensajes prioritarios a todos los administradores.
+\end{itemize}
+
+\section{Análisis de Vistas y Frontend}
+
+\subsection{modulo1.blade.php (Dashboard Principal)}
+Es la vista más compleja, encargada del monitoreo en tiempo real.
+\begin{itemize}
+    \item \textbf{Integración WebSocket}: Usa JavaScript nativo para conectar a \texttt{ws://localhost:8080/ws/stream}.
+    \item \textbf{Mecanismo de Renderizado}:
+    \begin{itemize}
+        \item Recibe \textbf{BLOBs} de imágenes (JPEG) por WebSocket.
+        \item Usa \texttt{URL.createObjectURL()} para renderizar eficientemente en un \texttt{<canvas>}.
+    \end{itemize}
+    \item \textbf{Polling de Estadísticas}: Un \texttt{setInterval} consume \texttt{/api/vehicle-monitor} cada segundo para actualizar contadores y gráficos sin recargar la página.
+\end{itemize}
+
+\subsection{modulo2.blade.php (Reportes)}
+Muestra tablas de datos históricos. Utiliza Blade \texttt{@foreach} para iterar sobre los registros filtrados pasados por el \texttt{ReporteController}.
+
+\section{Rutas (routes/web.php)}
+El archivo de rutas define la "API pública" de la aplicación Laravel.
+\begin{itemize}
+    \item \textbf{Middlewares}:
+    \begin{itemize}
+        \item \texttt{auth}: Protege rutas que requieren login.
+        \item \texttt{isAdmin}: Protege rutas críticas como el Modulo 3 y la gestión de usuarios.
+    \end{itemize}
+    \item \textbf{Grupos}: Se utilizan \texttt{Route::prefix} y \texttt{Route::group} para organizar las rutas por módulo.
+\end{itemize}
+
+\section{Componentes Adicionales - Necessary for Function}
+
+\subsection{Detector Python (vehiculo\_detector.py)}
+El corazón del procesamiento.
+\begin{itemize}
+    \item \textbf{Flask + Flask-Sock}: Provee tanto la API REST (para stats) como el servidor WebSocket (para video).
+    \item \textbf{Playwright}: Se utiliza para extraer URLs de stream complejos (como SkylineWebcams).
+    \item \textbf{Multithreading}:
+        \item \textbf{Worker Thread}: Captura frames y corre YOLO.
+        \item \textbf{Main Thread}: Sirve peticiones HTTP/WS.
+\end{itemize}
+
+\end{document}

@@ -1,8 +1,6 @@
-@extends('layouts.app')
+<?php $__env->startSection('title', 'Reportes'); ?>
 
-@section('title', 'Reportes')
-
-@section('content')
+<?php $__env->startSection('content'); ?>
 <div class="bg-white rounded-lg shadow-lg p-6 mb-6">
     <!-- Título y botones en la misma línea -->
     <div class="flex justify-between items-start mb-4">
@@ -11,42 +9,42 @@
             <p class="text-gray-500 text-sm mt-1">Visualización de datos históricos y estadísticas</p>
         </div>
         <div class="flex gap-2">
-            <a href="{{ route('modulo2.my-notifications') }}" class="text-xs bg-blue-50 hover:bg-blue-100 px-3 py-1.5 rounded transition whitespace-nowrap">
+            <a href="<?php echo e(route('modulo2.my-notifications')); ?>" class="text-xs bg-blue-50 hover:bg-blue-100 px-3 py-1.5 rounded transition whitespace-nowrap">
                 Notificaciones
             </a>
-            <a href="{{ route('modulo2.my-reports') }}" class="text-xs bg-green-50 hover:bg-green-100 px-3 py-1.5 rounded transition whitespace-nowrap">
+            <a href="<?php echo e(route('modulo2.my-reports')); ?>" class="text-xs bg-green-50 hover:bg-green-100 px-3 py-1.5 rounded transition whitespace-nowrap">
                 Reportes
             </a>
         </div>
     </div>
     
     <!-- Filtros compactos -->
-    <form action="{{ route('modulo2') }}" method="GET" class="flex flex-wrap items-end gap-3 bg-gray-50 p-3 rounded-lg border border-gray-200">
+    <form action="<?php echo e(route('modulo2')); ?>" method="GET" class="flex flex-wrap items-end gap-3 bg-gray-50 p-3 rounded-lg border border-gray-200">
         <div class="flex flex-col min-w-[160px]">
             <label class="text-xs text-gray-600 font-semibold mb-1">Cámara</label>
             <select name="camera_id" class="border-gray-300 rounded text-sm px-2 py-1.5 focus:ring-blue-500 focus:border-blue-500">
-                <option value="CAM_002" {{ request('camera_id') == 'CAM_002' ? 'selected' : '' }}>Skyline Cochabamba</option>
-                <option value="CAM_001" {{ request('camera_id') == 'CAM_001' ? 'selected' : '' }}>Oracle Server</option>
+                <option value="CAM_002" <?php echo e(request('camera_id') == 'CAM_002' ? 'selected' : ''); ?>>Skyline Cochabamba</option>
+                <option value="CAM_001" <?php echo e(request('camera_id') == 'CAM_001' ? 'selected' : ''); ?>>Oracle Server</option>
             </select>
         </div>
 
         <div class="flex flex-col">
             <label class="text-xs text-gray-600 font-semibold mb-1">Desde</label>
-            <input type="date" name="fecha_inicio" class="border-gray-300 rounded text-sm px-2 py-1.5 focus:ring-blue-500 focus:border-blue-500" value="{{ request('fecha_inicio', date('Y-m-01')) }}">
+            <input type="date" name="fecha_inicio" class="border-gray-300 rounded text-sm px-2 py-1.5 focus:ring-blue-500 focus:border-blue-500" value="<?php echo e(request('fecha_inicio', date('Y-m-01'))); ?>">
         </div>
         
         <div class="flex flex-col">
             <label class="text-xs text-gray-600 font-semibold mb-1">Hasta</label>
-            <input type="date" name="fecha_fin" class="border-gray-300 rounded text-sm px-2 py-1.5 focus:ring-blue-500 focus:border-blue-500" value="{{ request('fecha_fin', date('Y-m-d')) }}">
+            <input type="date" name="fecha_fin" class="border-gray-300 rounded text-sm px-2 py-1.5 focus:ring-blue-500 focus:border-blue-500" value="<?php echo e(request('fecha_fin', date('Y-m-d'))); ?>">
         </div>
 
         <div class="flex flex-col min-w-[120px]">
             <label class="text-xs text-gray-600 font-semibold mb-1">Tipo</label>
             <select name="tipo" class="border-gray-300 rounded text-sm px-2 py-1.5 focus:ring-blue-500 focus:border-blue-500">
                 <option value="">Todos</option>
-                <option value="Auto" {{ request('tipo') == 'Auto' ? 'selected' : '' }}>Autos</option>
-                <option value="Moto" {{ request('tipo') == 'Moto' ? 'selected' : '' }}>Motos</option>
-                <option value="Bus"  {{ request('tipo') == 'Bus' ? 'selected' : '' }}>Buses</option>
+                <option value="Auto" <?php echo e(request('tipo') == 'Auto' ? 'selected' : ''); ?>>Autos</option>
+                <option value="Moto" <?php echo e(request('tipo') == 'Moto' ? 'selected' : ''); ?>>Motos</option>
+                <option value="Bus"  <?php echo e(request('tipo') == 'Bus' ? 'selected' : ''); ?>>Buses</option>
             </select>
         </div>
 
@@ -54,8 +52,8 @@
             <label class="text-xs text-gray-600 font-semibold mb-1">Agrupación</label>
             <select name="view_mode" class="border-gray-300 rounded text-sm px-2 py-1.5 focus:ring-blue-500 focus:border-blue-500">
                 <option value="auto">Automático</option>
-                <option value="hourly" {{ request('view_mode') == 'hourly' ? 'selected' : '' }}>Por Hora (0-23h)</option>
-                <option value="daily" {{ request('view_mode') == 'daily' ? 'selected' : '' }}>Por Día</option>
+                <option value="hourly" <?php echo e(request('view_mode') == 'hourly' ? 'selected' : ''); ?>>Por Hora (0-23h)</option>
+                <option value="daily" <?php echo e(request('view_mode') == 'daily' ? 'selected' : ''); ?>>Por Día</option>
             </select>
         </div>
 
@@ -95,7 +93,7 @@
     <div class="p-6 border-b border-gray-100 flex justify-between items-center">
         <h2 class="text-lg font-semibold text-gray-800">Registro de Detecciones</h2>
         <div class="flex gap-2">
-            <a href="{{ route('exportar.excel', request()->all()) }}" class="px-3 py-1 text-sm text-green-600 bg-green-50 rounded border border-green-200 hover:bg-green-100 flex items-center gap-2">
+            <a href="<?php echo e(route('exportar.excel', request()->all())); ?>" class="px-3 py-1 text-sm text-green-600 bg-green-50 rounded border border-green-200 hover:bg-green-100 flex items-center gap-2">
                 Exportar Excel
             </a>
             <button onclick="window.print()" class="px-3 py-1 text-sm text-red-600 bg-red-50 rounded border border-red-200 hover:bg-red-100 flex items-center gap-2">
@@ -115,8 +113,8 @@
                 </tr>
             </thead>
             <tbody class="divide-y divide-gray-100 text-sm text-gray-700" id="reportsTableBody">
-                @forelse($registros ?? [] as $registro)
-                    @php
+                <?php $__empty_1 = true; $__currentLoopData = $registros ?? []; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $registro): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+                    <?php
                         $colorClass = match(strtolower($registro['tipo'])) {
                             'auto' => 'bg-blue-500',
                             'moto' => 'bg-red-500',
@@ -140,47 +138,48 @@
                             'morado' => 'bg-purple-500',
                         ];
                         $colorBadge = $vehicleColorMap[strtolower($registro['color'] ?? 'desconocido')] ?? 'bg-gray-300';
-                    @endphp
+                    ?>
 
                     <tr class="hover:bg-gray-50 transition-colors">
-                        <td class="px-6 py-4">{{ $registro['fecha'] }}</td>
+                        <td class="px-6 py-4"><?php echo e($registro['fecha']); ?></td>
                         <td class="px-6 py-4">
                             <span class="flex items-center gap-2">
-                                <span class="w-2 h-2 rounded-full {{ $colorClass }}"></span>
-                                {{ $registro['tipo'] }}
+                                <span class="w-2 h-2 rounded-full <?php echo e($colorClass); ?>"></span>
+                                <?php echo e($registro['tipo']); ?>
+
                             </span>
                         </td>
                         <td class="px-6 py-4">
                             <span class="flex items-center gap-2">
-                                <span class="w-4 h-4 rounded-full {{ $colorBadge }}"></span>
-                                <span class="capitalize">{{ $registro['color'] ?? 'desconocido' }}</span>
+                                <span class="w-4 h-4 rounded-full <?php echo e($colorBadge); ?>"></span>
+                                <span class="capitalize"><?php echo e($registro['color'] ?? 'desconocido'); ?></span>
                             </span>
                         </td>
                         <td class="px-6 py-4">
                             <span class="flex items-center gap-2">
-                                <span class="w-4 h-4 rounded-full {{ $colorBadge }}"></span>
-                                <span class="capitalize">{{ $registro['confianza'] ?? 'desconocido' }}</span>
+                                <span class="w-4 h-4 rounded-full <?php echo e($colorBadge); ?>"></span>
+                                <span class="capitalize"><?php echo e($registro['confianza'] ?? 'desconocido'); ?></span>
                             </span>
                         </td>
                     </tr>
-                @empty
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
                     <tr>
                         <td colspan="6" class="px-6 py-8 text-center text-gray-500">
                             No se encontraron registros en el archivo XML o base de datos.
                         </td>
                     </tr>
-                @endforelse
+                <?php endif; ?>
             </tbody>
         </table>
     </div>
 
     <div class="px-6 py-4 border-t border-gray-100 bg-gray-50 flex justify-between items-center text-sm text-gray-500">
-        <span>Total: {{ count($registros ?? []) }} registros</span>
+        <span>Total: <?php echo e(count($registros ?? [])); ?> registros</span>
     </div>
 </div>
-@endsection
+<?php $__env->stopSection(); ?>
 
-@push('scripts')
+<?php $__env->startPush('scripts'); ?>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script>
@@ -194,7 +193,7 @@
 
     document.addEventListener('DOMContentLoaded', function() {
         // Obtenemos los datos pasados desde PHP (XML)
-        const rawData = @json($registros ?? []);
+        const rawData = <?php echo json_encode($registros ?? [], 15, 512) ?>;
         processAndInitCharts(rawData);
 
         // Escuchar cambios en el formulario de filtros
@@ -335,7 +334,8 @@
     // Función global para exportar (puede ser llamada por comandos de voz)
     window.exportToExcel = function() {
         const params = new URLSearchParams(window.location.search);
-        window.location.href = '{{ route("exportar.excel") }}?' + params.toString();
+        window.location.href = '<?php echo e(route("exportar.excel")); ?>?' + params.toString();
     };
 </script>
-@endpush
+<?php $__env->stopPush(); ?>
+<?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\xampp\htdocs\ProyectoFinal\polysense\resources\views/modulo2.blade.php ENDPATH**/ ?>
