@@ -8,9 +8,6 @@ use Illuminate\Support\Collection;
 
 class NotificationService
 {
-    /**
-     * Crear una nueva notificación
-     */
     public function create(
         int $userId,
         string $title,
@@ -29,9 +26,6 @@ class NotificationService
         ]);
     }
 
-    /**
-     * Obtener notificaciones no leídas de un usuario
-     */
     public function getUnread(int $userId): Collection
     {
         return Notification::forUser($userId)
@@ -40,9 +34,6 @@ class NotificationService
             ->get();
     }
 
-    /**
-     * Obtener contador de notificaciones no leídas
-     */
     public function getUnreadCount(int $userId): int
     {
         return Notification::forUser($userId)
@@ -50,9 +41,6 @@ class NotificationService
             ->count();
     }
 
-    /**
-     * Marcar notificación como leída
-     */
     public function markAsRead(int $notificationId): Notification
     {
         $notification = Notification::findOrFail($notificationId);
@@ -60,9 +48,6 @@ class NotificationService
         return $notification->fresh();
     }
 
-    /**
-     * Marcar todas las notificaciones de un usuario como leídas
-     */
     public function markAllAsRead(int $userId): int
     {
         return Notification::forUser($userId)
@@ -73,19 +58,14 @@ class NotificationService
             ]);
     }
 
-    /**
-     * Obtener historial de notificaciones con filtros
-     */
     public function getHistory(int $userId, array $filters = []): LengthAwarePaginator
     {
         $query = Notification::forUser($userId);
 
-        // Filtrar por tipo
         if (isset($filters['type']) && !empty($filters['type'])) {
             $query->ofType($filters['type']);
         }
 
-        // Filtrar por estado de lectura
         if (isset($filters['is_read'])) {
             if ($filters['is_read'] === 'true' || $filters['is_read'] === true) {
                 $query->where('is_read', true);
@@ -94,17 +74,14 @@ class NotificationService
             }
         }
 
-        // Filtrar por prioridad
         if (isset($filters['priority']) && !empty($filters['priority'])) {
             $query->ofPriority($filters['priority']);
         }
 
-        // Filtrar por fecha desde
         if (isset($filters['date_from']) && !empty($filters['date_from'])) {
             $query->whereDate('created_at', '>=', $filters['date_from']);
         }
 
-        // Filtrar por fecha hasta
         if (isset($filters['date_to']) && !empty($filters['date_to'])) {
             $query->whereDate('created_at', '<=', $filters['date_to']);
         }
@@ -112,19 +89,12 @@ class NotificationService
         return $query->latest()->paginate(20);
     }
 
-    /**
-     * Eliminar una notificación
-     */
     public function delete(int $notificationId): bool
     {
         $notification = Notification::findOrFail($notificationId);
         return $notification->delete();
     }
 
-    /**
-     * Verificar y notificar sobre alto tráfico
-     * Se ejecuta automáticamente desde un comando o job
-     */
     public function checkAndNotifyHighTraffic(int $userId, int $threshold = 50, int $minutes = 5): ?Notification
     {
         $xmlPath = storage_path('app/vehiculos_db.xml');
@@ -144,7 +114,6 @@ class NotificationService
         }
 
         if ($recentDetections > $threshold) {
-            // Verificar si ya existe una notificación reciente similar
             $existingNotification = Notification::forUser($userId)
                 ->where('type', 'warning')
                 ->where('title', 'Alto Tráfico Detectado')
@@ -170,10 +139,6 @@ class NotificationService
         return null;
     }
 
-    /**
-     * Verificar y notificar sobre cámara offline
-     * Se ejecuta automáticamente desde un comando o job
-     */
     public function checkAndNotifyCameraOffline(int $userId, int $minutesOffline = 10): ?Notification
     {
         $xmlPath = storage_path('app/vehiculos_db.xml');
@@ -191,7 +156,6 @@ class NotificationService
         $diff = time() - $lastTime;
 
         if ($diff > ($minutesOffline * 60)) {
-            // Verificar si ya existe una notificación reciente similar
             $existingNotification = Notification::forUser($userId)
                 ->where('type', 'alert')
                 ->where('title', 'Cámara Posiblemente Offline')
@@ -217,9 +181,6 @@ class NotificationService
         return null;
     }
 
-    /**
-     * Notificar a todos los administradores
-     */
     public function notifyAllAdmins(string $title, string $message, string $type = 'info', string $priority = 'medium'): int
     {
         $admins = \App\Models\User::where('role', 'admin')->get();
