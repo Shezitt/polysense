@@ -1,0 +1,231 @@
+\subsection{Módulo 2: Reportes y Estadísticas}
+
+\subsubsection{Descripción General}
+
+El módulo de reportes permite visualizar el historial completo de detecciones vehiculares con filtrados avanzados, gráficos estadísticos interactivos y exportación a Excel/CSV.
+
+\subsubsection{Vista Principal - modulo2.blade.php}
+
+\textbf{Archivo}: \texttt{resources/views/modulo2.blade.php} (341 líneas)
+
+\paragraph{Estructura HTML (Líneas 1-180)}
+
+\textbf{Filtros del formulario (L.24-65)}:
+\begin{itemize}
+    \item \textbf{L.27-30}: Select de cámara con opciones CAM\_001 y CAM\_002
+    \item \textbf{L.35}: Input type='date' para fecha\_inicio, valor default: \texttt{date('Y-m-01')}
+    \item \textbf{L.40}: Input type='date' para fecha\_fin, valor default: \texttt{date('Y-m-d')}
+    \item \textbf{L.45-50}: Select de tipo con opciones: Todos, Auto, Moto, Bus
+    \item \textbf{L.55-59}: Select de agrupación con modos: Automático, Por Hora, Por Día
+\end{itemize}
+
+\textbf{Canvas para gráficos (L.70-91)}:
+\begin{itemize}
+    \item \textbf{L.77}: Canvas \texttt{\#dailyChart} para gráfico de barras (300px alto)
+    \item \textbf{L.89}: Canvas \texttt{\#typeDistributionChart} para gráfico de torta
+\end{itemize}
+
+\textbf{Tabla de registros (L.107-175)}:
+\begin{lstlisting}[style=phpstyle, caption={Loop de Detecciones - modulo2.blade.php}]
+@forelse($registros ?? [] as $registro)
+    @php
+        // L.120-126: Mapeo de colores por tipo
+        $colorClass = match(strtolower($registro['tipo'])) {
+            'auto' => 'bg-blue-500',
+            'moto' => 'bg-red-500',
+            'bus' => 'bg-green-500',
+            default => 'bg-gray-500'
+        };
+        
+        // L.127-128: Determinación de color según confianza
+        $conf = floatval($registro['confianza']);
+        $confColor = $conf > 90 ? 'bg-green-100' : 
+                    ($conf > 75 ? 'bg-yellow-100' : 'bg-red-100');
+        
+        // L.131-142: Mapeo de colores de vehículo a CSS
+        $vehicleColorMap = [
+            'rojo' => 'bg-red-500',
+            'azul' => 'bg-blue-500',
+            'blanco' => 'bg-gray-100 border',
+            // ... otros colores
+        ];
+    @endphp
+    
+    <tr class="hover:bg-gray-50">
+        <td>{{ $registro['fecha'] }}</td>
+        <td><span class="{{ $colorClass }}"></span> {{ $registro['tipo'] }}</td>
+        <td><span class="{{ $colorBadge }}"></span> {{ $registro['color'] }}</td>
+    </tr>
+@empty
+    <tr><td colspan="6">No se encontraron registros</td></tr>
+@endforelse
+\end{lstlisting}
+
+\paragraph{JavaScript de Gráficos (L.186-340)}
+
+\textbf{Variables globales (L.188-193)}:
+\begin{lstlisting}[language=JavaScript]
+let chartBar = null;    // Gráfico de barras
+let chartPie = null;    // Gráfico de torta
+const getSelectedCamera = () => {
+    const params = new URLSearchParams(window.location.search);
+    return params.get('camera_id') || 'CAM_002';
+};
+\end{lstlisting}
+
+\textbf{Función processAndInitCharts() (L.209-333)}:
+
+\textbf{Determinación de modo de visualización (L.211-231)}:
+\begin{lstlisting}[language=JavaScript]
+const viewMode = urlParams.get('view_mode') || 'auto';
+let isMultiDay = false;
+
+if (viewMode === 'daily') {
+    isMultiDay = true;  // Agrupar por día
+} else if (viewMode === 'hourly') {
+    isMultiDay = false;  // Agrupar por hora 0-23
+} else {
+    // Modo Automático: detecta si hay múltiples días
+    const uniqueDates = new Set(data.map(item => item.fecha.split(' ')[0]));
+    if (uniqueDates.size > 1) isMultiDay = true;
+}
+\end{lstlisting}
+
+\textbf{Procesamiento de datos (L.233-261)}:
+\begin{lstlisting}[language=JavaScript]
+const stats = {};
+const typesCount = { 'Auto': 0, 'Moto': 0, 'Bus': 0, 'Otro': 0 };
+
+data.forEach(item => {
+    const [datePart, timePart] = item.fecha.split(' ');
+    const hour = timePart.split(':')[0];
+    
+    // Clave de agrupación: fecha completa O hora
+    const key = isMultiDay ? datePart : `${hour}:00`;
+    
+    // Inicializar contador si no existe
+    if (!stats[key]) {
+        stats[key] = { 'Auto': 0, 'Moto': 0, 'Bus': 0, 'Otro': 0 };
+    }
+    
+    // Incrementar contador
+    stats[key][item.tipo]++;
+    typesCount[item.tipo]++;
+});
+\end{lstlisting}
+
+\textbf{Creación de gráfico de barras (L.292-312)}:
+\begin{lstlisting}[language=JavaScript]
+chartBar = new Chart(ctxBar, {
+    type: 'bar',
+    data: {
+        labels: sortedKeys,  // Ordenadas cronológicamente
+        datasets: [
+            { label: 'Autos', data: dataAuto, backgroundColor: '#3b82f6' },
+            { label: 'Motos', data: dataMoto, backgroundColor: '#ef4444' },
+            { label: 'Buses', data: dataBus, backgroundColor: '#10b981' }
+        ]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+            y: { beginAtZero: true, ticks: { stepSize: 1 } }
+        }
+    }
+});
+\end{lstlisting}
+
+\subsubsection{Controlador ReporteController}
+
+\textbf{Archivo}: \texttt{app/Http/Controllers/ReporteController.php} (171 líneas)
+
+\paragraph{Método obtenerRegistrosFiltrados() (L.12-73)}
+
+\textbf{Carga de XML (L.15-19)}:
+\begin{lstlisting}[style=phpstyle]
+$xmlPath = storage_path('app/vehiculos_db.xml');
+if (file_exists($xmlPath)) {
+    $xmlContent = file_get_contents($xmlPath);
+    $xml = simplexml_load_string($xmlContent);
+}
+\end{lstlisting}
+
+\textbf{Construcción de registro (L.23-30)}:
+\begin{lstlisting}[style=phpstyle]
+$registro = [
+    'fecha' => (string)$det->fecha,
+    'tipo'  => (string)$det->tipo,
+    'confianza' => (float)$det->confianza,
+    'color' => isset($det->color) ? (string)$det->color : 'desconocido',
+    'camara' => isset($det->camara) ? (string)$det->camara : 'CAM_002',
+    'nombre_camara' => isset($det->nombre_camara) ? 
+        (string)$det->nombre_camara : 'Skyline Cochabamba'
+];
+\end{lstlisting}
+
+\textbf{Aplicación de filtros (L.34-60)}:
+\begin{itemize}
+    \item \textbf{L.34-38}: Filtro por camera\_id - compara string exacto
+    \item \textbf{L.40-44}: Filtro por tipo - compara string exacto
+    \item \textbf{L.46-52}: Filtro por fecha inicio:
+    \begin{lstlisting}[style=phpstyle]
+$fechaRegistro = strtotime($registro['fecha']);
+$fechaInicio = strtotime($request->fecha_inicio . ' 00:00:00');
+if ($fechaRegistro < $fechaInicio) {
+    $incluir = false;
+}
+    \end{lstlisting}
+    \item \textbf{L.54-60}: Similar para fecha\_fin, añade '23:59:59'
+\end{itemize}
+
+\paragraph{Método exportarExcel() (L.82-140)}
+
+\textbf{Setup de archivo (L.84-92)}:
+\begin{lstlisting}[style=phpstyle]
+$registros = $this->obtenerRegistrosFiltrados($request);
+$nombreArchivo = 'reportes_' . date('Y-m-d_His') . '.csv';
+$rutaTemporal = storage_path('app/temp');
+
+if (!is_dir($rutaTemporal)) {
+    mkdir($rutaTemporal, 0755, true);
+}
+
+$rutaCompleta = $rutaTemporal . '/' . $nombreArchivo;
+\end{lstlisting}
+
+\textbf{Escritura CSV con BOM UTF-8 (L.100-122)}:
+\begin{lstlisting}[style=phpstyle]
+$archivo = fopen($rutaCompleta, 'w');
+
+// BOM para Excel UTF-8
+fprintf($archivo, chr(0xEF).chr(0xBB).chr(0xBF));
+
+// Encabezados
+fputcsv($archivo, [
+    'Fecha/Hora', 'Tipo Vehículo', 'Confianza (%)', 
+    'Color', 'Cámara', 'Nombre Cámara'
+], ',');
+
+// Datos
+foreach ($registros as $registro) {
+    fputcsv($archivo, [
+        $registro['fecha'],
+        $registro['tipo'],
+        number_format($registro['confianza'], 2),
+        $registro['color'],
+        $registro['camara'],
+        $registro['nombre_camara']
+    ], ',');
+}
+
+fclose($archivo);
+\end{lstlisting}
+
+\textbf{Descarga y auto-eliminación (L.127)}:
+\begin{lstlisting}[style=phpstyle]
+return response()->download($rutaCompleta, $nombreArchivo)
+    ->deleteFileAfterSend(true);
+\end{lstlisting}
+
+\newpage

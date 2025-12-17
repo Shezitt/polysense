@@ -1,0 +1,247 @@
+\section{Módulo Python de Detección}
+
+\subsection{vehiculo\_detector.py}
+
+\textbf{Archivo}: \texttt{deteccion/vehiculo\_detector.py} (767 líneas)
+
+\textbf{Responsabilidad}: Sistema completo de detección vehicular con YOLOv8, tracking multi-cámara, WebSocket streaming, y persistencia XML.
+
+\subsubsection{Arquitectura del Detector}
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[
+    box/.style={rectangle, draw, fill=cyan!20, minimum width=2.5cm, minimum height=0.8cm, font=\small},
+    node distance=1cm
+]
+    \node[box] (cam1) {CAM\_001};
+    \node[box, right=of cam1] (cam2) {CAM\_002};
+    \node[box, below=of cam1, xshift=1.25cm] (workers) {Workers};
+    \node[box, below=of workers] (yolo) {YOLOv8};
+    \node[box, below=of yolo, xshift=-1.5cm] (track) {Tracking};
+    \node[box, below=of yolo, xshift=1.5cm] (color) {Color};
+    \node[box, below=of yolo] (xml) {XML DB};
+    
+    \draw[-{Latex}] (cam1) -- (workers);
+    \draw[-{Latex}] (cam2) -- (workers);
+    \draw[-{Latex}] (workers) -- (yolo);
+    \draw[-{Latex}] (yolo) -- (track);
+    \draw[-{Latex}] (yolo) -- (color);
+    \draw[-{Latex}] (yolo) -- (xml);
+\end{tikzpicture}
+\caption{Arquitectura del Detector Multi-Cámara}
+\end{figure}
+
+El sistema sigue una arquitectura modular con los siguientes componentes:
+
+\textbf{Fuentes de Video}:
+\begin{itemize}
+    \item CAM\_001: Oracle WebSocket (ws://144.22.56.85:5000/ws/CAM\_001)
+    \item CAM\_002: Skyline HLS (extracción con Playwright)
+\end{itemize}
+
+\textbf{Procesamiento}:
+\begin{itemize}
+    \item Worker Threads: worker\_oracle() y worker\_skyline() ejecutan en hilos separados
+    \item YOLOv8 Model: detect\_vehicles() - detección de objetos
+    \item Tracking System: match\_vehicle\_to\_tracked() - seguimiento único
+    \item Color Detection: get\_dominant\_color() - análisis HSV
+    \item XML Database: save\_detection\_to\_xml() - persistencia
+\end{itemize}
+
+\textbf{Interfaces}:
+\begin{itemize}
+    \item Flask API: /api/vehicles - estadísticas en JSON
+    \item WebSocket: /ws/stream - streaming de video procesado
+\end{itemize}
+
+\subsubsection{Configuración de Cámaras}
+
+\begin{lstlisting}[caption={Configuración Multi-Cámara}, style=pythonstyle, label=lst:cam-config]
+CAMERAS_CONFIG = {
+    'CAM_001': {
+        'name': 'Oracle Server',
+        'type': 'websocket',
+        'url': 'ws://144.22.56.85:5000/ws/CAM_001'
+    },
+    'CAM_002': {
+        'name': 'Skyline Cochabamba',
+        'type': 'skyline',
+        'url': 'https://www.skylinewebcams.com/...'
+    }
+}
+
+# Estado global por cámara
+camera_states = {
+    'CAM_001': {
+        'raw_frame': None,
+        'processed_frame': None,
+        'tracked_vehicles': {},
+        'next_vehicle_id': 1,
+        'status': 'offline'
+    },
+    'CAM_002': { ... }
+}
+\end{lstlisting}
+
+\subsubsection{Algoritmo de Tracking}
+
+El sistema implementa tracking único basado en distancia euclidiana entre centroides:
+
+\begin{enumerate}
+    \item Calcular centroide del bbox detectado
+    \item Comparar con vehículos tracked existentes
+    \item Si distancia \textless{} max\_distance: asociar a vehículo existente
+    \item Si no: crear nuevo ID de vehículo
+    \item Eliminar vehículos no vistos en max\_frames\_missing frames
+\end{enumerate}
+
+\begin{lstlisting}[caption={Algoritmo de Tracking}, style=pythonstyle, label=lst:tracking]
+def match_vehicle_to_tracked(bbox, tracked_vehicles, max_distance):
+    center = calculate_bbox_center(bbox)
+    best_match_id = None
+    best_distance = float('inf')
+    
+    for vehicle_id, vehicle_data in tracked_vehicles.items():
+        tracked_center = calculate_bbox_center(vehicle_data['bbox'])
+        distance = calculate_distance(center, tracked_center)
+        
+        if distance < max_distance and distance < best_distance:
+            best_distance = distance
+            best_match_id = vehicle_id
+    
+    return best_match_id
+\end{lstlisting}
+
+\subsubsection{Detección de Color}
+
+Utiliza espacio de color HSV para determinar color dominante del vehículo:
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|l|l|}
+\hline
+\textbf{Rango Hue} & \textbf{Color} \\
+\hline
+\textless 10 o \textgreater 170 & Rojo \\
+10-25 & Naranja \\
+25-35 & Amarillo \\
+35-85 & Verde \\
+85-130 & Azul \\
+130-160 & Morado \\
+S\textless50, V\textgreater200 & Blanco \\
+V\textless50 & Negro \\
+Otros & Gris \\
+\hline
+\end{tabular}
+\caption{Mapeo HSV a Colores}
+\end{table}
+
+\subsubsection{API Flask}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|l|l|p{5cm}|}
+\hline
+\textbf{Endpoint} & \textbf{Método} & \textbf{Descripción} \\
+\hline
+/ & GET & Página de información del detector \\
+\hline
+/api/vehicles & GET & Estadísticas (camera\_id param) \\
+\hline
+/stats & GET & Stats simplificadas (camera\_id param) \\
+\hline
+/api/reset & POST & Reset contadores \\
+\hline
+/ws/stream & WebSocket & Stream de video procesado \\
+\hline
+\end{tabular}
+\caption{Endpoints del Detector Python}
+\end{table}
+
+\subsection{voice\_server.py}
+
+\textbf{Archivo}: \texttt{deteccion/voice\_server.py} (180 líneas)
+
+\textbf{Responsabilidad}: Reconocimiento de voz en español usando Vosk, comunicación WebSocket con frontend.
+
+\subsubsection{Arquitect ura de Voz}
+
+El sistema de reconocimiento de voz sigue el siguiente flujo:
+
+\begin{enumerate}
+    \item \textbf{Micrófono} captura audio a 16kHz mediante sounddevice
+    \item \textbf{Audio Queue} (queue.Queue()) almacena buffers de audio
+    \item \textbf{Vosk Model} (KaldiRecognizer) procesa el audio
+    \item \textbf{Flask-SocketIO} emite eventos:
+        \begin{itemize}
+            \item voice\_command: Texto reconocido final
+            \item voice\_partial: Texto parcial en tiempo real
+        \end{itemize}
+    \item \textbf{JavaScript Client} en modulo4.blade.php recibe y procesa comandos
+\end{enumerate}
+
+\newpage
+
+\section{Vistas Blade}
+
+\subsection{modulo1.blade.php}
+
+\textbf{Archivo}: \texttt{resources/views/modulo1.blade.php} (323 líneas)
+
+\textbf{Componentes principales}:
+\begin{itemize}
+    \item Selector de cámara (CAM\_001, CAM\_002)
+    \item Canvas 800x600px para video en tiempo real
+    \item Estadísticas: vehículos actuales, total detectados, FPS, promedio
+    \item Gráficos de tipos y colores de vehículos
+\end{itemize}
+
+\subsection{modulo2.blade.php}
+
+\textbf{Archivo}: \texttt{resources/views/modulo2.blade.php}
+
+\textbf{Funcionalidades}:
+\begin{itemize}
+    \item Filtros por tipo, fecha, cámara
+    \item Tabla de detecciones con paginación
+    \item Exportación a Excel/CSV
+    \item Gráficos estadísticos con Chart.js
+\end{itemize}
+
+\subsection{modulo3.blade.php}
+
+\textbf{Archivo}: \texttt{resources/views/modulo3.blade.php}
+
+\textbf{Panel de Administración} (solo admins):
+\begin{itemize}
+    \item Gestión de usuarios
+    \item Configuración de notificaciones (thresholds)
+    \item Configuración de reportes automáticos
+    \item Limpieza programada de XML
+    \item Monitor de estado de cámaras
+\end{itemize}
+
+\subsection{modulo4.blade.php}
+
+\textbf{Archivo}: \texttt{resources/views/modulo4.blade.php}
+
+\textbf{Gestión de Comandos de Voz}:
+\begin{itemize}
+    \item CRUD completo de comandos
+    \item Panel de pruebas en tiempo real
+    \item Integración con SocketIO para reconocimiento
+\end{itemize}
+
+\subsection{modulo5.blade.php}
+
+\textbf{Archivo}: \texttt{resources/views/modulo5.blade.php}
+
+\textbf{Gestión de Usuarios} (solo admins):
+\begin{itemize}
+    \item Crear/eliminar usuarios
+    \item Cambiar roles (user/admin)
+    \item Tabla de usuarios activos
+\end{itemize}
+
+\newpage

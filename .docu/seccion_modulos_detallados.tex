@@ -1,0 +1,611 @@
+\section{Documentación Detallada por Módulos}
+
+\subsection{Módulo 1: Detección en Tiempo Real}
+
+\subsubsection{Descripción General}
+
+El módulo de detección proporciona visualización en tiempo real del procesamiento de video con YOLOv8, mostrando estadísticas actualizadas y permitiendo seleccionar entre múltiples cámaras.
+
+\subsubsection{Componentes del Frontend}
+
+\textbf{Archivo}: \texttt{resources/views/modulo1.blade.php} (323 líneas)
+
+\paragraph{Estructura HTML Principal (Líneas 1-50)}
+
+\begin{itemize}
+    \item \textbf{Línea 1}: Extiende layout principal \texttt{@extends('layouts.app')}
+    \item \textbf{Líneas 10-15}: Selector de cámara con ID \texttt{cameraSelector}
+    \item \textbf{Línea 25}: Canvas para video \texttt{<canvas id="videoCanvas" width="800" height="600">}
+    \item \textbf{Líneas 30-45}: Cards de estadísticas con IDs:
+    \begin{itemize}
+        \item \texttt{currentVehicles} - Vehículos actuales
+        \item \texttt{totalVehicles} - Total detectados
+        \item \texttt{fps} - Frames por segundo
+        \item \texttt{averageVehicles} - Promedio de vehículos
+    \end{itemize}
+\end{itemize}
+
+\paragraph{Lógica JavaScript (Líneas 150-323)}
+
+\textbf{Variables Globales (Líneas 152-160)}:
+\begin{lstlisting}[style=jsstyle, caption={Variables Globales - modulo1.blade.php}]
+let websocket = null;
+let currentCamera = 'CAM_002';
+const canvas = document.getElementById('videoCanvas');
+const ctx = canvas.getContext('2d');
+let statsInterval = null;
+let reconnectAttempts = 0;
+const MAX_RECONNECT_ATTEMPTS = 5;
+\end{lstlisting}
+
+\textbf{Función connectWebSocket() (Líneas 170-210)}:
+\begin{itemize}
+    \item \textbf{Línea 171}: Construye URL WebSocket: \texttt{ws://localhost:8080/ws/stream?camera\_id=\$\{currentCamera\}}
+    \item \textbf{Línea 173}: Crea instancia WebSocket con \texttt{new WebSocket(wsUrl)}
+    \item \textbf{Línea 174}: Configura tipo binario: \texttt{websocket.binaryType = 'arraybuffer'}
+    \item \textbf{Líneas 176-179}: Handler \texttt{onopen} - actualiza status a "Online"
+    \item \textbf{Líneas 181-195}: Handler \texttt{onmessage}:
+    \begin{itemize}
+        \item Línea 182: Recibe ArrayBuffer del frame JPEG
+        \item Línea 183: Convierte a Blob: \texttt{const blob = new Blob([event.data], \{type: 'image/jpeg'\})}
+        \item Línea 184: Crea Object URL temporal
+        \item Líneas 187-191: Dibuja imagen en canvas usando \texttt{ctx.drawImage()}
+        \item Línea 192: Libera memoria con \texttt{URL.revokeObjectURL(url)}
+    \end{itemize}
+    \item \textbf{Líneas 197-204}: Manejo de errores y reconexión automática
+\end{itemize}
+
+\textbf{Función updateStats() (Líneas 215-250)}:
+\begin{itemize}
+    \item \textbf{Línea 217}: Fetch a API Laravel: \texttt{/api/vehicle-monitor/\$\{currentCamera\}}
+    \item \textbf{Línea 218}: Parsea respuesta JSON
+    \item \textbf{Líneas 220-223}: Actualiza elementos DOM:
+    \begin{lstlisting}[style=jsstyle]
+document.getElementById('currentVehicles').textContent = data.current_vehicles || 0;
+document.getElementById('totalVehicles').textContent = data.total_detected || 0;
+document.getElementById('fps').textContent = (data.fps || 0).toFixed(1);
+    \end{lstlisting}
+    \item \textbf{Líneas 225-230}: Llama \texttt{updateVehicleTypes(data.vehicle\_types)} para actualizar gráfico
+    \item \textbf{Líneas 232-237}: Llama \texttt{updateVehicleColors(data.vehicle\_colors)} para badges de colores
+\end{itemize}
+
+\textbf{Inicialización (Líneas 300-315)}:
+\begin{lstlisting}[style=jsstyle, caption={Inicialización del Módulo}]
+window.addEventListener('DOMContentLoaded', () => {
+    connectWebSocket();
+    statsInterval = setInterval(updateStats, 1000); // Actualizar cada 1s
+    
+    document.getElementById('cameraSelector').addEventListener('change', (e) => {
+        currentCamera = e.target.value;
+        if (websocket) websocket.close();
+        connectWebSocket();
+    });
+});
+\end{lstlisting}
+
+\subsubsection{Backend API}
+
+\textbf{Archivo}: \texttt{app/Http/Controllers/VehicleMonitorController.php} (59 líneas)
+
+\paragraph{Clase VehicleMonitorController}
+
+\textbf{Propiedades (Líneas 12-13)}:
+\begin{lstlisting}[style=phpstyle]
+protected $detectorUrl = 'http://localhost:8080';
+\end{lstlisting}
+
+\textbf{Método getStats() (Líneas 20-57)}:
+\begin{itemize}
+    \item \textbf{Línea 21}: Recibe parámetro \texttt{\$cameraId} (default: 'CAM\_002')
+    \item \textbf{Líneas 23-26}: Valida y normaliza cameraId:
+    \begin{lstlisting}[style=phpstyle]
+$cameraId = strtoupper($cameraId);
+if (!in_array($cameraId, ['CAM_001', 'CAM_002'])) {
+    $cameraId = 'CAM_002';
+}
+    \end{lstlisting}
+    \item \textbf{Línea 28}: Construye URL completa: \texttt{"\{detectorUrl\}/api/vehicles?camera\_id=\{cameraId\}"}
+    \item \textbf{Línea 29}: Hace petición HTTP con timeout de 5s: \texttt{Http::timeout(5)->get(\$url)}
+    \item \textbf{Líneas 31-33}: Si exitoso, retorna JSON del detector Python
+    \item \textbf{Líneas 35-42}: Si falla, retorna estructura por defecto con valores en 0
+\end{itemize}
+
+\subsubsection{Servicio Python Detector}
+
+\textbf{Archivo}: \texttt{deteccion/vehiculo\_detector.py} (767 líneas)
+
+\paragraph{API Flask - Endpoint /api/vehicles (Líneas 550-580)}
+
+\textbf{Función get\_vehicle\_stats() (Línea 552)}:
+\begin{lstlisting}[style=pythonstyle, caption={Endpoint de Estadísticas}]
+@app.route('/api/vehicles', methods=['GET'])
+def get_vehicle_stats():
+    camera_id = request.args.get('camera_id', 'CAM_002')
+    
+    with data_lock:
+        state = camera_states.get(camera_id, {})
+        tracked = state.get('tracked_vehicles', {})
+        
+        # Contar por tipo de vehículo
+        vehicle_types = {}
+        vehicle_colors = {}
+        
+        for vehicle_id, vehicle_data in tracked.items():
+            v_type = vehicle_data.get('type', 'desconocido')
+            v_color = vehicle_data.get('color', 'desconocido')
+            
+            vehicle_types[v_type] = vehicle_types.get(v_type, 0) + 1
+            vehicle_colors[v_color] = vehicle_colors.get(v_color, 0) + 1
+        
+        return jsonify({
+            'camera_id': camera_id,
+            'status': state.get('status', 'offline'),
+            'current_vehicles': len(tracked),
+            'total_detected': state.get('total_vehicles_detected', 0),
+            'fps': state.get('fps', 0.0),
+            'vehicle_types': vehicle_types,
+            'vehicle_colors': vehicle_colors
+        })
+\end{lstlisting}
+
+\paragraph{WebSocket Streaming - Endpoint /ws/stream (Líneas 600-650)}
+
+\textbf{Función stream\_video() (Línea 602)}:
+\begin{itemize}
+    \item \textbf{Línea 604}: Obtiene \texttt{camera\_id} de query params
+    \item \textbf{Líneas 608-615}: Loop infinito que:
+    \begin{itemize}
+        \item Línea 610: Accede a \texttt{camera\_states[camera\_id]['processed\_frame']} con lock
+        \item Línea 612: Si frame existe, lo codifica a JPEG usando \texttt{cv2.imencode('.jpg', frame)}
+        \item Línea 614: Envía bytes vía WebSocket: \texttt{ws.send(frame\_bytes)}
+        \item Línea 616: Espera 33ms (30 FPS): \texttt{time.sleep(0.033)}
+    \end{itemize}
+    \item \textbf{Líneas 620-625}: Manejo de excepciones y cierre de conexión
+\end{itemize}
+
+\paragraph{Worker Thread - worker\_skyline() (Líneas 350-450)}
+
+\textbf{Función principal (Línea 352)}:
+\begin{itemize}
+    \item \textbf{Líneas 355-365}: Llama \texttt{get\_skyline\_stream\_url\_robust()} para obtener URL HLS
+    \item \textbf{Línea 370}: Abre stream con OpenCV: \texttt{cap = cv2.VideoCapture(stream\_url)}
+    \item \textbf{Líneas 375-420}: Loop de procesamiento:
+    \begin{itemize}
+        \item Línea 377: Lee frame: \texttt{ret, frame = cap.read()}
+        \item Línea 380: Llama \texttt{process\_frame\_generic(frame, 'CAM\_002')}
+        \item Líneas 385-395: Calcula FPS usando \texttt{time.time()} y contador de frames
+    \end{itemize}
+\end{itemize}
+
+\textbf{Función process\_frame\_generic() (Líneas 200-280)}:
+\begin{itemize}
+    \item \textbf{Línea 205}: Ejecuta YOLO: \texttt{results = model(frame, conf=0.4)}
+    \item \textbf{Líneas 210-250}: Para cada detección:
+    \begin{itemize}
+        \item Línea 215: Obtiene bbox, confianza y clase
+        \item Línea 220: Filtra solo vehículos (car, motorcycle, bus, truck)
+        \item Línea 225: Llama \texttt{match\_vehicle\_to\_tracked(bbox, tracked, max\_distance=50)}
+        \item Líneas 230-240: Si es nuevo vehículo:
+        \begin{itemize}
+            \item Asigna nuevo ID: \texttt{vehicle\_id = state['next\_vehicle\_id']}
+            \item Incrementa contador
+            \item Llama \texttt{get\_dominant\_color(frame, bbox)}
+            \item Llama \texttt{save\_detection\_to\_xml(vehicle\_data, camera\_id)}
+        \end{itemize}
+        \item Línea 245: Dibuja bbox en frame con \texttt{cv2.rectangle()}
+    \end{itemize}
+    \item \textbf{Línea 270}: Almacena frame procesado: \texttt{state['processed\_frame'] = frame}
+\end{itemize}
+
+\subsubsection{Flujo Completo de Detección}
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[
+    box/.style={rectangle, draw, fill=cyan!15, minimum width=3.5cm, minimum height=0.7cm, font=\small},
+    node distance=0.8cm
+]
+    \node[box] (step1) {1. Usuario abre modulo1.blade.php};
+    \node[box, below=of step1] (step2) {2. DOMContentLoaded ejecuta (L.300)};
+    \node[box, below=of step2] (step3) {3. connectWebSocket() (L.170)};
+    \node[box, below=of step3] (step4) {4. WebSocket a localhost:8080/ws/stream};
+    \node[box, below=of step4] (step5) {5. Python stream\_video() envía JPEGs};
+    \node[box, below=of step5] (step6) {6. onmessage dibuja en canvas (L.181)};
+    \node[box, below=of step6] (step7) {7. setInterval llama updateStats() (L.305)};
+    \node[box, below=of step7] (step8) {8. Fetch a /api/vehicle-monitor};
+    \node[box, below=of step8] (step9) {9. VehicleMonitorController::getStats()};
+    \node[box, below=of step9] (step10) {10. HTTP a Python /api/vehicles};
+    \node[box, below=of step10] (step11) {11. Retorna vehicle\_types, colors, FPS};
+    \node[box, below=of step11] (step12) {12. Actualiza DOM (L.220-237)};
+    
+    \draw[-{Latex}] (step1) -- (step2);
+    \draw[-{Latex}] (step2) -- (step3);
+    \draw[-{Latex}] (step3) -- (step4);
+    \draw[-{Latex}] (step4) -- (step5);
+    \draw[-{Latex}] (step5) -- (step6);
+    \draw[-{Latex}] (step6) -- (step7);
+    \draw[-{Latex}] (step7) -- (step8);
+    \draw[-{Latex}] (step8) -- (step9);
+    \draw[-{Latex}] (step9) -- (step10);
+    \draw[-{Latex}] (step10) -- (step11);
+    \draw[-{Latex}] (step11) -- (step12);
+\end{tikzpicture}
+\caption{Flujo Completo del Módulo Detección}
+\end{figure}
+
+\newpage
+\subsection{Módulo 2: Reportes y Estadísticas}
+
+\subsubsection{Descripción General}
+
+El módulo de reportes permite visualizar el historial completo de detecciones vehiculares con filtrados avanzados, gráficos estadísticos interactivos y exportación a Excel/CSV.
+
+\subsubsection{Vista Principal - modulo2.blade.php}
+
+\textbf{Archivo}: \texttt{resources/views/modulo2.blade.php} (341 líneas)
+
+\paragraph{Estructura HTML (Líneas 1-180)}
+
+\textbf{Filtros del formulario (L.24-65)}:
+\begin{itemize}
+    \item \textbf{L.27-30}: Select de cámara con opciones CAM\_001 y CAM\_002
+    \item \textbf{L.35}: Input type='date' para fecha\_inicio, valor default: \texttt{date('Y-m-01')}
+    \item \textbf{L.40}: Input type='date' para fecha\_fin, valor default: \texttt{date('Y-m-d')}
+    \item \textbf{L.45-50}: Select de tipo con opciones: Todos, Auto, Moto, Bus
+    \item \textbf{L.55-59}: Select de agrupación con modos: Automático, Por Hora, Por Día
+\end{itemize}
+
+\textbf{Canvas para gráficos (L.70-91)}:
+\begin{itemize}
+    \item \textbf{L.77}: Canvas \texttt{\#dailyChart} para gráfico de barras (300px alto)
+    \item \textbf{L.89}: Canvas \texttt{\#typeDistributionChart} para gráfico de torta
+\end{itemize}
+
+\textbf{Tabla de registros (L.107-175)}:
+\begin{lstlisting}[style=phpstyle, caption={Loop de Detecciones - modulo2.blade.php}]
+@forelse($registros ?? [] as $registro)
+    @php
+        // L.120-126: Mapeo de colores por tipo
+        $colorClass = match(strtolower($registro['tipo'])) {
+            'auto' => 'bg-blue-500',
+            'moto' => 'bg-red-500',
+            'bus' => 'bg-green-500',
+            default => 'bg-gray-500'
+        };
+        
+        // L.127-128: Determinación de color según confianza
+        $conf = floatval($registro['confianza']);
+        $confColor = $conf > 90 ? 'bg-green-100' : 
+                    ($conf > 75 ? 'bg-yellow-100' : 'bg-red-100');
+        
+        // L.131-142: Mapeo de colores de vehículo a CSS
+        $vehicleColorMap = [
+            'rojo' => 'bg-red-500',
+            'azul' => 'bg-blue-500',
+            'blanco' => 'bg-gray-100 border',
+            // ... otros colores
+        ];
+    @endphp
+    
+    <tr class="hover:bg-gray-50">
+        <td>{{ $registro['fecha'] }}</td>
+        <td><span class="{{ $colorClass }}"></span> {{ $registro['tipo'] }}</td>
+        <td><span class="{{ $colorBadge }}"></span> {{ $registro['color'] }}</td>
+    </tr>
+@empty
+    <tr><td colspan="6">No se encontraron registros</td></tr>
+@endforelse
+\end{lstlisting}
+
+\paragraph{JavaScript de Gráficos (L.186-340)}
+
+\textbf{Variables globales (L.188-193)}:
+\begin{lstlisting}[language=JavaScript]
+let chartBar = null;    // Gráfico de barras
+let chartPie = null;    // Gráfico de torta
+const getSelectedCamera = () => {
+    const params = new URLSearchParams(window.location.search);
+    return params.get('camera_id') || 'CAM_002';
+};
+\end{lstlisting}
+
+\textbf{Función processAndInitCharts() (L.209-333)}:
+
+\textbf{Determinación de modo de visualización (L.211-231)}:
+\begin{lstlisting}[language=JavaScript]
+const viewMode = urlParams.get('view_mode') || 'auto';
+let isMultiDay = false;
+
+if (viewMode === 'daily') {
+    isMultiDay = true;  // Agrupar por día
+} else if (viewMode === 'hourly') {
+    isMultiDay = false;  // Agrupar por hora 0-23
+} else {
+    // Modo Automático: detecta si hay múltiples días
+    const uniqueDates = new Set(data.map(item => item.fecha.split(' ')[0]));
+    if (uniqueDates.size > 1) isMultiDay = true;
+}
+\end{lstlisting}
+
+\textbf{Procesamiento de datos (L.233-261)}:
+\begin{lstlisting}[language=JavaScript]
+const stats = {};
+const typesCount = { 'Auto': 0, 'Moto': 0, 'Bus': 0, 'Otro': 0 };
+
+data.forEach(item => {
+    const [datePart, timePart] = item.fecha.split(' ');
+    const hour = timePart.split(':')[0];
+    
+    // Clave de agrupación: fecha completa O hora
+    const key = isMultiDay ? datePart : `${hour}:00`;
+    
+    // Inicializar contador si no existe
+    if (!stats[key]) {
+        stats[key] = { 'Auto': 0, 'Moto': 0, 'Bus': 0, 'Otro': 0 };
+    }
+    
+    // Incrementar contador
+    stats[key][item.tipo]++;
+    typesCount[item.tipo]++;
+});
+\end{lstlisting}
+
+\textbf{Creación de gráfico de barras (L.292-312)}:
+\begin{lstlisting}[language=JavaScript]
+chartBar = new Chart(ctxBar, {
+    type: 'bar',
+    data: {
+        labels: sortedKeys,  // Ordenadas cronológicamente
+        datasets: [
+            { label: 'Autos', data: dataAuto, backgroundColor: '#3b82f6' },
+            { label: 'Motos', data: dataMoto, backgroundColor: '#ef4444' },
+            { label: 'Buses', data: dataBus, backgroundColor: '#10b981' }
+        ]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+            y: { beginAtZero: true, ticks: { stepSize: 1 } }
+        }
+    }
+});
+\end{lstlisting}
+
+\subsubsection{Controlador ReporteController}
+
+\textbf{Archivo}: \texttt{app/Http/Controllers/ReporteController.php} (171 líneas)
+
+\paragraph{Método obtenerRegistrosFiltrados() (L.12-73)}
+
+\textbf{Carga de XML (L.15-19)}:
+\begin{lstlisting}[style=phpstyle]
+$xmlPath = storage_path('app/vehiculos_db.xml');
+if (file_exists($xmlPath)) {
+    $xmlContent = file_get_contents($xmlPath);
+    $xml = simplexml_load_string($xmlContent);
+}
+\end{lstlisting}
+
+\textbf{Construcción de registro (L.23-30)}:
+\begin{lstlisting}[style=phpstyle]
+$registro = [
+    'fecha' => (string)$det->fecha,
+    'tipo'  => (string)$det->tipo,
+    'confianza' => (float)$det->confianza,
+    'color' => isset($det->color) ? (string)$det->color : 'desconocido',
+    'camara' => isset($det->camara) ? (string)$det->camara : 'CAM_002',
+    'nombre_camara' => isset($det->nombre_camara) ? 
+        (string)$det->nombre_camara : 'Skyline Cochabamba'
+];
+\end{lstlisting}
+
+\textbf{Aplicación de filtros (L.34-60)}:
+\begin{itemize}
+    \item \textbf{L.34-38}: Filtro por camera\_id - compara string exacto
+    \item \textbf{L.40-44}: Filtro por tipo - compara string exacto
+    \item \textbf{L.46-52}: Filtro por fecha inicio:
+    \begin{lstlisting}[style=phpstyle]
+$fechaRegistro = strtotime($registro['fecha']);
+$fechaInicio = strtotime($request->fecha_inicio . ' 00:00:00');
+if ($fechaRegistro < $fechaInicio) {
+    $incluir = false;
+}
+    \end{lstlisting}
+    \item \textbf{L.54-60}: Similar para fecha\_fin, añade '23:59:59'
+\end{itemize}
+
+\paragraph{Método exportarExcel() (L.82-140)}
+
+\textbf{Setup de archivo (L.84-92)}:
+\begin{lstlisting}[style=phpstyle]
+$registros = $this->obtenerRegistrosFiltrados($request);
+$nombreArchivo = 'reportes_' . date('Y-m-d_His') . '.csv';
+$rutaTemporal = storage_path('app/temp');
+
+if (!is_dir($rutaTemporal)) {
+    mkdir($rutaTemporal, 0755, true);
+}
+
+$rutaCompleta = $rutaTemporal . '/' . $nombreArchivo;
+\end{lstlisting}
+
+\textbf{Escritura CSV con BOM UTF-8 (L.100-122)}:
+\begin{lstlisting}[style=phpstyle]
+$archivo = fopen($rutaCompleta, 'w');
+
+// BOM para Excel UTF-8
+fprintf($archivo, chr(0xEF).chr(0xBB).chr(0xBF));
+
+// Encabezados
+fputcsv($archivo, [
+    'Fecha/Hora', 'Tipo Vehículo', 'Confianza (%)', 
+    'Color', 'Cámara', 'Nombre Cámara'
+], ',');
+
+// Datos
+foreach ($registros as $registro) {
+    fputcsv($archivo, [
+        $registro['fecha'],
+        $registro['tipo'],
+        number_format($registro['confianza'], 2),
+        $registro['color'],
+        $registro['camara'],
+        $registro['nombre_camara']
+    ], ',');
+}
+
+fclose($archivo);
+\end{lstlisting}
+
+\textbf{Descarga y auto-eliminación (L.127)}:
+\begin{lstlisting}[style=phpstyle]
+return response()->download($rutaCompleta, $nombreArchivo)
+    ->deleteFileAfterSend(true);
+\end{lstlisting}
+
+\newpage
+\subsection{Módulo 3: Automatizaciones y Administración}
+
+\subsubsection{Descripción General}
+
+Panel administrativo exclusivo para gestionar configuraciones de automatización, reglas de notificación, frecuencias de reportes y limpieza de datos XML.
+
+\subsubsection{Controlador ModuloTresController}
+
+\textbf{Archivo}: \texttt{app/Http/Controllers/ModuloTresController.php} (139 líneas)
+
+\paragraph{Método index() (L.16-26)}
+
+\textbf{Eager Loading con relaciones (L.18)}:
+\begin{lstlisting}[style=phpstyle]
+`$users = User::with('automationConfig')->get();
+`\end{lstlisting}
+
+Uso del método \texttt{with()} para cargar la relación \texttt{automationConfig} y evitar N+1 queries.
+
+\textbf{Estadísticas agregadas (L.21-23)}:
+\begin{lstlisting}[style=phpstyle]
+`$totalNotifications = Notification::count();
+`$totalReports = Report::count();
+`$activeUsers = User::where('role', '!=', 'admin')->count();
+\end{lstlisting}
+
+\paragraph{Método saveConfiguration() (L.42-60)}
+
+\textbf{Reglas de validación (L.44-53)}:
+\begin{lstlisting}[style=phpstyle]
+`$validated = $`request->validate([
+    'traffic_threshold' => 'required|integer|min:1|max:1000',
+    'traffic_minutes' => 'required|integer|min:1|max:60',
+    'notify_high_traffic' => 'boolean',
+    'notify_camera_offline' => 'boolean',
+    'camera_offline_minutes' => 'required|integer|min:1|max:120',
+    'report_frequency' => 'required|in:daily,weekly,monthly,disabled',
+    'report_generation_time' => 'required|date_format:H:i',
+    'auto_generate_reports' => 'boolean',
+]);
+\end{lstlisting}
+
+\textbf{Actualización con Eloquent (L.55-56)}:
+\begin{lstlisting}[style=phpstyle]
+`$config = AutomationConfig::getOrCreateForUser(`$userId);
+`$config->update(`$validated);
+\end{lstlisting}
+
+\subsection{Módulo 4: Accesibilidad (Comandos de Voz)}
+
+\subsubsection{VoiceCommandController}
+
+\textbf{Archivo}: \texttt{app/Http/Controllers/VoiceCommandController.php} (223 lined)
+
+\paragraph{Método store() (L.32-60)}
+
+Validación de 8 campos incluyendo pattern matching trigger.
+
+\subsubsection{Servidor voice\_server.py}
+
+\textbf{Archivo}: \texttt{deteccion/voice\_server.py} (180 líneas)
+
+\paragraph{Clase VoiceRecognitionServer (L.20-145)}
+
+\textbf{audio\_callback() (L.30-35)}: Captura audio a 16kHz, añade a cola.
+
+\textbf{process\_audio() (L.37-85)}: Reconocimiento continuo con Vosk, emite \texttt{voice\_command} y \texttt{voice\_partial}.
+
+\subsection{Módulo 5: Gestión de Usuarios}
+
+\subsubsection{UserController}
+
+Operaciones CRUD: crear con hash bcrypt, eliminar con validación de único admin, cambiar rol useradmin.
+
+\section{Arquitectura Completa de la Aplicación}
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[
+    layer/.style={rectangle, draw, fill=blue!10, minimum width=11cm, minimum height=1.2cm, font=\small},
+    component/.style={rectangle, draw, fill=green!15, minimum width=2.2cm, minimum height=0.7cm, font=\tiny},
+    service/.style={rectangle, draw, fill=orange!15, minimum width=2cm, minimum height=0.7cm, font=\tiny},
+    node distance=0.4cm and 0.3cm
+]
+    % Frontend Layer
+    \node[layer] (frontend) {\textbf{CAPA DE PRESENTACIÓN - FRONTEND}};
+    \node[component, below=of frontend, xshift=-4.5cm] (m1) {modulo1\\Detección};
+    \node[component, right=of m1] (m2) {modulo2\\Reportes};
+    \node[component, right=of m2] (m3) {modulo3\\Automatización};
+    \node[component, right=of m3] (m4) {modulo4\\Voz};
+    \node[component, right=of m4] (m5) {modulo5\\Gestión};
+    
+    % Backend Layer
+    \node[layer, below=1.5cm of m3] (backend) {\textbf{CAPA DE APLICACIÓN - LARAVEL BACKEND}};
+    \node[component, below=of backend, xshift=-4cm] (ctrl1) {VehicleMonitor\\Controller};
+    \node[component, right=of ctrl1] (ctrl2) {Reporte\\Controller};
+    \node[component, right=of ctrl2] (ctrl3) {ModuloTres\\Controller};
+    \node[component, right=of ctrl3] (ctrl4) {VoiceCommand\\Controller};
+    \node[component, right=of ctrl4] (ctrl5) {User\\Controller};
+    
+    % Services Layer
+    \node[layer, below=1.5cm of ctrl3] (services) {\textbf{SERVICIOS Y LÓGICA DE NEGOCIO}};
+    \node[service, below=of services, xshift=-2.5cm] (notif) {NotificationService};
+    \node[service, right=of notif] (report) {ReportService};
+    \node[service, right=of report] (auth) {AuthService};
+    
+    % Data Layer
+    \node[layer, below=1.5cm of report] (data) {\textbf{CAPA DE DATOS}};
+    \node[service, below=of data, xshift=-3.5cm] (mysql) {MySQL\\Database};
+    \node[service, right=of mysql] (xml) {vehiculos\_db.xml};
+    \node[service, right=of xml] (config) {users\_config.xml};
+    
+    % External Services
+    \node[layer, below=1.5cm of xml] (external) {\textbf{SERVICIOS EXTERNOS - PYTHON}};
+    \node[service, below=of external, xshift=-2cm] (detector) {vehiculo\_detector.py\\YOLOv8+Flask};
+    \node[service, right=of detector] (voice) {voice\_server.py\\Vosk+SocketIO};
+    
+    % Connections
+    \draw[-{Latex}] (m1) -- (ctrl1);
+    \draw[-{Latex}] (m2) -- (ctrl2);
+    \draw[-{Latex}] (m3) -- (ctrl3);
+    \draw[-{Latex}] (m4) -- (ctrl4);
+    \draw[-{Latex}] (m5) -- (ctrl5);
+    
+    \draw[-{Latex}] (ctrl2) -- (report);
+    \draw[-{Latex}] (ctrl3) -- (notif);
+    
+    \draw[-{Latex}] (notif) -- (mysql);
+    \draw[-{Latex}] (report) -- (mysql);
+    \draw[-{Latex}] (report) -- (xml);
+    \draw[-{Latex}] (ctrl2) -- (xml);
+    \draw[-{Latex}] (ctrl3) -- (config);
+    
+    \draw[-{Latex}] (ctrl1) -- (detector);
+    \draw[-{Latex}] (m1) -- (detector);
+    \draw[-{Latex}] (detector) -- (xml);
+    
+    \draw[-{Latex}] (m4) -- (voice);
+    
+\end{tikzpicture}
+\caption{Arquitectura Completa del Sistema PolySense}
+\end{figure}
+
+\end{document}

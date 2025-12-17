@@ -1,0 +1,144 @@
+\subsection{Módulo 3: Automatizaciones y Administración}
+
+\subsubsection{Descripción General}
+
+Panel administrativo exclusivo para gestionar configuraciones de automatización, reglas de notificación, frecuencias de reportes y limpieza de datos XML.
+
+\subsubsection{Controlador ModuloTresController}
+
+\textbf{Archivo}: \texttt{app/Http/Controllers/ModuloTresController.php} (139 líneas)
+
+\paragraph{Método index() (L.16-26)}
+
+\textbf{Eager Loading con relaciones (L.18)}:
+\begin{lstlisting}[style=phpstyle]
+`$users = User::with('automationConfig')->get();
+`\end{lstlisting}
+
+Uso del método \texttt{with()} para cargar la relación \texttt{automationConfig} y evitar N+1 queries.
+
+\textbf{Estadísticas agregadas (L.21-23)}:
+\begin{lstlisting}[style=phpstyle]
+`$totalNotifications = Notification::count();
+`$totalReports = Report::count();
+`$activeUsers = User::where('role', '!=', 'admin')->count();
+\end{lstlisting}
+
+\paragraph{Método saveConfiguration() (L.42-60)}
+
+\textbf{Reglas de validación (L.44-53)}:
+\begin{lstlisting}[style=phpstyle]
+`$validated = $`request->validate([
+    'traffic_threshold' => 'required|integer|min:1|max:1000',
+    'traffic_minutes' => 'required|integer|min:1|max:60',
+    'notify_high_traffic' => 'boolean',
+    'notify_camera_offline' => 'boolean',
+    'camera_offline_minutes' => 'required|integer|min:1|max:120',
+    'report_frequency' => 'required|in:daily,weekly,monthly,disabled',
+    'report_generation_time' => 'required|date_format:H:i',
+    'auto_generate_reports' => 'boolean',
+]);
+\end{lstlisting}
+
+\textbf{Actualización con Eloquent (L.55-56)}:
+\begin{lstlisting}[style=phpstyle]
+`$config = AutomationConfig::getOrCreateForUser(`$userId);
+`$config->update(`$validated);
+\end{lstlisting}
+
+\subsection{Módulo 4: Accesibilidad (Comandos de Voz)}
+
+\subsubsection{VoiceCommandController}
+
+\textbf{Archivo}: \texttt{app/Http/Controllers/VoiceCommandController.php} (223 lined)
+
+\paragraph{Método store() (L.32-60)}
+
+Validación de 8 campos incluyendo pattern matching trigger.
+
+\subsubsection{Servidor voice\_server.py}
+
+\textbf{Archivo}: \texttt{deteccion/voice\_server.py} (180 líneas)
+
+\paragraph{Clase VoiceRecognitionServer (L.20-145)}
+
+\textbf{audio\_callback() (L.30-35)}: Captura audio a 16kHz, añade a cola.
+
+\textbf{process\_audio() (L.37-85)}: Reconocimiento continuo con Vosk, emite \texttt{voice\_command} y \texttt{voice\_partial}.
+
+\subsection{Módulo 5: Gestión de Usuarios}
+
+\subsubsection{UserController}
+
+Operaciones CRUD: crear con hash bcrypt, eliminar con validación de único admin, cambiar rol useradmin.
+
+\section{Arquitectura Completa de la Aplicación}
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[
+    layer/.style={rectangle, draw, fill=blue!10, minimum width=11cm, minimum height=1.2cm, font=\small},
+    component/.style={rectangle, draw, fill=green!15, minimum width=2.2cm, minimum height=0.7cm, font=\tiny},
+    service/.style={rectangle, draw, fill=orange!15, minimum width=2cm, minimum height=0.7cm, font=\tiny},
+    node distance=0.4cm and 0.3cm
+]
+    % Frontend Layer
+    \node[layer] (frontend) {\textbf{CAPA DE PRESENTACIÓN - FRONTEND}};
+    \node[component, below=of frontend, xshift=-4.5cm] (m1) {modulo1\\Detección};
+    \node[component, right=of m1] (m2) {modulo2\\Reportes};
+    \node[component, right=of m2] (m3) {modulo3\\Automatización};
+    \node[component, right=of m3] (m4) {modulo4\\Voz};
+    \node[component, right=of m4] (m5) {modulo5\\Gestión};
+    
+    % Backend Layer
+    \node[layer, below=1.5cm of m3] (backend) {\textbf{CAPA DE APLICACIÓN - LARAVEL BACKEND}};
+    \node[component, below=of backend, xshift=-4cm] (ctrl1) {VehicleMonitor\\Controller};
+    \node[component, right=of ctrl1] (ctrl2) {Reporte\\Controller};
+    \node[component, right=of ctrl2] (ctrl3) {ModuloTres\\Controller};
+    \node[component, right=of ctrl3] (ctrl4) {VoiceCommand\\Controller};
+    \node[component, right=of ctrl4] (ctrl5) {User\\Controller};
+    
+    % Services Layer
+    \node[layer, below=1.5cm of ctrl3] (services) {\textbf{SERVICIOS Y LÓGICA DE NEGOCIO}};
+    \node[service, below=of services, xshift=-2.5cm] (notif) {NotificationService};
+    \node[service, right=of notif] (report) {ReportService};
+    \node[service, right=of report] (auth) {AuthService};
+    
+    % Data Layer
+    \node[layer, below=1.5cm of report] (data) {\textbf{CAPA DE DATOS}};
+    \node[service, below=of data, xshift=-3.5cm] (mysql) {MySQL\\Database};
+    \node[service, right=of mysql] (xml) {vehiculos\_db.xml};
+    \node[service, right=of xml] (config) {users\_config.xml};
+    
+    % External Services
+    \node[layer, below=1.5cm of xml] (external) {\textbf{SERVICIOS EXTERNOS - PYTHON}};
+    \node[service, below=of external, xshift=-2cm] (detector) {vehiculo\_detector.py\\YOLOv8+Flask};
+    \node[service, right=of detector] (voice) {voice\_server.py\\Vosk+SocketIO};
+    
+    % Connections
+    \draw[-{Latex}] (m1) -- (ctrl1);
+    \draw[-{Latex}] (m2) -- (ctrl2);
+    \draw[-{Latex}] (m3) -- (ctrl3);
+    \draw[-{Latex}] (m4) -- (ctrl4);
+    \draw[-{Latex}] (m5) -- (ctrl5);
+    
+    \draw[-{Latex}] (ctrl2) -- (report);
+    \draw[-{Latex}] (ctrl3) -- (notif);
+    
+    \draw[-{Latex}] (notif) -- (mysql);
+    \draw[-{Latex}] (report) -- (mysql);
+    \draw[-{Latex}] (report) -- (xml);
+    \draw[-{Latex}] (ctrl2) -- (xml);
+    \draw[-{Latex}] (ctrl3) -- (config);
+    
+    \draw[-{Latex}] (ctrl1) -- (detector);
+    \draw[-{Latex}] (m1) -- (detector);
+    \draw[-{Latex}] (detector) -- (xml);
+    
+    \draw[-{Latex}] (m4) -- (voice);
+    
+\end{tikzpicture}
+\caption{Arquitectura Completa del Sistema PolySense}
+\end{figure}
+
+\end{document}

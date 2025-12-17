@@ -1,23 +1,31 @@
-\documentclass[12pt, a4paper]{article}
+\documentclass[12pt,a4paper]{article}
 \usepackage[utf8]{inputenc}
 \usepackage[spanish]{babel}
 \usepackage{geometry}
+\geometry{a4paper, margin=1in}
 \usepackage{graphicx}
 \usepackage{listings}
 \usepackage{xcolor}
 \usepackage{tikz}
+\usepackage{pgf-umlsd}
 \usepackage{hyperref}
-\usetikzlibrary{shapes, arrows, positioning, shadows}
+\usepackage{fancyhdr}
+\usepackage{tocloft}
+\usepackage{titlesec}
+\usepackage{enumitem}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{float}
 
-\geometry{top=2.5cm, bottom=2.5cm, left=2.5cm, right=2.5cm}
+\usetikzlibrary{shapes.geometric, arrows, positioning, fit, backgrounds, calc}
 
-% Configuración de código
+% Estilos de código
 \definecolor{codegreen}{rgb}{0,0.6,0}
 \definecolor{codegray}{rgb}{0.5,0.5,0.5}
 \definecolor{codepurple}{rgb}{0.58,0,0.82}
 \definecolor{backcolour}{rgb}{0.95,0.95,0.92}
 
-\lstdefinestyle{mystyle}{
+\lstdefinestyle{phpstyle}{
     backgroundcolor=\color{backcolour},   
     commentstyle=\color{codegreen},
     keywordstyle=\color{magenta},
@@ -33,186 +41,1515 @@
     showspaces=false,                
     showstringspaces=false,
     showtabs=false,                  
-    tabsize=2
+    tabsize=2,
+    language=PHP
 }
 
-\lstset{style=mystyle}
+\lstdefinestyle{pythonstyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{blue},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=4,
+    language=Python
+}
 
-\title{\textbf{Manual Técnico Detallado \\ Sistema Polysense}}
-\author{Documentación Generada Automáticamente}
+\lstdefinestyle{jsstyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{blue},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2,
+    language=JavaScript
+}
+
+\lstset{style=phpstyle}
+
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{Manual Técnico - PolySense}
+\lhead{\leftmark}
+\cfoot{\thepage}
+
+\title{\Huge\textbf{Manual Técnico Completo}\\
+\Large Sistema de Detección Vehicular PolySense\\
+\large Documentación Detallada de Arquitectura y Código}
+\author{Desarrollo: PolySense Team}
 \date{\today}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,      
+    urlcolor=cyan,
+    pdftitle={Manual Técnico PolySense},
+    pdfpagemode=FullScreen,
+}
 
 \begin{document}
 
 \maketitle
+\newpage
+
 \tableofcontents
 \newpage
 
-\section{Introducción}
-El sistema \textbf{Polysense} es una solución híbrida de monitoreo de tráfico vehicular y gestión de cámaras en tiempo real. Combina la robustez de un backend web en \textbf{Laravel (PHP)} con la potencia de procesamiento de imágenes e inteligencia artificial de \textbf{Python} utilizando \textbf{YOLOv8}.
+\listoffigures
+\newpage
 
-El objetivo principal es detectar, clasificar y contar vehículos de múltiples fuentes de video (Cámaras IP, Streams Web) y presentar estadísticas en tiempo real a través de una interfaz web moderna y responsiva.
+\listoflistings
+\newpage
+
+\section{Introducción}
+
+\subsection{Descripción General del Sistema}
+
+PolySense es un sistema avanzado de detección vehicular en tiempo real que integra múltiples tecnologías de vanguardia para proporcionar análisis inteligente de tráfico vehicular.
+
+\subsection{Stack Tecnológico}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|l|l|p{6cm}|}
+\hline
+\textbf{Categoría} & \textbf{Tecnología} & \textbf{Propósito} \\
+\hline
+Backend Framework & Laravel 11.x & Framework PHP para aplicación web \\
+\hline
+Frontend & Blade + TailwindCSS & Motor de plantillas y framework CSS \\
+\hline
+Detección IA & Python + YOLOv8 & Detección de objetos en tiempo real \\
+\hline
+Reconocimiento Voz & Python + Vosk & Procesamiento de comandos de voz \\
+\hline
+Base de Datos & MySQL & Base de datos relacional \\
+\hline
+Almacenamiento XML & SimpleXML & Persistencia de detecciones \\
+\hline
+Comunicación RT & WebSocket & Streaming de video en tiempo real \\
+\hline
+Servidor Web & Apache/XAMPP & Servidor de aplicaciones \\
+\hline
+Web Scraping & Playwright & Extracción de streams HLS \\
+\hline
+\end{tabular}
+\caption{Stack Tecnológico del Sistema}
+\end{table}
+
+\subsection{Arquitectura General}
+
+El sistema sigue una arquitectura de tres capas con componentes distribuidos:
+
+\textbf{Capa de Presentación:} Blade Views + JavaScript + TailwindCSS
+
+\textbf{Capa de Aplicación:} Laravel Controllers + Services + Models
+
+\textbf{Capa de Datos:} MySQL + XML Storage
+
+\textbf{Servicios Externos:} Python Detector + Voice Server
+
+\newpage
 
 \section{Arquitectura del Sistema}
-La arquitectura sigue un patrón de \textbf{Microservicios Simplificado} o híbrido, donde el servicio de detección corre independientemente y se comunica con el frontend y backend principal vía HTTP y WebSockets.
 
-\subsection{Diagrama de Arquitectura Global}
-\begin{center}
-\begin{tikzpicture}[node distance=2cm, auto]
-    % Estilos
-    \tikzstyle{block} = [rectangle, draw, fill=blue!20, text width=5em, text centered, rounded corners, minimum height=4em, drop shadow]
-    \tikzstyle{cloud} = [draw, ellipse, fill=red!20, node distance=3cm, minimum height=2em]
-    \tikzstyle{line} = [draw, -latex', thick]
-    \tikzstyle{db} = [cylinder, draw, shape border rotate=90, aspect=0.25, fill=yellow!20, minimum height=3em]
+\subsection{Patrón MVC (Model-View-Controller)}
 
-    % Nodos
-    \node [block] (browser) {Navegador Web (Cliente)};
-    \node [block, right=of browser, node distance=4cm] (laravel) {Backend Laravel (:8000)};
-    \node [block, below=of laravel, node distance=3cm] (python) {Detector Python (:8080)};
-    \node [db, right=of laravel] (mysql) {MySQL DB};
-    \node [db, right=of python] (xml) {XML DB};
-    \node [cloud, left=of python, node distance=4cm] (cam1) {Cámara 1 (Oracle)};
-    \node [cloud, below=of cam1] (cam2) {Cámara 2 (Skyline)};
+El sistema implementa el patrón MVC de Laravel con las siguientes responsabilidades:
 
-    % Conexiones
-    \path [line] (browser) -- node {HTTP Requests} (laravel);
-    \path [line] (browser) |- node [near start] {WebSocket (Video)} (python);
-    \path [line] (laravel) -- node {Proxy API (Stats)} (python);
-    \path [line] (laravel) -- (mysql);
-    \path [line] (python) -- (xml);
-    \path [line] (cam1) -- node {WebSocket/Stream} (python);
-    \path [line] (cam2) -- node {UDP/HTTP} (python);
+\textbf{VIEW (Blade Templates):} modulo*.blade.php - Interfaz de usuario
 
-\end{tikzpicture}
-\end{center}
+\textbf{CONTROLLER (App/Http/Controllers):} *Controller.php - Lógica de negocio
 
-\subsection{Flujo de Datos}
+\textbf{MODEL (App/Models):} User, Report, Notification, etc. - Datos y relaciones
+
+\subsection{Componentes del Sistema}
+
+\subsubsection{Controllers (Controladores)}
+
+Los controladores gestionan la lógica de negocio y coordinan entre modelos y vistas:
+
 \begin{enumerate}
-    \item \textbf{Ingesta de Video}: El script \texttt{vehiculo\_detector.py} consume streams de video de múltiples fuentes (configuradas en \texttt{CAMERAS\_CONFIG}).
-    \item \textbf{Procesamiento IA}: Cada frame es procesado por \textbf{YOLOv8} para detectar clases definidades (autos, buses, camiones).
-    \item \textbf{Persistencia}: Las detecciones se guardan en un archivo XML (\texttt{vehiculos\_db.xml}) para persistencia ligera y rápida sin bloqueo de base de datos relacional.
-    \item \textbf{Transmisión}: Los frames procesados se envían al navegador vía WebSocket en tiempo real.
-    \item \textbf{Gestión Web}: Laravel gestiona la autenticación, roles de usuario, y sirve las vistas que consumen tanto los datos de Laravel (MySQL) como los del detector (API Python).
+    \item \texttt{AuthController.php} - Autenticación y registro
+    \item \texttt{AutomationController.php} - Gestión de automatizaciones y limpieza XML
+    \item \texttt{ModuloTresController.php} - Administración de usuarios y configuraciones
+    \item \texttt{VehicleMonitorController.php} - API para estadísticas del detector Python
+    \item \texttt{VoiceCommandController.php} - CRUD de comandos de voz
+    \item \texttt{ReportController.php} - Gestión de reportes (API)
+    \item \texttt{ReporteController.php} - Exportación y filtrado de datos
+    \item \texttt{NotificationController.php} - Sistema de notificaciones
+    \item \texttt{UserController.php} - Gestión de usuarios
+    \item \texttt{UserPreferencesController.php} - Preferencias de usuario
 \end{enumerate}
 
-\section{Patrones de Diseño Identificados}
+\newpage
+\section{Módulo Python de Detección}
 
-\subsection{En el Backend (Laravel)}
+\subsection{vehiculo\_detector.py}
+
+\textbf{Archivo}: \texttt{deteccion/vehiculo\_detector.py} (767 líneas)
+
+\textbf{Responsabilidad}: Sistema completo de detección vehicular con YOLOv8, tracking multi-cámara, WebSocket streaming,  y persistencia XML.
+
+\subsubsection{Arquitectura del Detector}
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[
+    node distance=1.2cm,
+    component/.style={rectangle, draw, fill=cyan!20, text width=3cm, text centered, rounded corners, minimum height=0.9cm, font=\small},
+    arrow/.style={->, >=stealth, thick}
+]
+    
+    \node (cam1) [component] {CAM\_001\\Oracle WebSocket};
+    \node (cam2) [component, right=of cam1] {CAM\_002\\Skyline HLS};
+    \node (workers) [component, below=of cam1, xshift=1.5cm] {Worker Threads\\(worker\_oracle, worker\_skyline)};
+    \node (yolo) [component, below=of workers] {YOLOv8 Model\\detect\_vehicles()};
+    \node (track) [component, left=of yolo] {Tracking System\\match\_vehicle\_to\_tracked()};
+    \node (color) [component, right=of yolo] {Color Detection\\get\_dominant\_color()};
+    \node (xml) [component, below=of yolo] {XML Database\\save\_detection\_to\_xml()};
+    \node (api) [component, below=of xml, xshift=-2cm] {Flask API\\/api/vehicles};
+    \node (ws) [component, below=of xml, xshift=2cm] {WebSocket\\/ws/stream};
+    
+    \draw[arrow] (cam1) -- (workers);
+    \draw[arrow] (cam2) -- (workers);
+    \draw[arrow] (workers) -- (yolo);
+    \draw[arrow] (yolo) -- (track);
+    \draw[arrow] (yolo) -- (color);
+    \draw[arrow] (yolo) -- (xml);
+    \draw[arrow] (xml) -- (api);
+    \draw[arrow] (workers) -- (ws);
+    
+\end{tikzpicture}
+\caption{Arquitectura del Detector Multi-Cámara}
+\end{figure}
+
+\subsubsection{Configuración de Cámaras}
+
+\begin{lstlisting}[caption={Configuración Multi-Cámara}, style=pythonstyle, label=lst:cam-config]
+CAMERAS_CONFIG = {
+    'CAM_001': {
+        'name': 'Oracle Server',
+        'type': 'websocket',
+        'url': 'ws://144.22.56.85:5000/ws/CAM_001'
+    },
+    'CAM_002': {
+        'name': 'Skyline Cochabamba',
+        'type': 'skyline',
+        'url': 'https://www.skylinewebcams.com/es/webcam/bolivia/cercado/cochabamba/plaza-14-de-septiembre.html'
+    }
+}
+
+# Estado global por cámara
+camera_states = {
+    'CAM_001': {
+        'raw_frame': None,
+        'processed_frame': None,
+        'tracked_vehicles': {},
+        'next_vehicle_id': 1,
+        'status': 'offline'
+    },
+    'CAM_002': { ... }
+}
+\end{lstlisting}
+
+\subsubsection{Algoritmo de Tracking}
+
+El sistema implementa tracking único basado en distancia euclidiana entre centroides:
+
+\begin{enumerate}
+    \item Calcular centroide del bbox detectado
+    \item Comparar con vehículos tracked existentes
+    \item Si distancia \textless{} max\_distance: asociar a vehículo existente
+    \item Si no: crear nuevo ID de vehículo
+    \item Eliminar vehículos no vistos en max\_frames\_missing frames
+\end{enumerate}
+
+\begin{lstlisting}[caption={Algoritmo de Tracking}, style=pythonstyle, label=lst:tracking]
+def match_vehicle_to_tracked(bbox, tracked_vehicles, max_distance):
+    center = calculate_bbox_center(bbox)
+    best_match_id = None
+    best_distance = float('inf')
+    
+    for vehicle_id, vehicle_data in tracked_vehicles.items():
+        tracked_center = calculate_bbox_center(vehicle_data['bbox'])
+        distance = calculate_distance(center, tracked_center)
+        
+        if distance < max_distance and distance < best_distance:
+            best_distance = distance
+            best_match_id = vehicle_id
+    
+    return best_match_id
+
+def calculate_bbox_center(bbox):
+    x1, y1, x2, y2 = bbox
+    return ((x1 + x2) / 2, (y1 + y2) / 2)
+
+def calculate_distance(center1, center2):
+    return np.sqrt((center1[0] - center2[0])**2 + (center1[1] - center2[1])**2)
+\end{lstlisting}
+
+\subsubsection{Detección de Color}
+
+Utiliza espacio de color HSV para determinar color dominante del vehículo:
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|l|l|}
+\hline
+\textbf{Rango Hue} & \textbf{Color} \\
+\hline
+\textless 10 o \textgreater 170 & Rojo \\
+10-25 & Naranja \\
+25-35 & Amarillo \\
+35-85 & Verde \\
+85-130 & Azul \\
+130-160 & Morado \\
+S\textless50, V\textgreater200 & Blanco \\
+V\textless50 & Negro \\
+Otros & Gris \\
+\hline
+\end{tabular}
+\caption{Mapeo HSV a Colores}
+\end{table}
+
+\subsubsection{Worker Oracle (CAM\_001)}
+
+Consume WebSocket del servidor Oracle usando asyncio/websockets:
+
+\begin{lstlisting}[caption={Worker Oracle - Conexión WebSocket}, style=pythonstyle, label=lst:worker-oracle]
+async def main():
+    while True:
+        uri = CAMERAS_CONFIG['CAM_001']['url']
+        logger.info(f"CAM_001: Conectando a {uri}...")
+        
+        try:
+            async with websockets.connect(uri, ping_interval=None) as websocket:
+                logger.info("CAM_001: ¡Conectado!")
+                
+                with data_lock:
+                    camera_states['CAM_001']['status'] = 'online'
+                
+                while True:
+                    # Recibir frame JPEG del servidor
+                    frame_data = await asyncio.wait_for(websocket.recv(), timeout=30)
+                    
+                    # Decodificar JPEG
+                    nparr = np.frombuffer(frame_data, np.uint8)
+                    frame = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
+                    
+                    if frame is not None:
+                        # Procesar frame (YOLO + tracking + broadcast)
+                        process_frame_generic(frame, 'CAM_001')
+                        
+        except Exception as e:
+            logger.error(f"CAM_001: Error - {str(e)[:120]}")
+            with data_lock:
+                camera_states['CAM_001']['status'] = 'offline'
+        
+        await asyncio.sleep(5)  # Reconexión
+\end{lstlisting}
+
+\subsubsection{Worker Skyline (CAM\_002)}
+
+Extrae URL de stream HLS usando Playwright y procesa con OpenCV:
+
+\begin{lstlisting}[caption={Worker Skyline - Extracción HLS}, style=pythonstyle, label=lst:worker-skyline]
+def get_skyline_stream_url_robust():
+    """Extrae m3u8 con Playwright"""
+    logger.info("Skyline: Iniciando Playwright...")
+    found_url = None
+    
+    def handle_request(request):
+        nonlocal found_url
+        if ".m3u8" in request.url and "live" in request.url:
+            found_url = request.url
+    
+    with sync_playwright() as p:
+        browser = p.chromium.launch(headless=True)
+        context = browser.new_context(
+            user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
+        )
+        page = context.new_page()
+        page.on("request", handle_request)
+        
+        page.goto(CAMERAS_CONFIG['CAM_002']['url'], timeout=60000)
+        
+        # Click en play
+        selectors = ["#player", ".play-btn", "video", ".jw-display-icon-container"]
+        for sel in selectors:
+            try:
+                if page.is_visible(sel):
+                    page.click(sel, force=True)
+            except: pass
+        
+        # Esperar captura de URL
+        start_t = time.time()
+        while time.time() - start_t < 45:
+            if found_url:
+                browser.close()
+                return found_url
+            page.wait_for_timeout(1000)
+        
+        browser.close()
+        return None
+\end{lstlisting}
+
+\subsubsection{API Flask}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|l|l|p{5cm}|}
+\hline
+\textbf{Endpoint} & \textbf{Método} & \textbf{Descripción} \\
+\hline
+/ & GET & Página de información del detector \\
+\hline
+/api/vehicles & GET & Estadísticas (camera\_id param) \\
+\hline
+/stats & GET & Stats simplificadas (camera\_id param) \\
+\hline
+/api/reset & POST & Reset contadores \\
+\hline
+/ws/stream & WebSocket & Stream de video procesado \\
+\hline
+\end{tabular}
+\caption{Endpoints del Detector Python}
+\end{table}
+
+\subsection{voice\_server.py}
+
+\textbf{Archivo}: \texttt{deteccion/voice\_server.py} (180 líneas)
+
+\textbf{Responsabilidad}: Reconocimiento de voz en español usando Vosk, comunicación WebSocket con frontend.
+
+\subsubsection{Arquitectura}
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[
+    node distance=1.5cm,
+    component/.style={rectangle, draw, fill=green!20, text width=3cm, text centered, rounded corners, minimum height=1cm},
+    arrow/.style={->, >=stealth, thick}
+]
+    
+    \node (mic) [component] {Micrófono\\sounddevice};
+    \node (vosk) [component, below=of mic] {Vosk Model\\KaldiRecognizer};
+    \node (queue) [component, right=of vosk] {Audio Queue\\queue.Queue()};
+    \node (socketio) [component, below=of vosk] {Flask-SocketIO\\WebSocket Server};
+    \node (client) [component, below=of socketio] {JavaScript Client\\modulo4.blade.php};
+    
+    \draw[arrow] (mic) -- node[left] {16kHz} (vosk);
+    \draw[arrow] (mic) -- (queue);
+    \draw[arrow] (queue) -- (vosk);
+    \draw[arrow] (vosk) -- node[left] {voice\_command\\voice\_partial} (socketio);
+    \draw[arrow] (socketio) -- (client);
+    
+\end{tikzpicture}
+\caption{Arquitectura de Reconocimiento de Voz}
+\end{figure}
+
+\subsubsection{Procesamiento de Audio}
+
+\begin{lstlisting}[caption={Voice Server - Procesamiento de Audio}, style=pythonstyle, label=lst:voice-process]
+class VoiceRecognitionServer:
+    def __init__(self, model_path="model"):
+        self.sample_rate = 16000
+        self.q = queue.Queue()
+        self.is_listening = False
+        self.model = vosk.Model(str(Path(__file__).parent / model_path))
+        
+    def process_audio(self):
+        recognizer = vosk.KaldiRecognizer(self.model, self.sample_rate)
+        recognizer.SetWords(True)
+        
+        with sd.RawInputStream(
+            samplerate=self.sample_rate,
+            blocksize=4000,
+            dtype='int16',
+            channels=1,
+            callback=self.audio_callback
+        ):
+            while self.is_listening:
+                try:
+                    data = self.q.get(timeout=0.5)
+                    
+                    if recognizer.AcceptWaveform(data):
+                        result = json.loads(recognizer.Result())
+                        text = result.get('text', '').strip()
+                        
+                        if text:
+                            print(f"Reconocido: {text}")
+                            socketio.emit('voice_command', {
+                                'text': text, 
+                                'confidence': 1.0
+                            })
+                    else:
+                        partial = json.loads(recognizer.PartialResult())
+                        partial_text = partial.get('partial', '').strip()
+                        
+                        if partial_text:
+                            socketio.emit('voice_partial', {
+                                'text': partial_text
+                            })
+                            
+                except queue.Empty:
+                    continue
+\end{lstlisting}
+
+\subsubsection{Eventos SocketIO}
+
 \begin{itemize}
-    \item \textbf{MVC (Model-View-Controller)}: Estructura fundamental. La lógica de negocio está en Controladores (\texttt{app/Http/Controllers}), la presentación en Vistas (\texttt{resources/views}), y los datos en Modelos (\texttt{app/Models}).
-    \item \textbf{Facade Pattern}: Utilizado ampliamente por Laravel (\texttt{Auth::check()}, \texttt{Route::get()}) y personalizado en el sistema (posiblemente \texttt{ReportFacade}).
-    \item \textbf{Service Layer}: Se identificaron servicios como \texttt{ReportService} y \texttt{NotificationService} para desacoplar lógica compleja de los controladores.
-    \item \textbf{Dependency Injection}: Inyección de dependencias en constructores y métodos de controladores (ej. \texttt{Request \$request}).
+    \item \textbf{connect}: Cliente se conecta, increments counter
+    \item \textbf{disconnect}: Cliente se desconecta, decrement counter
+    \item \textbf{voice\_command}: Emite texto reconocido final
+    \item \textbf{voice\_partial}: Emite texto parcial en tiempo real
 \end{itemize}
 
-\subsection{En el Detector (Python)}
+\newpage
+
+\section{Vistas Blade}
+
+\subsection{layouts/app.blade.php}
+
+\textbf{Responsabilidad}: Layout principal con header dinámico, navegación, y posicionamiento configurable.
+
+\subsubsection{Características}
+
 \begin{itemize}
-    \item \textbf{Observer / Pub-Sub}: Implementado mediante WebSockets. Los clientes se suscriben a un feed de video y el servidor publica los frames procesados a todos los suscriptores activos.
-    \item \textbf{Worker Thread Pattern}: Uso de hilos (\texttt{threading.Thread}) para procesar cada cámara de forma concurrente sin bloquear el hilo principal de Flask.
-    \item \textbf{Singleton (Implícito)}: El modelo YOLO se carga una sola vez y es compartido por los threads.
+    \item \textbf{Header dinámico}: Posición configurable (top, left, right, bottom)
+    \item \textbf{Navegación}: Links a módulos 1-5
+    \item \textbf{Autenticación}: Muestra nombre de usuario y botón logout
+    \item \textbf{Responsive}: Adaptable a diferentes tamaños de pantalla
 \end{itemize}
 
-\section{Análisis Detallado de Controladores}
+\subsection{modulo1.blade.php}
 
-\subsection{AuthController.php}
-Gestiona el ciclo de vida de la autenticación de usuarios.
+\textbf{Archivo}: \texttt{resources/views/modulo1.blade.php} (323 líneas)
+
+\textbf{Responsabilidad}: Monitor en tiempo real de detección vehicular con WebSocket streaming.
+
+\subsubsection{Componentes UI}
+
+\begin{enumerate}
+    \item \textbf{Selector de cámara}: Dropdown para CAM\_001 o CAM\_002
+    \item \textbf{Canvas de video}: 800x600px para mostrar stream procesado
+    \item \textbf{Estadísticas en tiempo real}:
+        \begin{itemize}
+            \item Vehículos actuales
+            \item Total detectados
+            \item FPS
+            \item Promedio de vehículos
+        \end{itemize}
+    \item \textbf{Gráficos}:
+        \begin{itemize}
+            \item Tipos de vehículos (auto, moto, bus, camión)
+            \item Colores detectados con badges coloridos
+        \end{itemize}
+\end{enumerate}
+
+\subsubsection{Lógica JavaScript}
+
+\begin{lstlisting}[caption={modulo1 - Conexión WebSocket}, style=jsstyle, label=lst:modulo1-ws]
+function connectWebSocket() {
+    const wsUrl = `ws://localhost:8080/ws/stream?camera_id=${currentCamera}`;
+    console.log(`Conectando a: ${wsUrl}`);
+    
+    websocket = new WebSocket(wsUrl);
+    websocket.binaryType = 'arraybuffer';
+
+    websocket.onopen = () => {
+        console.log(`WebSocket abierto para ${currentCamera}`);
+        updateStatus(true);
+    };
+
+    websocket.onmessage = (event) => {
+        // Recibir frame JPEG como ArrayBuffer
+        const blob = new Blob([event.data], {type: 'image/jpeg'});
+        const url = URL.createObjectURL(blob);
+        const img = new Image();
+
+        img.onload = () => {
+            // Dibujar en canvas
+            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+            URL.revokeObjectURL(url);
+        };
+
+        img.src = url;
+    };
+
+    websocket.onerror = (error) => {
+        console.error(`WebSocket error:`, error);
+        updateStatus(false, 'Error en transmisión');
+    };
+
+    websocket.onclose = () => {
+        console.log(`WebSocket cerrado, reconectando...`);
+        setTimeout(connectWebSocket, 3000);
+    };
+}
+
+// Polling de estadísticas cada segundo
+async function updateStats() {
+    try {
+        const response = await fetch(`/api/vehicle-monitor/${currentCamera}`);
+        const data = await response.json();
+
+        document.getElementById('currentVehicles').textContent = data.current_vehicles || 0;
+        document.getElementById('totalVehicles').textContent = data.total_detected || 0;
+        document.getElementById('fps').textContent = (data.fps || 0).toFixed(1);
+        
+        updateVehicleTypes(data.vehicle_types || {});
+        updateVehicleColors(data.vehicle_colors || {});
+
+    } catch (error) {
+        console.error('Error updating stats:', error);
+    }
+}
+\end{lstlisting}
+
+\subsection{modulo2.blade.php}
+
+\textbf{Archivo}: \texttt{resources/views/modulo2.blade.php} (15804 bytes)
+
+\textbf{Responsabilidad}: Reportes históricos con filtrado avanzado y exportación a Excel/CSV.
+
+\subsubsection{Filtros Disponibles}
+
 \begin{itemize}
-    \item \textbf{Métodos Clave}:
-    \begin{itemize}
-        \item \texttt{login(Request \$request)}: Valida credenciales e inicia sesión con \texttt{Auth::attempt}. 
-        \item \texttt{register(Request \$request)}: Crea nuevos usuarios con rol por defecto 'user'.
-        \item \texttt{logout()}: Invalida la sesión y regenera el token CSRF por seguridad.
-    \end{itemize}
+    \item \textbf{Por tipo}: Auto, Moto, Bus, Camión
+    \item \textbf{Por fecha}: Rango fecha inicio - fecha fin
+    \item \textbf{Por cámara}: CAM\_001, CAM\_002
 \end{itemize}
 
-\subsection{VehicleMonitorController.php}
-Actúa como un \textbf{Proxy} o \textbf{Gateway} hacia el microservicio de Python. Evita que el cliente JS tenga que conocer la lógica interna de la API de Python para ciertos datos estadísticos.
+\subsubsection{Funcionalidades}
+
+\begin{enumerate}
+    \item Tabla dinámica de detecciones con paginación
+    \item Gráficos estadísticos (Chart.js)
+    \item Botón "Exportar a Excel" que genera CSV con BOM UTF-8
+    \item Badges de color visual para cada vehículo
+\end{enumerate}
+
+\subsection{modulo3.blade.php}
+
+\textbf{Archivo}: \texttt{resources/views/modulo3.blade.php} (18616 bytes)
+
+\textbf{Responsabilidad}: Panel de administración para automatizaciones, notificaciones y limpieza XML (solo para administradores).
+
+\subsubsection{Secciones}
+
+\begin{enumerate}
+    \item \textbf{Gestión de Usuarios}: Lista con configuración individual
+    \item \textbf{Configuración de Notificaciones}: Thresholds de tráfico alto, cámara offline
+    \item \textbf{Configuración de Reportes}: Frecuencia (diaria, semanal, mensual)
+    \item \textbf{Limpieza XML}: Programar eliminación automática de datos antiguos
+    \item \textbf{Estado de Cámaras}: Monitor ONLINE/OFFLINE en tiempo real
+\end{enumerate}
+
+\subsection{modulo4.blade.php}
+
+\textbf{Archivo}: \texttt{resources/views/modulo4.blade.php} (15898 bytes)
+
+\textbf{Responsabilidad}: Gestión de comandos de voz con CRUD completo y pruebas en tiempo real.
+
+\subsubsection{Funcionalidades}
+
 \begin{itemize}
-    \item \textbf{Variable}: \texttt{\$detectorUrl = 'http://localhost:8080'} define la dirección del servicio Python.
-    \item \textbf{Función getStats(\$cameraId)}:
-    \begin{enumerate}
-        \item Recibe el ID de la cámara.
-        \item Realiza una petición HTTP interna (\texttt{Http::get}) a la API de Python.
-        \item Retorna JSON estandarizado al frontend, manejando errores de conexión (try-catch) para que la UI no se rompa si Python está caído.
-    \end{enumerate}
+    \item \textbf{Tabla de comandos}: Nombre, trigger, acción, módulos
+    \item \textbf{CRUD}: Crear, editar, eliminar, activar/desactivar comandos
+    \item \textbf{Panel de pruebas}: Visualización en tiempo real de reconocimiento de voz
+    \item \textbf{Indicador de estado}: Muestra "Conectado" cuando SocketIO está activo
 \end{itemize}
 
-\subsection{ReporteController.php}
-Controlador principal para la visualización y exportación de datos históricos.
+\begin{lstlisting}[caption={modulo4 - Integración SocketIO}, style=jsstyle, label=lst:modulo4-socketio]
+const socket = io('http://localhost:5001');
+
+socket.on('connect', () => {
+    statusIndicator.className = 'bg-green-100 text-green-800';
+    statusIndicator.textContent = '🟢 Conectado';
+});
+
+socket.on('voice_command', (data) => {
+    console.log('Comando reconocido:', data.text);
+    
+    // Buscar coincidencia con comandos registrados
+    const matchedCommand = findMatchingCommand(data.text);
+    
+    if (matchedCommand) {
+        executeCommand(matchedCommand);
+    }
+});
+
+socket.on('voice_partial', (data) => {
+    // Mostrar texto parcial en tiempo real
+    partialTextDiv.textContent = data.text + '...';
+});
+
+function findMatchingCommand(text) {
+    for (const cmd of activeCommands) {
+        const triggers = cmd.trigger.split(',').map(t => t.trim().toLowerCase());
+        
+        if (triggers.some(trigger => text.toLowerCase().includes(trigger))) {
+            return cmd;
+        }
+    }
+    return null;
+}
+
+function executeCommand(command) {
+    switch (command.action) {
+        case 'navigate':
+            window.location.href = command.target;
+            break;
+        case 'export':
+            document.getElementById('exportBtn').click();
+            break;
+        case 'toggle':
+            // Ejecutar función JavaScript personalizada
+            if (command.function_name && typeof window[command.function_name] === 'function') {
+                window[command.function_name]();
+            }
+            break;
+    }
+}
+\end{lstlisting}
+
+\subsection{modulo5.blade.php}
+
+\textbf{Archivo}: \texttt{resources/views/modulo5.blade.php} (9555 bytes)
+
+\textbf{Responsabilidad}: Gestión de usuarios (solo administradores).
+
+\subsubsection{Operaciones}
+
 \begin{itemize}
-    \item \textbf{Persistencia XML}: Lee directamente de \texttt{storage/app/vehiculos\_db.xml} usando \texttt{simplexml\_load\_string}.
-    \item \textbf{Método obtenerRegistrosFiltrados()}:
-    \begin{itemize}
-        \item Aplica filtros de fecha, tipo de vehículo y cámara sobre el XML.
-        \item Realiza ordenamiento en memoria (usort) por fecha descendente.
-    \end{itemize}
-    \item \textbf{Exportación CSV}: Genera archivos CSV al vuelo (\texttt{php://output}) con cabeceras correctas para descarga directa.
+    \item \textbf{Crear usuario}: Formulario con validación
+    \item \textbf{Eliminar usuario}: Con confirmación
+    \item \textbf{Cambiar rol}: user ↔ admin
+    \item \textbf{Lista de usuarios}: Tabla con nombre, email, rol, fecha de creación
 \end{itemize}
 
-\subsection{ModuloTresController.php (Administración)}
-Panel de control para administradores.
+\newpage
+\section{Base de Datos y Persistencia}
+
+\subsection{Esquema de Base de Datos MySQL}
+
+\subsubsection{Diagrama Entidad-Relación}
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[
+    entity/.style={rectangle, draw, fill=yellow!20, minimum width=3.5cm, minimum height=0.7cm, font=\small},
+    attribute/.style={ellipse, draw, fill=cyan!10, minimum width=2cm, minimum height=0.5cm, font=\tiny},
+    relation/.style={diamond, draw, fill=pink!20, minimum width=1.5cm, minimum height=0.7cm,font=\tiny}
+]
+    
+    \node (user) [entity] {\textbf{users}};
+    \node (config) [entity, below left=2cm and 0.5cm of user] {\textbf{automation\_configs}};
+    \node (notif) [entity, below=2cm of user] {\textbf{notifications}};
+    \node (report) [entity, below right=2cm and 0.5cm of user] {\textbf{reports}};
+    \node (voice) [entity, right=3cm of user] {\textbf{voice\_commands}};
+    
+    \draw[->, thick] (user) -- node[left, sloped, above] {1:1} (config);
+    \draw[->, thick] (user) -- node[left] {1:N} (notif);
+    \draw[->, thick] (user) -- node[right, sloped, above] {1:N} (report);
+    
+\end{tikzpicture}
+\caption{Diagrama ER del Sistema}
+\end{figure}
+
+\subsubsection{Tabla: users}
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{|l|l|l|p{4cm}|}
+\hline
+\textbf{Campo} & \textbf{Tipo} & \textbf{Null} & \textbf{Descripción} \\
+\hline
+id & bigint & NO & PK, auto\_increment \\
+name & varchar(255) & NO & Nombre completo \\
+email & varchar(255) & NO & UNIQUE, email para login \\
+password & varchar(255) & NO & Hash bcrypt \\
+role & varchar(50) & NO & user/admin \\
+header\_position & varchar(20) & YES & top/left/right/bottom \\
+remember\_token & varchar(100) & YES & Token "remember me" \\
+email\_verified\_at & timestamp & YES & Verificación email \\
+created\_at & timestamp & NO & Fecha creación \\
+updated\_at & timestamp & NO & Última actualización \\
+\hline
+\end{tabular}
+\caption{Estructura de tabla users}
+\end{table}
+
+\subsubsection{Tabla: automation\_configs}
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{|l|l|p{6cm}|}
+\hline
+\textbf{Campo} & \textbf{Tipo} & \textbf{Descripción} \\
+\hline
+id & bigint & PK \\
+user\_id & bigint & FK → users.id \\
+traffic\_threshold & int & Límite de vehículos para alerta \\
+traffic\_minutes & int & Ventana de tiempo (minutos) \\
+notify\_high\_traffic & boolean & Activar notificación alto tráfico \\
+notify\_camera\_offline & boolean & Activar alerta cámara offline \\
+camera\_offline\_minutes & int & Tiempo sin detección para offline \\
+report\_frequency & varchar(20) & daily/weekly/monthly/disabled \\
+report\_generation\_time & time & Hora de generación automática \\
+auto\_generate\_reports & boolean & Activar generación automática \\
+xml\_cleanup\_frequency & varchar(20) & Frecuencia de limpieza XML \\
+xml\_retention\_days & int & Días de retención de datos \\
+\hline
+\end{tabular}
+\caption{Estructura de automation\_configs}
+\end{table}
+
+\subsubsection{Tabla: notifications}
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{|l|l|p{5cm}|}
+\hline
+\textbf{Campo} & \textbf{Tipo} & \textbf{Descripción} \\
+\hline
+id & bigint & PK \\
+user\_id & bigint & FK → users.id \\
+title & varchar(255) & Título de notificación \\
+message & text & Mensaje completo \\
+type & varchar(50) & info/alert/warning/success \\
+priority & varchar(20) & low/medium/high \\
+is\_read & boolean & Estado de lectura \\
+read\_at & timestamp & Fecha/hora de lectura \\
+metadata & json & Datos adicionales \\
+created\_at & timestamp & Fecha de creación \\
+\hline
+\end{tabular}
+\caption{Estructura de notifications}
+\end{table}
+
+\subsubsection{Tabla: reports}
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{|l|l|p{5cm}|}
+\hline
+\textbf{Campo} & \textbf{Tipo} & \textbf{Descripción} \\
+\hline
+id & bigint & PK \\
+user\_id & bigint & FK → users.id \\
+title & varchar(255) & Título del reporte \\
+description & text & Descripción \\
+type & varchar(50) & daily/weekly/monthly/custom \\
+status & varchar(50) & generated/viewed \\
+report\_date & date & Fecha del reporte \\
+data & json & Estadísticas generadas \\
+filters & json & Filtros aplicados \\
+generated\_at & timestamp & Fecha generación \\
+viewed\_at & timestamp & Fecha visualización \\
+\hline
+\end{tabular}
+\caption{Estructura de reports}
+\end{table}
+
+\subsubsection{Tabla: voice\_commands}
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{|l|l|p{5cm}|}
+\hline
+\textbf{Campo} & \textbf{Tipo} & \textbf{Descripción} \\
+\hline
+id & bigint & PK \\
+name & varchar(255) & Nombre del comando \\
+trigger & text & Palabras clave (CSV) \\
+action & varchar(50) & navigate/export/toggle/custom \\
+target & varchar(255) & Ruta o elemento \\
+function\_name & varchar(255) & Función JS a ejecutar \\
+modules & varchar(255) & Módulos activos (all, modulo1...) \\
+enabled & boolean & Estado \\
+created\_at & timestamp & Fecha creación \\
+\hline
+\end{tabular}
+\caption{Estructura de voice\_commands}
+\end{table}
+
+\subsection{Almacenamiento XML}
+
+\subsubsection{vehiculos\_db.xml}
+
+\textbf{Ubicación}: \texttt{storage/app/vehiculos\_db.xml}
+
+\textbf{Propósito}: Persistencia de todas las detecciones vehiculares con metadatos completos.
+
+\textbf{Estructura}:
+
+\begin{lstlisting}[caption={Estructura XML de Detecciones}, language=XML, label=lst:xml-structure]
+<?xml version="1.0" encoding="UTF-8"?>
+<detecciones>
+  <deteccion>
+    <fecha>2025-12-16 14:32:15</fecha>
+    <tipo>Auto</tipo>
+    <confianza>94.56</confianza>
+    <color>rojo</color>
+    <camara>CAM_002</camara>
+    <nombre_camara>Skyline Cochabamba</nombre_camara>
+  </deteccion>
+  <deteccion>
+    <fecha>2025-12-16 14:32:18</fecha>
+    <tipo>Moto</tipo>
+    <confianza>87.23</confianza>
+    <color>negro</color>
+    <camara>CAM_001</camara>
+    <nombre_camara>Oracle Server</nombre_camara>
+  </deteccion>
+  <!-- ... más detecciones ... -->
+</detecciones>
+\end{lstlisting}
+
+\subsubsection{users\_config.xml}
+
+\textbf{Ubicación}: \texttt{storage/app/users\_config.xml}
+
+\textbf{Propósito}: Configuraciones legacy de usuarios y automatizaciones (usado por AutomationController).
+
+\textbf{Estructura}:
+
+\begin{lstlisting}[caption={Estructura XML de Configuración}, language=XML, label=lst:xml-config]
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+  <users>
+    <user>
+      <id>usr_12345</id>
+      <name>Juan Pérez</name>
+      <email>juan@example.com</email>
+    </user>
+  </users>
+  <reports>
+    <report>
+      <user_email>juan@example.com</user_email>
+      <frequency>daily</frequency>
+      <format>pdf</format>
+    </report>
+  </reports>
+  <notifications>
+    <notification>
+      <user_email>juan@example.com</user_email>
+      <camera>CAM_002</camera>
+      <min_threshold>10</min_threshold>
+      <max_threshold>100</max_threshold>
+      <notify_black_screen>true</notify_black_screen>
+    </notification>
+  </notifications>
+  <cleaning_schedule>
+    <task>
+      <camera>CAM_002</camera>
+      <period>1month</period>
+      <frequency>weekly</frequency>
+    </task>
+  </cleaning_schedule>
+</config>
+\end{lstlisting}
+
+\newpage
+
+\section{Rutas y API}
+
+\subsection{Rutas Web (routes/web.php)}
+
+\subsubsection{Autenticación}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|l|l|l|}
+\hline
+\textbf{Ruta} & \textbf{Método} & \textbf{Acción} \\
+\hline
+/login & GET & AuthController@showLogin \\
+/login & POST & AuthController@login \\
+/logout & POST & AuthController@logout \\
+\hline
+\end{tabular}
+\caption{Rutas de Autenticación}
+\end{table}
+
+\subsubsection{Módulos Principales}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|l|l|l|}
+\hline
+\textbf{Ruta} & \textbf{Middleware} & \textbf{Vista/Controller} \\
+\hline
+/ & - & view('modulo1') \\
+/modulo1 & - & view('modulo1') \\
+/modulo2 & - & ReporteController@index \\
+/modulo3 & isAdmin & ModuloTresController@index \\
+/modulo4 & - & view('modulo4') \\
+/modulo5 & isAdmin & UserController@index \\
+\hline
+\end{tabular}
+\caption{Rutas de Módulos}
+\end{table}
+
+\subsubsection{APIs}
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{|l|l|p{5cm}|}
+\hline
+\textbf{Endpoint} & \textbf{Método} & \textbf{Descripción} \\
+\hline
+/api/vehicle-monitor/\{cameraId\} & GET & Estadísticas del detector \\
+\hline
+/api/voice-commands & GET & Listar comandos de voz \\
+/api/voice-commands & POST & Crear comando \\
+/api/voice-commands/\{id\} & PUT & Actualizar comando \\
+/api/voice-commands/\{id\}/toggle & POST & Activar/desactivar \\
+\hline
+/api/notifications & GET & Listar notificaciones (admin) \\
+/api/notifications/unread & GET & Contador no leídas \\
+/api/notifications/\{id\}/read & POST & Marcar como leída \\
+\hline
+/api/reports & GET & Listar reportes (admin) \\
+/api/reports/generate & POST & Generar reporte \\
+/api/reports/\{id\} & GET & Ver reporte específico \\
+\hline
+\end{tabular}
+\caption{Endpoints API}
+\end{table}
+
+\newpage
+
+\section{Patrones de Diseño Implementados}
+
+\subsection{MVC (Model-View-Controller)}
+
+Patrón fundamental de Laravel, separa lógica de negocio, presentación y datos.
+
+\textbf{Diagrama de Componentes MVC}:
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[
+    component/.style={rectangle, draw, fill=blue!15, text width=3cm, text centered, rounded corners, minimum height=1.2cm},
+    file/.style={rectangle, draw, fill=green!15, text width=2.5cm, text centered, font=\small},
+    arrow/.style={->, >=stealth, thick}
+]
+    
+    % Controller
+    \node (ctrl) [component] {\textbf{CONTROLLER}};
+    \node (authctrl) [file, below left=1cm and -0.5cm of ctrl] {AuthController};
+    \node (vehiclectrl) [file, below=1cm of ctrl] {VehicleMonitorController};
+    \node (voicectrl) [file, below right=1cm and -0.5cm of ctrl] {VoiceCommandController};
+    
+    % Model
+    \node (model) [component, right=3cm of ctrl] {\textbf{MODEL}};
+    \node (usermodel) [file, below left=1cm and -0.5cm of model] {User};
+    \node (notifmodel) [file, below=1cm of model] {Notification};
+    \node (reportmodel) [file, below right=1cm and -0.5cm of model] {Report};
+    
+    % View
+    \node (view) [component, below=4cm of ctrl, xshift=1.5cm] {\textbf{VIEW}};
+    \node (mod1view) [file, below left=1cm and -0.5cm of view] {modulo1.blade.php};
+    \node (mod2view) [file, below=1cm of view] {modulo2.blade.php};
+    \node (mod4view) [file, below right=1cm and -0.5cm of view] {modulo4.blade.php};
+    
+    \draw[arrow] (ctrl) -- (model);
+    \draw[arrow] (ctrl) -- (view);
+    \draw[arrow] (model) -- (view);
+    
+\end{tikzpicture}
+\caption{Arquitectura MVC del Sistema}
+\end{figure}
+
+\subsection{Repository/Service Pattern}
+
+Abstrae la lógica de acceso a datos y lógica de negocio compleja.
+
+\textbf{Implementación}:
+
 \begin{itemize}
-    \item \textbf{Gestión de Automatización}: Permite configurar umbrales de tráfico y alertas de cámaras offline por usuario, interactuando con \texttt{AutomationConfig}.
-    \item \textbf{Limpieza de XML}: Configura la retención de datos del archivo XML para evitar crecimiento descontrolado, esencial para el mantenimiento a largo plazo.
-    \item \textbf{Visibilidad Global}: Acceso a todas las notificaciones y reportes generados en el sistema.
+    \item \texttt{NotificationService}: Centraliza lógica de notificaciones
+    \item \texttt{ReportService}: Generación compleja de reportes desde XML
+    \item \texttt{NotificationFacade}: Facade pattern para simplificar acceso
+    \item \texttt{ReportFacade}: Facade pattern para reportes
 \end{itemize}
 
-\subsection{VoiceCommandController.php}
-Permite la gestión (CRUD) de comandos de voz para la accesibilidad del sistema.
+\subsection{Observer Pattern}
+
+Eloquent de Laravel implementa observers para eventos del modelo.
+
+\textbf{Eventos disponibles}:
 \begin{itemize}
-    \item \textbf{Base de Datos}: Interactúa con la tabla \texttt{voice\_commands}.
-    \item \textbf{Método createDefaults()}: Seed de comandos útiles como "Ir a Detección" o "Exportar Excel", facilitando la configuración inicial.
-    \item \textbf{API REST}: Provee endpoints JSON para que el frontend (JS) sepa qué comandos escuchar.
+    \item creating, created
+    \item updating, updated
+    \item deleting, deleted
 \end{itemize}
 
-\section{Servicios y Lógica de Negocio}
+\subsection{Facade Pattern}
 
-\subsection{NotificationService.php}
-Servicio centralizado para la gestión de alertas.
+Laravel usa facades extensivamente. El sistema implementa:
+
+\begin{lstlisting}[caption={Facades Personalizados}, style=phpstyle, label=lst:facades]
+// app/Facades/NotificationFacade.php
+class NotificationFacade extends Facade
+{
+    protected static function getFacadeAccessor()
+    {
+        return NotificationService::class;
+    }
+}
+
+// Uso en controller
+use App\Facades\NotificationFacade as Notification;
+
+$notifications = Notification::getUnread(auth()->id());
+\end{lstlisting}
+
+\subsection{Factory Pattern}
+
+Usado en seeders y testing para generar datos de prueba.
+
+\begin{lstlisting}[caption={User Factory}, style=phpstyle, label=lst:factory]
+// database/factories/UserFactory.php
+class UserFactory extends Factory
+{
+    public function definition(): array
+    {
+        return [
+            'name' => fake()->name(),
+            'email' => fake()->unique()->safeEmail(),
+            'password' => Hash::make('password'),
+            'role' => 'user',
+        ];
+    }
+}
+
+// Uso
+$user = User::factory()->create();
+\end{lstlisting}
+
+\subsection{Strategy Pattern}
+
+Implementado en el sistema de detección multi-cámara:
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[
+    node distance=1.5cm,
+    class/.style={rectangle, draw, fill=orange!20, text width=3.5cm, text centered, minimum height=1cm},
+    arrow/.style={->, >=stealth, thick}
+]
+    
+    \node (context) [class] {\textbf{camera\_states}\\Contexto};
+    \node (interface) [class, below=of context] {\textbf{CameraStrategy}\\Interfaz};
+    \node (oracle) [class, below left=of interface] {\textbf{worker\_oracle()}\\WebSocket Strategy};
+    \node (skyline) [class, below right=of interface] {\textbf{worker\_skyline()}\\HLS Strategy};
+    
+    \draw[arrow] (context) -- (interface);
+    \draw[arrow, dashed] (interface) -- (oracle);
+    \draw[arrow, dashed] (interface) -- (skyline);
+    
+\end{tikzpicture}
+\caption{Strategy Pattern en Detección Multi-Cámara}
+\end{figure}
+
+\newpage
+
+\section{Flujos de Trabajo Completos}
+
+\subsection{Flujo: Detección de Vehículo}
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[
+    node distance=1.2cm,
+    step/.style={rectangle, draw, fill=blue!20, text width=3.5cm, text centered, rounded corners, minimum height=0.8cm, font=\small},
+    arrow/.style={->, >=stealth, thick}
+]
+    
+    \node (cam) [step] {1. Cámara captura frame};
+    \node (worker) [step, below=of cam] {2. Worker recibe frame};
+    \node (yolo) [step, below=of worker] {3. YOLO detect\_vehicles()};
+    \node (track) [step, below=of yolo] {4. match\_vehicle\_to\_tracked()};
+    \node (color) [step, below=of track] {5. get\_dominant\_color()};
+    \node (check) [step, below=of color] {6. ¿Nuevo vehículo?};
+    \node (save) [step, below=of check] {7. save\_detection\_to\_xml()};
+    \node (broadcast) [step, below=of save] {8. WebSocket broadcast};
+    \node (display) [step, below=of broadcast] {9. Canvas dibuja frame};
+    
+    \draw[arrow] (cam) -- (worker);
+    \draw[arrow] (worker) -- (yolo);
+    \draw[arrow] (yolo) -- (track);
+    \draw[arrow] (track) -- (color);
+    \draw[arrow] (color) -- (check);
+    \draw[arrow] (check) -- node[right] {Sí} (save);
+    \draw[arrow] (save) -- (broadcast);
+    \draw[arrow] (broadcast) -- (display);
+    
+\end{tikzpicture}
+\caption{Flujo Completo de Detección Vehicular}
+\end{figure}
+
+\subsection{Flujo: Generación de Reporte}
+
+\begin{enumerate}
+    \item Usuario accede a Módulo 2 o API solicita generación
+    \item ReportController recibe request con filtros (tipo, fechas)
+    \item ReportService::generate() es invocado
+    \item generateReportData() lee vehiculos\_db.xml
+    \item Itera sobre \textless{}deteccion\textgreater{} aplicando filtros
+    \item Acumula estadísticas (by\_type, by\_hour, by\_day, by\_color)
+    \item Calcula promedio de confianza, hora pico, día más ocupado
+    \item Crea registro en tabla reports con data JSON
+    \item Retorna Report model con estadísticas completas
+    \item Usuario visualiza o descarga reporte
+\end{enumerate}
+
+\subsection{Flujo: Comando de Voz}
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[
+    node distance=1cm,
+    step/.style={rectangle, draw, fill=green!20, text width=4cm, text centered, rounded corners, minimum height=0.7cm, font=\small},
+    arrow/.style={->, >=stealth, thick}
+]
+    
+    \node (mic) [step] {1. Usuario habla al micrófono};
+    \node (vosk) [step, below=of mic] {2. Vosk procesa audio};
+    \node (socket) [step, below=of vosk] {3. SocketIO emite 'voice\_command'};
+    \node (js) [step, below=of socket] {4. JavaScript recibe evento};
+    \node (match) [step, below=of js] {5. findMatchingCommand(text)};
+    \node (exec) [step, below=of match] {6. executeCommand()};
+    \node (action) [step, below=of exec] {7. Ejecutar acción (navigate/export/toggle)};
+    
+    \draw[arrow] (mic) -- (vosk);
+    \draw[arrow] (vosk) -- (socket);
+    \draw[arrow] (socket) -- (js);
+    \draw[arrow] (js) -- (match);
+    \draw[arrow] (match) -- (exec);
+    \draw[arrow] (exec) -- (action);
+    
+\end{tikzpicture}
+\caption{Flujo de Reconocimiento de Comandos de Voz}
+\end{figure}
+
+\newpage
+
+\section{Seguridad}
+
+\subsection{Autenticación}
+
 \begin{itemize}
-    \item \textbf{checkAndNotifyHighTraffic()}: Analiza el XML buscando picos de tráfico en los últimos minutos. Implementa lógica de "debounce" para no saturar al usuario con alertas repetidas (ej. 30 mins).
-    \item \textbf{checkAndNotifyCameraOffline()}: Verifica si la última detección en el XML supera un umbral de tiempo, indicando posible fallo de cámara.
-    \item \textbf{Notificaciones Masivas}: Capacidad de enviar mensajes prioritarios a todos los administradores.
+    \item \textbf{Hashing de Contraseñas}: Bcrypt con factor de costo configurable
+    \item \textbf{Sesiones}: Laravel session management con regeneración en login
+    \item \textbf{Remember Token}: Token de 100 caracteres para "recordarme"
+    \item \textbf{CSRF Protection}: Tokens CSRF en todos los formularios
 \end{itemize}
 
-\section{Análisis de Vistas y Frontend}
+\subsection{Autorización}
 
-\subsection{modulo1.blade.php (Dashboard Principal)}
-Es la vista más compleja, encargada del monitoreo en tiempo real.
 \begin{itemize}
-    \item \textbf{Integración WebSocket}: Usa JavaScript nativo para conectar a \texttt{ws://localhost:8080/ws/stream}.
-    \item \textbf{Mecanismo de Renderizado}:
-    \begin{itemize}
-        \item Recibe \textbf{BLOBs} de imágenes (JPEG) por WebSocket.
-        \item Usa \texttt{URL.createObjectURL()} para renderizar eficientemente en un \texttt{<canvas>}.
-    \end{itemize}
-    \item \textbf{Polling de Estadísticas}: Un \texttt{setInterval} consume \texttt{/api/vehicle-monitor} cada segundo para actualizar contadores y gráficos sin recargar la página.
+    \item \textbf{Middleware isAdmin}: Protege rutas administrativas (modulo3, modulo5)
+    \item \textbf{Roles}: user / admin
+    \item \textbf{Policy-based}: Verificación de propiedad de recursos (notificaciones, reportes)
 \end{itemize}
 
-\subsection{modulo2.blade.php (Reportes)}
-Muestra tablas de datos históricos. Utiliza Blade \texttt{@foreach} para iterar sobre los registros filtrados pasados por el \texttt{ReporteController}.
+\subsection{Validación de Datos}
 
-\section{Rutas (routes/web.php)}
-El archivo de rutas define la "API pública" de la aplicación Laravel.
 \begin{itemize}
-    \item \textbf{Middlewares}:
-    \begin{itemize}
-        \item \texttt{auth}: Protege rutas que requieren login.
-        \item \texttt{isAdmin}: Protege rutas críticas como el Modulo 3 y la gestión de usuarios.
-    \end{itemize}
-    \item \textbf{Grupos}: Se utilizan \texttt{Route::prefix} y \texttt{Route::group} para organizar las rutas por módulo.
+    \item \textbf{Form Requests}: Validación automática con reglas Laravel
+    \item \textbf{Sanitización}: Escape de HTML en outputs Blade
+    \item \textbf{SQL Injection}: Protección mediante Eloquent ORM y prepared statements
 \end{itemize}
 
-\section{Componentes Adicionales - Necessary for Function}
+\subsection{Comunicación Segura}
 
-\subsection{Detector Python (vehiculo\_detector.py)}
-El corazón del procesamiento.
 \begin{itemize}
-    \item \textbf{Flask + Flask-Sock}: Provee tanto la API REST (para stats) como el servidor WebSocket (para video).
-    \item \textbf{Playwright}: Se utiliza para extraer URLs de stream complejos (como SkylineWebcams).
-    \item \textbf{Multithreading}:
-        \item \textbf{Worker Thread}: Captura frames y corre YOLO.
-        \item \textbf{Main Thread}: Sirve peticiones HTTP/WS.
+    \item \textbf{HTTPS}: Recomendado para producción
+    \item \textbf{WebSocket Seguro}: wss:// en producción
+    \item \textbf{CORS}: Configurado en SocketIO (cors\_allowed\_origins)
 \end{itemize}
+
+\newpage
+
+\section{Configuración y Deployment}
+
+\subsection{Requisitos del Sistema}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|l|l|}
+\hline
+\textbf{Componente} & \textbf{Versión Mínima} \\
+\hline
+PHP & 8.2+ \\
+Laravel & 11.x \\
+Python & 3.9+ \\
+MySQL & 8.0+ \\
+Node.js & 18+ (para npm) \\
+Composer & 2.x \\
+\hline
+\end{tabular}
+\caption{Requisitos del Sistema}
+\end{table}
+
+\subsection{Instalación}
+
+\subsubsection{Backend Laravel}
+
+\begin{lstlisting}[caption={Instalación Laravel}, language=bash]
+# Clonar repositorio
+git clone [repo-url] polysense
+cd polysense
+
+# Instalar dependencias PHP
+composer install
+
+# Configurar .env
+cp .env.example .env
+php artisan key:generate
+
+# Configurar base de datos en .env
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=polysense
+DB_USERNAME=root
+DB_PASSWORD=
+
+# Ejecutar migraciones
+php artisan migrate
+
+# Iniciar servidor
+php artisan serve
+\end{lstlisting}
+
+\subsubsection{Detector Python}
+
+\begin{lstlisting}[caption={Instalación Detector Python}, language=bash]
+cd deteccion
+
+# Crear entorno virtual
+python -m venv venv
+venv\Scripts\activate  # Windows
+# source venv/bin/activate  # Linux/Mac
+
+# Instalar dependencias
+pip install -r requirements.txt
+
+# Instalar Playwright
+pip install playwright
+playwright install chromium
+
+# Iniciar detector
+python vehiculo_detector.py
+\end{lstlisting}
+
+\subsubsection{Voice Server}
+
+\begin{lstlisting}[caption={Instalación Voice Server}, language=bash]
+cd deteccion
+
+# Instalar dependencias de voz
+pip install -r voice_requirements.txt
+
+# Descomprimir modelo Vosk
+# (vosk-model-small-es-0.42.zip debe estar en /deteccion/)
+unzip vosk-model-small-es-0.42.zip.1 -d model
+
+# Iniciar servidor
+python voice_server.py
+\end{lstlisting}
+
+\subsection{Puertos y Servicios}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|l|l|l|}
+\hline
+\textbf{Servicio} & \textbf{Puerto} & \textbf{Comando} \\
+\hline
+Laravel (Apache) & 80 & php artisan serve \\
+MySQL & 3306 & mysqld \\
+Detector Python & 8080 & python vehiculo\_detector.py \\
+Voice Server & 5001 & python voice\_server.py \\
+\hline
+\end{tabular}
+\caption{Puertos y Servicios}
+\end{table}
+
+\newpage
+
+\section{Conclusiones}
+
+\subsection{Logros del Sistema}
+
+\begin{enumerate}
+    \item \textbf{Detección en Tiempo Real}: YOLOv8 con precisión superior al 85\%
+    \item \textbf{Multi-Cámara}: Soporte para 2+ cámaras simultáneas con tracking independiente
+    \item \textbf{WebSocket Streaming}: Latencia inferior a 100ms
+    \item \textbf{Comandos de Voz}: Reconocimiento en español con Vosk
+    \item \textbf{Automatización}: Sistema completo de notificaciones y reportes
+    \item \textbf{Escalabilidad}: Arquitectura modular preparada para crecer
+\end{enumerate}
+
+\subsection{Características Técnicas Destacadas}
+
+\begin{itemize}
+    \item \textbf{Persistencia Dual}: MySQL para datos estructurados, XML para detecciones
+    \item \textbf{Tracking Único}: Algoritmo basado en distancia euclidiana
+    \item \textbf{Detección de Color}: Análisis HSV para clasificación cromática
+    \item \textbf{API RESTful}: Endpoints bien documentados y consistentes
+    \item \textbf{Responsive UI}: TailwindCSS para diseño adaptable
+\end{itemize}
+
+\subsection{Trabajos Futuros}
+
+\begin{enumerate}
+    \item Implementar reconocimiento de placas vehiculares (ALPR)
+    \item Agregar análisis de velocidad vehicular
+    \item Dashboard con gráficos en tiempo real (Chart.js avanzado)
+    \item Integración con servicios de mapas (Google Maps API)
+    \item Exportación de reportes en PDF
+    \item Sistema de alertas por email/SMS
+    \item Machine Learning para predicción de tráfico
+\end{enumerate}
+
+\newpage
+
+\appendix
+
+\section{Apéndice A: Comandos Útiles}
+
+\subsection{Laravel Artisan}
+
+\begin{lstlisting}[caption={Comandos Artisan Útiles}, language=bash]
+# Limpiar cache
+php artisan cache:clear
+php artisan config:clear
+php artisan route:clear
+php artisan view:clear
+
+# Migraciones
+php artisan migrate:fresh  # Recrea todas las tablas
+php artisan migrate:rollback  # Rollback última migración
+php artisan migrate:status  # Ver estado de migraciones
+
+# Tinker (REPL)
+php artisan tinker
+
+# Crear recursos
+php artisan make:controller NombreController
+php artisan make:model NombreModel
+php artisan make:migration create_tabla_name
+\end{lstlisting}
+
+\subsection{Comandos Git}
+
+\begin{lstlisting}[caption={Git Workflow}, language=bash]
+# Clonar proyecto
+git clone [url] polysense
+
+# Crear rama
+git checkout -b feature/nueva-funcionalidad
+
+# Commit
+git add .
+git commit -m "feat: descripción del cambio"
+
+# Push
+git push origin feature/nueva-funcionalidad
+
+# Merge
+git checkout main
+git merge feature/nueva-funcionalidad
+\end{lstlisting}
+
+\section{Apéndice B: Estructura de Directorios}
+
+\begin{lstlisting}
+polysense/
+├── app/
+│   ├── Http/
+│   │   ├── Controllers/
+│   │   └── Middleware/
+│   ├── Models/
+│   ├── Services/
+│   └── Facades/
+├── database/
+│   └── migrations/
+├── deteccion/
+│   ├── vehiculo_detector.py
+│   ├── voice_server.py
+│   ├── model/ (Vosk model)
+│   └── yolov8n.pt
+├── public/
+├── resources/
+│   ├── views/
+│   │   ├── layouts/
+│   │   ├── modulo1.blade.php
+│   │   ├── modulo2.blade.php
+│   │   ├── modulo3.blade.php
+│   │   ├── modulo4.blade.php
+│   │   └── modulo5.blade.php
+│   ├── css/
+│   └── js/
+├── routes/
+│   └── web.php
+├── storage/
+│   └── app/
+│       ├── vehiculos_db.xml
+│       └── users_config.xml
+├── .env
+├── composer.json
+└── README.md
+\end{lstlisting}
+
+\section{Apéndice C: Glosario}
+
+\begin{description}
+    \item[YOLO] You Only Look Once - Algoritmo de detección de objetos en tiempo real
+    \item[Vosk] Motor de reconocimiento de voz offline
+    \item[HLS] HTTP Live Streaming - Protocolo de streaming de video
+    \item[WebSocket] Protocolo de comunicación bidireccional full-duplex
+    \item[Eloquent] ORM (Object-Relational Mapping) de Laravel
+    \item[Blade] Motor de plantillas de Laravel
+    \item[MVC] Model-View-Controller - Patrón de diseño arquitectónico
+    \item[CRUD] Create, Read, Update, Delete - Operaciones básicas de datos
+    \item[API] Application Programming Interface
+    \item[REST] Representational State Transfer
+\end{description}
 
 \end{document}
