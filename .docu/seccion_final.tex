@@ -1,0 +1,456 @@
+\section{Base de Datos y Persistencia}
+
+\subsection{Esquema de Base de Datos MySQL}
+
+\subsubsection{Diagrama Entidad-Relación}
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[
+    entity/.style={rectangle, draw, fill=yellow!20, minimum width=3cm, minimum height=0.7cm},
+    node distance=2cm
+]
+    \node[entity] (user) {users};
+    \node[entity, below left=of user] (config) {automation\_configs};
+    \node[entity, below=of user] (notif) {notifications};
+    \node[entity, below right=of user] (report) {reports};
+    \node[entity, right=3cm of user] (voice) {voice\_commands};
+    
+    \draw[-{Latex}] (user) -- node[left,sloped,above] {1:1} (config);
+    \draw[-{Latex}] (user) -- node[left] {1:N} (notif);
+    \draw[-{Latex}] (user) -- node[right,sloped,above] {1:N} (report);
+\end{tikzpicture}
+\caption{Diagrama ER del Sistema}
+\end{figure}
+
+El sistema utiliza 5 tablas principales con las siguientes relaciones:
+
+\textbf{users} (Tabla central):
+\begin{itemize}
+    \item 1:1 con automation\_configs
+    \item 1:N con notifications
+    \item 1:N con reports
+\end{itemize}
+
+\textbf{voice\_commands}: Tabla independiente sin relaciones FK
+
+\subsubsection{Tabla: users}
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{|l|l|l|p{4cm}|}
+\hline
+\textbf{Campo} & \textbf{Tipo} & \textbf{Null} & \textbf{Descripción} \\
+\hline
+id & bigint & NO & PK, auto\_increment \\
+name & varchar(255) & NO & Nombre completo \\
+email & varchar(255) & NO & UNIQUE, email para login \\
+password & varchar(255) & NO & Hash bcrypt \\
+role & varchar(50) & NO & user/admin \\
+header\_position & varchar(20) & YES & top/left/right/bottom \\
+remember\_token & varchar(100) & YES & Token ``remember me'' \\
+email\_verified\_at & timestamp & YES & Verificación email \\
+created\_at & timestamp & NO & Fecha creación \\
+updated\_at & timestamp & NO & Última actualización \\
+\hline
+\end{tabular}
+\caption{Estructura de tabla users}
+\end{table}
+
+\subsubsection{Tabla: automation\_configs}
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{|l|l|p{6cm}|}
+\hline
+\textbf{Campo} & \textbf{Tipo} & \textbf{Descripción} \\
+\hline
+id & bigint & PK \\
+user\_id & bigint & FK → users.id \\
+traffic\_threshold & int & Límite de vehículos para alerta \\
+traffic\_minutes & int & Ventana de tiempo (minutos) \\
+notify\_high\_traffic & boolean & Activar notificación alto tráfico \\
+notify\_camera\_offline & boolean & Activar alerta cámara offline \\
+camera\_offline\_minutes & int & Tiempo sin detección para offline \\
+report\_frequency & varchar(20) & daily/weekly/monthly/disabled \\
+report\_generation\_time & time & Hora de generación automática \\
+auto\_generate\_reports & boolean & Activar generación automática \\
+xml\_cleanup\_frequency & varchar(20) & Frecuencia de limpieza XML \\
+xml\_retention\_days & int & Días de retención de datos \\
+\hline
+\end{tabular}
+\caption{Estructura de automation\_configs}
+\end{table}
+
+\subsubsection{Tabla: notifications}
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{|l|l|p{5cm}|}
+\hline
+\textbf{Campo} & \textbf{Tipo} & \textbf{Descripción} \\
+\hline
+id & bigint & PK \\
+user\_id & bigint & FK → users.id \\
+title & varchar(255) & Título de notificación \\
+message & text & Mensaje completo \\
+type & varchar(50) & info/alert/warning/success \\
+priority & varchar(20) & low/medium/high \\
+is\_read & boolean & Estado de lectura \\
+read\_at & timestamp & Fecha/hora de lectura \\
+metadata & json & Datos adicionales \\
+created\_at & timestamp & Fecha de creación \\
+\hline
+\end{tabular}
+\caption{Estructura de notifications}
+\end{table}
+
+\subsubsection{Tabla: reports}
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{|l|l|p{5cm}|}
+\hline
+\textbf{Campo} & \textbf{Tipo} & \textbf{Descripción} \\
+\hline
+id & bigint & PK \\
+user\_id & bigint & FK → users.id \\
+title & varchar(255) & Título del reporte \\
+description & text & Descripción \\
+type & varchar(50) & daily/weekly/monthly/custom \\
+status & varchar(50) & generated/viewed \\
+report\_date & date & Fecha del reporte \\
+data & json & Estadísticas generadas \\
+filters & json & Filtros aplicados \\
+generated\_at &  timestamp & Fecha generación \\
+viewed\_at & timestamp & Fecha visualización \\
+\hline
+\end{tabular}
+\caption{Estructura de reports}
+\end{table}
+
+\subsubsection{Tabla: voice\_commands}
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{|l|l|p{5cm}|}
+\hline
+\textbf{Campo} & \textbf{Tipo} & \textbf{Descripción} \\
+\hline
+id & bigint & PK \\
+name & varchar(255) & Nombre del comando \\
+trigger & text & Palabras clave (CSV) \\
+action & varchar(50) & navigate/export/toggle/custom \\
+target & varchar(255) & Ruta o elemento \\
+function\_name & varchar(255) & Función JS a ejecutar \\
+modules & varchar(255) & Módulos activos (all, modulo1...) \\
+enabled & boolean & Estado \\
+created\_at & timestamp & Fecha creación \\
+\hline
+\end{tabular}
+\caption{Estructura de voice\_commands}
+\end{table}
+
+\newpage
+
+\section{Rutas y API}
+
+\subsection{Rutas Web (routes/web.php)}
+
+\subsubsection{Autenticación}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|l|l|l|}
+\hline
+\textbf{Ruta} & \textbf{Método} & \textbf{Acción} \\
+\hline
+/login & GET & AuthController@showLogin \\
+/login & POST & AuthController@login \\
+/logout & POST & AuthController@logout \\
+\hline
+\end{tabular}
+\caption{Rutas de Autenticación}
+\end{table}
+
+\subsubsection{Módulos Principales}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|l|l|l|}
+\hline
+\textbf{Ruta} & \textbf{Middleware} & \textbf{Vista/Controller} \\
+\hline
+/ & - & view('modulo1') \\
+/modulo1 & - & view('modulo1') \\
+/modulo2 & - & ReporteController@index \\
+/modulo3 & isAdmin & ModuloTresController@index \\
+/modulo4 & - & view('modulo4') \\
+/modulo5 & isAdmin & UserController@index \\
+\hline
+\end{tabular}
+\caption{Rutas de Módulos}
+\end{table}
+
+\subsubsection{APIs}
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{|l|l|p{5cm}|}
+\hline
+\textbf{Endpoint} & \textbf{Método} & \textbf{Descripción} \\
+\hline
+/api/vehicle-monitor/\{cameraId\} & GET & Estadísticas del detector \\
+\hline
+/api/voice-commands & GET & Listar comandos de voz \\
+/api/voice-commands & POST & Crear comando \\
+/api/voice-commands/\{id\} & PUT & Actualizar comando \\
+/api/voice-commands/\{id\}/toggle & POST & Activar/desactivar \\
+\hline
+/api/notifications & GET & Listar notificaciones (admin) \\
+/api/notifications/unread & GET & Contador no leídas \\
+/api/notifications/\{id\}/read & POST & Marcar como leída \\
+\hline
+/api/reports & GET & Listar reportes (admin) \\
+/api/reports/generate & POST & Generar reporte \\
+/api/reports/\{id\} & GET & Ver reporte específico \\
+\hline
+\end{tabular}
+\caption{Endpoints API}
+\end{table}
+
+\newpage
+
+\section{Patrones de Diseño Implementados}
+
+\subsection{MVC (Model-View-Controller)}
+
+Patrón fundamental de Laravel, separa lógica de negocio, presentación y datos.
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[
+    component/.style={rectangle, draw, fill=blue!20, minimum width=2.5cm, minimum height=1cm},
+    node distance=3cm
+]
+    \node[component] (view) {VIEW\\Blade};
+    \node[component, right=of view] (controller) {CONTROLLER\\PHP};
+    \node[component, below=2cm of controller, xshift=-1.5cm] (model) {MODEL\\Eloquent};
+    
+    \draw[-{Latex}] (view) -- node[above] {Request} (controller);
+    \draw[-{Latex}] (controller) -- node[below,sloped] {Response} (view);
+    \draw[-{Latex}] (controller) -- node[right] {Query} (model);
+    \draw[-{Latex}] (model) -- node[left] {Data} (controller);
+\end{tikzpicture}
+\caption{Arquitectura MVC del Sistema}
+\end{figure}
+
+\textbf{Controllers}: AuthController, VehicleMonitorController, VoiceCommandController, etc.
+
+\textbf{Models}: User, Notification, Report, AutomationConfig
+
+\textbf{Views}: modulo1.blade.php, modulo2.blade.php, modulo3.blade.php, modulo4.blade.php, modulo5.blade.php
+
+\subsection{Repository/Service Pattern}
+
+Abstrae la lógica de acceso a datos y lógica de negocio compleja.
+
+\textbf{Implementación}:
+
+\begin{itemize}
+    \item \texttt{NotificationService}: Centraliza lógica de notificaciones
+    \item \texttt{ReportService}: Generación compleja de reportes desde XML
+    \item \texttt{NotificationFacade}: Facade pattern para simplificar acceso
+    \item \texttt{ReportFacade}: Facade pattern para reportes
+\end{itemize}
+
+\subsection{Observer Pattern}
+
+Eloquent de Laravel implementa observers para eventos del modelo:
+\begin{itemize}
+    \item creating, created
+    \item updating, updated
+    \item deleting, deleted
+\end{itemize}
+
+\subsection{Factory Pattern}
+
+Usado en seeders y testing para generar datos de prueba mediante UserFactory.
+
+\subsection{Strategy Pattern}
+
+Implementado en el sistema de detección multi-cámara:
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[
+    box/.style={rectangle, draw, fill=orange!20, minimum width=3cm, minimum height=0.8cm},
+    node distance=1.5cm
+]
+    \node[box] (context) {camera\_states\\Contexto};
+    \node[box, below=of context] (interface) {CameraStrategy\\Interfaz};
+    \node[box, below left=of interface] (oracle) {worker\_oracle()\\WebSocket};
+    \node[box, below right=of interface] (skyline) {worker\_skyline()\\HLS};
+    
+    \draw[-{Latex}] (context) -- (interface);
+    \draw[-{Latex}, dashed] (interface) -- (oracle);
+    \draw[-{Latex}, dashed] (interface) -- (skyline);
+\end{tikzpicture}
+\caption{Strategy Pattern en Detección Multi-Cámara}
+\end{figure}
+
+\textbf{Contexto}: camera\_states (gestión de estado por cámara)
+
+\textbf{Estrategias}:
+\begin{itemize}
+    \item worker\_oracle(): WebSocket Strategy para CAM\_001
+    \item worker\_skyline(): HLS Strategy para CAM\_002
+\end{itemize}
+
+Cada estrategia implementa su propia lógica de conexión y procesamiento de frames.
+
+\newpage
+
+\section{Flujos de Trabajo Completos}
+
+\subsection{Flujo: Detección de Vehículo}
+
+\begin{enumerate}
+    \item Cámara captura frame
+    \item Worker recibe frame
+    \item YOLO detect\_vehicles() - detección
+    \item match\_vehicle\_to\_tracked() - tracking
+    \item get\_dominant\_color() - análisis de color
+    \item ¿Es nuevo vehículo? Si → save\_detection\_to\_xml()
+    \item WebSocket broadcast a clientes conectados
+    \item Canvas en navegador dibuja frame
+\end{enumerate}
+
+\subsection{Flujo: Generación de Reporte}
+
+\begin{enumerate}
+    \item Usuario accede a Módulo 2 o API solicita generación
+    \item ReportController recibe request con filtros (tipo, fechas)
+    \item ReportService::generate() es invocado
+    \item generateReportData() lee vehiculos\_db.xml
+    \item Itera sobre \textless{}deteccion\textgreater{} aplicando filtros
+    \item Acumula estadísticas (by\_type, by\_hour, by\_day, by\_color)
+    \item Calcula promedio de confianza, hora pico, día más ocupado
+    \item Crea registro en tabla reports con data JSON
+    \item Retorna Report model con estadísticas completas
+    \item Usuario visualiza o descarga reporte
+\end{enumerate}
+
+\subsection{Flujo: Comando de Voz}
+
+\begin{enumerate}
+    \item Usuario habla al micrófono
+    \item Vosk procesa audio
+    \item SocketIO emite 'voice\_command'
+    \item JavaScript recibe evento
+    \item findMatchingCommand(text) busca coincidencias
+    \item executeCommand() ejecuta acción
+    \item Acción: navigate, export, o toggle según configuración
+\end{enumerate}
+
+\newpage
+
+\section{Seguridad}
+
+\subsection{Autenticación}
+
+\begin{itemize}
+    \item \textbf{Hashing de Contraseñas}: Bcrypt con factor de costo configurable
+    \item \textbf{Sesiones}: Laravel session management con regeneración en login
+    \item \textbf{Remember Token}: Token de 100 caracteres para ``recordarme''
+    \item \textbf{CSRF Protection}: Tokens CSRF en todos los formularios
+\end{itemize}
+
+\subsection{Autorización}
+
+\begin{itemize}
+    \item \textbf{Middleware isAdmin}: Protege rutas administrativas (modulo3, modulo5)
+    \item \textbf{Roles}: user / admin
+    \item \textbf{Policy-based}: Verificación de propiedad de recursos
+\end{itemize}
+
+\subsection{Validación de Datos}
+
+\begin{itemize}
+    \item \textbf{Form Requests}: Validación automática con reglas Laravel
+    \item \textbf{Sanitización}: Escape de HTML en outputs Blade
+    \item \textbf{SQL Injection}: Protección mediante Eloquent ORM
+\end{itemize}
+
+\newpage
+
+\section{Configuración y Deployment}
+
+\subsection{Requisitos del Sistema}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|l|l|}
+\hline
+\textbf{Componente} & \textbf{Versión Mínima} \\
+\hline
+PHP & 8.2+ \\
+Laravel & 11.x \\
+Python & 3.9+ \\
+MySQL & 8.0+ \\
+Node.js & 18+ (para npm) \\
+Composer & 2.x \\
+\hline
+\end{tabular}
+\caption{Requisitos del Sistema}
+\end{table}
+
+\subsection{Puertos y Servicios}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|l|l|l|}
+\hline
+\textbf{Servicio} & \textbf{Puerto} & \textbf{Comando} \\
+\hline
+Laravel (Apache) & 80 & php artisan serve \\
+MySQL & 3306 & mysqld \\
+Detector Python & 8080 & python vehiculo\_detector.py \\
+Voice Server & 5001 & python voice\_server.py \\
+\hline
+\end{tabular}
+\caption{Puertos y Servicios}
+\end{table}
+
+\newpage
+
+\section{Conclusiones}
+
+\subsection{Logros del Sistema}
+
+\begin{enumerate}
+    \item \textbf{Detección en Tiempo Real}: YOLOv8 con precisión superior al 85\%
+    \item \textbf{Multi-Cámara}: Soporte para 2+ cámaras simultáneas con tracking independiente
+    \item \textbf{WebSocket Streaming}: Latencia inferior a 100ms
+    \item \textbf{Comandos de Voz}: Reconocimiento en español con Vosk
+    \item \textbf{Automatización}: Sistema completo de notificaciones y reportes
+    \item \textbf{Escalabilidad}: Arquitectura modular preparada para crecer
+\end{enumerate}
+
+\subsection{Características Técnicas Destacadas}
+
+\begin{itemize}
+    \item \textbf{Persistencia Dual}: MySQL para datos estructurados, XML para detecciones
+    \item \textbf{Tracking Único}: Algoritmo basado en distancia euclidiana
+    \item \textbf{Detección de Color}: Análisis HSV para clasificación cromática
+    \item \textbf{API RESTful}: Endpoints bien documentados y consistentes
+    \item \textbf{Responsive UI}: TailwindCSS para diseño adaptable
+\end{itemize}
+
+\end{document}

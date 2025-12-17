@@ -1,0 +1,102 @@
+\subsection{Módulo 2: Reportes y Estadísticas}
+
+\subsubsection{Descripción General}
+
+El módulo de reportes permite visualizar el historial de detecciones con filtros avanzados, estadísticas agregadas y exportación a Excel/CSV.
+
+\subsubsection{Controlador Principal}
+
+\textbf{Archivo}: `texttt{app/Http/Controllers/ReporteController.php} (171 líneas)
+
+\paragraph{Método obtenerRegistrosFiltrados() (Líneas 12-73)}
+
+\textbf{Variables clave}:
+\begin{itemize}
+    \item \textbf{Línea 14}: `texttt{$registros = []} - Array acumulador de registros filtrados
+    \item \textbf{Línea 15}: `texttt{$xmlPath = storage\_path('app/vehiculos\_db.xml')} - Ruta del XML
+    \item \textbf{Línea 18-19}: Carga XML con `texttt{simplexml\_load\_string()}
+\end{itemize}
+
+\textbf{Bucle de filtrado (Líneas 22-65)}:
+\begin{lstlisting}[style=phpstyle]
+foreach (->deteccion as ) {
+     = [
+        'fecha' => (string)->fecha,
+        'tipo'  => (string)->tipo,
+        'confianza' => (float)->confianza,
+        'color' => isset(->color) ? (string)->color : 'desconocido',
+        'camara' => isset(->camara) ? (string)->camara : 'CAM_002'
+    ];
+    
+     = true;
+    
+    // L.34-38: Filtro por cámara
+    if (->has('camera_id') && ->camera_id != '') {
+        if (['camara'] != ->camera_id) {
+             = false;
+        }
+    }
+    
+    // L.40-44: Filtro por tipo (Auto, Moto, Bus, Camión)
+    if (->has('tipo') && ->tipo != '') {...}
+    
+    // L.46-52: Filtro por fecha inicio
+    if (->has('fecha_inicio') && ->fecha_inicio != '') {
+         = strtotime(['fecha']);
+         = strtotime(->fecha_inicio . ' 00:00:00');
+        if ( < )  = false;
+    }
+    
+    // L.54-60: Filtro por fecha fin
+    if (->has('fecha_fin') && ->fecha_fin != '') {...}
+    
+    if () [] = ;
+}
+\end{lstlisting}
+
+\textbf{Ordenamiento (Líneas 68-70)}: Ordena desc por fecha usando `texttt{usort()} y `texttt{strtotime()}
+
+\paragraph{Método exportarExcel() (Líneas 82-140)}
+
+\textbf{Variables clave (Líneas 84-88)}:
+\begin{itemize}
+    \item `texttt{$registros} - Obtiene registros filtrados
+    \item `texttt{$nombreArchivo} - Genera nombre con timestamp: `texttt{reportes\_ . date('Y-m-d\_His') . '.csv'}
+    \item `texttt{$rutaTemporal} - Path temporal: `texttt{storage\_path('app/temp')}
+\end{itemize}
+
+\textbf{Generación CSV (Líneas 95-125)}:
+\begin{lstlisting}[style=phpstyle]
+// L.100: Abrir archivo en modo escritura
+ = fopen(, 'w');
+
+// L.102-104: BOM UTF-8 para compatibilidad Excel
+fprintf(, chr(0xEF).chr(0xBB).chr(0xBF));
+
+// L.106-108: Escribir encabezados
+fputcsv(, [
+    'Fecha/Hora', 'Tipo Vehículo', 'Confianza (%)', 
+    'Color', 'Cámara', 'Nombre Cámara'
+], ',');
+
+// L.110-120: Escribir datos
+foreach ( as ) {
+    fputcsv(, [
+        ['fecha'],
+        ['tipo'],
+        number_format(['confianza'], 2),
+        ['color'],
+        ['camara'],
+        ['nombre_camara']
+    ], ',');
+}
+
+fclose(); // L.122
+\end{lstlisting}
+
+\textbf{Descarga y limpieza (Líneas 125-138)}:
+\begin{itemize}
+    \item \textbf{Línea 127}: `texttt{return response()->download($rutaCompleta, $nombreArchivo)->deleteFileAfterSend(true)}
+    \item El método `texttt{deleteFileAfterSend(true)} elimina automáticamente el archivo temporal
+\end{itemize}
+

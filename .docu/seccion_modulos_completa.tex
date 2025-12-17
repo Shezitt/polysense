@@ -1,0 +1,338 @@
+\section{Documentación Detallada por Módulos}
+
+\subsection{Módulo 1: Detección en Tiempo Real}
+
+\subsubsection{Descripción General}
+
+El módulo de detección proporciona visualización en tiempo real del procesamiento de video con YOLOv8, mostrando estadísticas actualizadas y permitiendo seleccionar entre múltiples cámaras.
+
+\subsubsection{Componentes del Frontend}
+
+\textbf{Archivo}: \texttt{resources/views/modulo1.blade.php} (323 líneas)
+
+\paragraph{Estructura HTML Principal (Líneas 1-50)}
+
+\begin{itemize}
+    \item \textbf{Línea 1}: Extiende layout principal \texttt{@extends('layouts.app')}
+    \item \textbf{Líneas 10-15}: Selector de cámara con ID \texttt{cameraSelector}
+    \item \textbf{Línea 25}: Canvas para video \texttt{<canvas id="videoCanvas" width="800" height="600">}
+    \item \textbf{Líneas 30-45}: Cards de estadísticas con IDs:
+    \begin{itemize}
+        \item \texttt{currentVehicles} - Vehículos actuales
+        \item \texttt{totalVehicles} - Total detectados
+        \item \texttt{fps} - Frames por segundo
+        \item \texttt{averageVehicles} - Promedio de vehículos
+    \end{itemize}
+\end{itemize}
+
+\paragraph{Lógica JavaScript (Líneas 150-323)}
+
+\textbf{Variables Globales (Líneas 152-160)}:
+\begin{lstlisting}[style=jsstyle, caption={Variables Globales - modulo1.blade.php}]
+let websocket = null;
+let currentCamera = 'CAM_002';
+const canvas = document.getElementById('videoCanvas');
+const ctx = canvas.getContext('2d');
+let statsInterval = null;
+let reconnectAttempts = 0;
+const MAX_RECONNECT_ATTEMPTS = 5;
+\end{lstlisting}
+
+\textbf{Función connectWebSocket() (Líneas 170-210)}:
+\begin{itemize}
+    \item \textbf{Línea 171}: Construye URL WebSocket: \texttt{ws://localhost:8080/ws/stream?camera\_id=\$\{currentCamera\}}
+    \item \textbf{Línea 173}: Crea instancia WebSocket con \texttt{new WebSocket(wsUrl)}
+    \item \textbf{Línea 174}: Configura tipo binario: \texttt{websocket.binaryType = 'arraybuffer'}
+    \item \textbf{Líneas 176-179}: Handler \texttt{onopen} - actualiza status a "Online"
+    \item \textbf{Líneas 181-195}: Handler \texttt{onmessage}:
+    \begin{itemize}
+        \item Línea 182: Recibe ArrayBuffer del frame JPEG
+        \item Línea 183: Convierte a Blob: \texttt{const blob = new Blob([event.data], \{type: 'image/jpeg'\})}
+        \item Línea 184: Crea Object URL temporal
+        \item Líneas 187-191: Dibuja imagen en canvas usando \texttt{ctx.drawImage()}
+        \item Línea 192: Libera memoria con \texttt{URL.revokeObjectURL(url)}
+    \end{itemize}
+    \item \textbf{Líneas 197-204}: Manejo de errores y reconexión automática
+\end{itemize}
+
+\textbf{Función updateStats() (Líneas 215-250)}:
+\begin{itemize}
+    \item \textbf{Línea 217}: Fetch a API Laravel: \texttt{/api/vehicle-monitor/\$\{currentCamera\}}
+    \item \textbf{Línea 218}: Parsea respuesta JSON
+    \item \textbf{Líneas 220-223}: Actualiza elementos DOM:
+    \begin{lstlisting}[style=jsstyle]
+document.getElementById('currentVehicles').textContent = data.current_vehicles || 0;
+document.getElementById('totalVehicles').textContent = data.total_detected || 0;
+document.getElementById('fps').textContent = (data.fps || 0).toFixed(1);
+    \end{lstlisting}
+    \item \textbf{Líneas 225-230}: Llama \texttt{updateVehicleTypes(data.vehicle\_types)} para actualizar gráfico
+    \item \textbf{Líneas 232-237}: Llama \texttt{updateVehicleColors(data.vehicle\_colors)} para badges de colores
+\end{itemize}
+
+\textbf{Inicialización (Líneas 300-315)}:
+\begin{lstlisting}[style=jsstyle, caption={Inicialización del Módulo}]
+window.addEventListener('DOMContentLoaded', () => {
+    connectWebSocket();
+    statsInterval = setInterval(updateStats, 1000); // Actualizar cada 1s
+    
+    document.getElementById('cameraSelector').addEventListener('change', (e) => {
+        currentCamera = e.target.value;
+        if (websocket) websocket.close();
+        connectWebSocket();
+    });
+});
+\end{lstlisting}
+
+\subsubsection{Backend API}
+
+\textbf{Archivo}: \texttt{app/Http/Controllers/VehicleMonitorController.php} (59 líneas)
+
+\paragraph{Clase VehicleMonitorController}
+
+\textbf{Propiedades (Líneas 12-13)}:
+\begin{lstlisting}[style=phpstyle]
+protected $detectorUrl = 'http://localhost:8080';
+\end{lstlisting}
+
+\textbf{Método getStats() (Líneas 20-57)}:
+\begin{itemize}
+    \item \textbf{Línea 21}: Recibe parámetro \texttt{\$cameraId} (default: 'CAM\_002')
+    \item \textbf{Líneas 23-26}: Valida y normaliza cameraId:
+    \begin{lstlisting}[style=phpstyle]
+$cameraId = strtoupper($cameraId);
+if (!in_array($cameraId, ['CAM_001', 'CAM_002'])) {
+    $cameraId = 'CAM_002';
+}
+    \end{lstlisting}
+    \item \textbf{Línea 28}: Construye URL completa: \texttt{"\{detectorUrl\}/api/vehicles?camera\_id=\{cameraId\}"}
+    \item \textbf{Línea 29}: Hace petición HTTP con timeout de 5s: \texttt{Http::timeout(5)->get(\$url)}
+    \item \textbf{Líneas 31-33}: Si exitoso, retorna JSON del detector Python
+    \item \textbf{Líneas 35-42}: Si falla, retorna estructura por defecto con valores en 0
+\end{itemize}
+
+\subsubsection{Servicio Python Detector}
+
+\textbf{Archivo}: \texttt{deteccion/vehiculo\_detector.py} (767 líneas)
+
+\paragraph{API Flask - Endpoint /api/vehicles (Líneas 550-580)}
+
+\textbf{Función get\_vehicle\_stats() (Línea 552)}:
+\begin{lstlisting}[style=pythonstyle, caption={Endpoint de Estadísticas}]
+@app.route('/api/vehicles', methods=['GET'])
+def get_vehicle_stats():
+    camera_id = request.args.get('camera_id', 'CAM_002')
+    
+    with data_lock:
+        state = camera_states.get(camera_id, {})
+        tracked = state.get('tracked_vehicles', {})
+        
+        # Contar por tipo de vehículo
+        vehicle_types = {}
+        vehicle_colors = {}
+        
+        for vehicle_id, vehicle_data in tracked.items():
+            v_type = vehicle_data.get('type', 'desconocido')
+            v_color = vehicle_data.get('color', 'desconocido')
+            
+            vehicle_types[v_type] = vehicle_types.get(v_type, 0) + 1
+            vehicle_colors[v_color] = vehicle_colors.get(v_color, 0) + 1
+        
+        return jsonify({
+            'camera_id': camera_id,
+            'status': state.get('status', 'offline'),
+            'current_vehicles': len(tracked),
+            'total_detected': state.get('total_vehicles_detected', 0),
+            'fps': state.get('fps', 0.0),
+            'vehicle_types': vehicle_types,
+            'vehicle_colors': vehicle_colors
+        })
+\end{lstlisting}
+
+\paragraph{WebSocket Streaming - Endpoint /ws/stream (Líneas 600-650)}
+
+\textbf{Función stream\_video() (Línea 602)}:
+\begin{itemize}
+    \item \textbf{Línea 604}: Obtiene \texttt{camera\_id} de query params
+    \item \textbf{Líneas 608-615}: Loop infinito que:
+    \begin{itemize}
+        \item Línea 610: Accede a \texttt{camera\_states[camera\_id]['processed\_frame']} con lock
+        \item Línea 612: Si frame existe, lo codifica a JPEG usando \texttt{cv2.imencode('.jpg', frame)}
+        \item Línea 614: Envía bytes vía WebSocket: \texttt{ws.send(frame\_bytes)}
+        \item Línea 616: Espera 33ms (30 FPS): \texttt{time.sleep(0.033)}
+    \end{itemize}
+    \item \textbf{Líneas 620-625}: Manejo de excepciones y cierre de conexión
+\end{itemize}
+
+\paragraph{Worker Thread - worker\_skyline() (Líneas 350-450)}
+
+\textbf{Función principal (Línea 352)}:
+\begin{itemize}
+    \item \textbf{Líneas 355-365}: Llama \texttt{get\_skyline\_stream\_url\_robust()} para obtener URL HLS
+    \item \textbf{Línea 370}: Abre stream con OpenCV: \texttt{cap = cv2.VideoCapture(stream\_url)}
+    \item \textbf{Líneas 375-420}: Loop de procesamiento:
+    \begin{itemize}
+        \item Línea 377: Lee frame: \texttt{ret, frame = cap.read()}
+        \item Línea 380: Llama \texttt{process\_frame\_generic(frame, 'CAM\_002')}
+        \item Líneas 385-395: Calcula FPS usando \texttt{time.time()} y contador de frames
+    \end{itemize}
+\end{itemize}
+
+\textbf{Función process\_frame\_generic() (Líneas 200-280)}:
+\begin{itemize}
+    \item \textbf{Línea 205}: Ejecuta YOLO: \texttt{results = model(frame, conf=0.4)}
+    \item \textbf{Líneas 210-250}: Para cada detección:
+    \begin{itemize}
+        \item Línea 215: Obtiene bbox, confianza y clase
+        \item Línea 220: Filtra solo vehículos (car, motorcycle, bus, truck)
+        \item Línea 225: Llama \texttt{match\_vehicle\_to\_tracked(bbox, tracked, max\_distance=50)}
+        \item Líneas 230-240: Si es nuevo vehículo:
+        \begin{itemize}
+            \item Asigna nuevo ID: \texttt{vehicle\_id = state['next\_vehicle\_id']}
+            \item Incrementa contador
+            \item Llama \texttt{get\_dominant\_color(frame, bbox)}
+            \item Llama \texttt{save\_detection\_to\_xml(vehicle\_data, camera\_id)}
+        \end{itemize}
+        \item Línea 245: Dibuja bbox en frame con \texttt{cv2.rectangle()}
+    \end{itemize}
+    \item \textbf{Línea 270}: Almacena frame procesado: \texttt{state['processed\_frame'] = frame}
+\end{itemize}
+
+\subsubsection{Flujo Completo de Detección}
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[
+    box/.style={rectangle, draw, fill=cyan!15, minimum width=3.5cm, minimum height=0.7cm, font=\small},
+    node distance=0.8cm
+]
+    \node[box] (step1) {1. Usuario abre modulo1.blade.php};
+    \node[box, below=of step1] (step2) {2. DOMContentLoaded ejecuta (L.300)};
+    \node[box, below=of step2] (step3) {3. connectWebSocket() (L.170)};
+    \node[box, below=of step3] (step4) {4. WebSocket a localhost:8080/ws/stream};
+    \node[box, below=of step4] (step5) {5. Python stream\_video() envía JPEGs};
+    \node[box, below=of step5] (step6) {6. onmessage dibuja en canvas (L.181)};
+    \node[box, below=of step6] (step7) {7. setInterval llama updateStats() (L.305)};
+    \node[box, below=of step7] (step8) {8. Fetch a /api/vehicle-monitor};
+    \node[box, below=of step8] (step9) {9. VehicleMonitorController::getStats()};
+    \node[box, below=of step9] (step10) {10. HTTP a Python /api/vehicles};
+    \node[box, below=of step10] (step11) {11. Retorna vehicle\_types, colors, FPS};
+    \node[box, below=of step11] (step12) {12. Actualiza DOM (L.220-237)};
+    
+    \draw[-{Latex}] (step1) -- (step2);
+    \draw[-{Latex}] (step2) -- (step3);
+    \draw[-{Latex}] (step3) -- (step4);
+    \draw[-{Latex}] (step4) -- (step5);
+    \draw[-{Latex}] (step5) -- (step6);
+    \draw[-{Latex}] (step6) -- (step7);
+    \draw[-{Latex}] (step7) -- (step8);
+    \draw[-{Latex}] (step8) -- (step9);
+    \draw[-{Latex}] (step9) -- (step10);
+    \draw[-{Latex}] (step10) -- (step11);
+    \draw[-{Latex}] (step11) -- (step12);
+\end{tikzpicture}
+\caption{Flujo Completo del Módulo Detección}
+\end{figure}
+
+\newpage
+\subsection{Módulo 2: Reportes y Estadísticas}
+
+\subsubsection{Descripción General}
+
+El módulo de reportes permite visualizar el historial de detecciones con filtros avanzados, estadísticas agregadas y exportación a Excel/CSV.
+
+\subsubsection{Controlador Principal}
+
+\textbf{Archivo}: `texttt{app/Http/Controllers/ReporteController.php} (171 líneas)
+
+\paragraph{Método obtenerRegistrosFiltrados() (Líneas 12-73)}
+
+\textbf{Variables clave}:
+\begin{itemize}
+    \item \textbf{Línea 14}: `texttt{$registros = []} - Array acumulador de registros filtrados
+    \item \textbf{Línea 15}: `texttt{$xmlPath = storage\_path('app/vehiculos\_db.xml')} - Ruta del XML
+    \item \textbf{Línea 18-19}: Carga XML con `texttt{simplexml\_load\_string()}
+\end{itemize}
+
+\textbf{Bucle de filtrado (Líneas 22-65)}:
+\begin{lstlisting}[style=phpstyle]
+foreach (->deteccion as ) {
+     = [
+        'fecha' => (string)->fecha,
+        'tipo'  => (string)->tipo,
+        'confianza' => (float)->confianza,
+        'color' => isset(->color) ? (string)->color : 'desconocido',
+        'camara' => isset(->camara) ? (string)->camara : 'CAM_002'
+    ];
+    
+     = true;
+    
+    // L.34-38: Filtro por cámara
+    if (->has('camera_id') && ->camera_id != '') {
+        if (['camara'] != ->camera_id) {
+             = false;
+        }
+    }
+    
+    // L.40-44: Filtro por tipo (Auto, Moto, Bus, Camión)
+    if (->has('tipo') && ->tipo != '') {...}
+    
+    // L.46-52: Filtro por fecha inicio
+    if (->has('fecha_inicio') && ->fecha_inicio != '') {
+         = strtotime(['fecha']);
+         = strtotime(->fecha_inicio . ' 00:00:00');
+        if ( < )  = false;
+    }
+    
+    // L.54-60: Filtro por fecha fin
+    if (->has('fecha_fin') && ->fecha_fin != '') {...}
+    
+    if () [] = ;
+}
+\end{lstlisting}
+
+\textbf{Ordenamiento (Líneas 68-70)}: Ordena desc por fecha usando `texttt{usort()} y `texttt{strtotime()}
+
+\paragraph{Método exportarExcel() (Líneas 82-140)}
+
+\textbf{Variables clave (Líneas 84-88)}:
+\begin{itemize}
+    \item `texttt{$registros} - Obtiene registros filtrados
+    \item `texttt{$nombreArchivo} - Genera nombre con timestamp: `texttt{reportes\_ . date('Y-m-d\_His') . '.csv'}
+    \item `texttt{$rutaTemporal} - Path temporal: `texttt{storage\_path('app/temp')}
+\end{itemize}
+
+\textbf{Generación CSV (Líneas 95-125)}:
+\begin{lstlisting}[style=phpstyle]
+// L.100: Abrir archivo en modo escritura
+ = fopen(, 'w');
+
+// L.102-104: BOM UTF-8 para compatibilidad Excel
+fprintf(, chr(0xEF).chr(0xBB).chr(0xBF));
+
+// L.106-108: Escribir encabezados
+fputcsv(, [
+    'Fecha/Hora', 'Tipo Vehículo', 'Confianza (%)', 
+    'Color', 'Cámara', 'Nombre Cámara'
+], ',');
+
+// L.110-120: Escribir datos
+foreach ( as ) {
+    fputcsv(, [
+        ['fecha'],
+        ['tipo'],
+        number_format(['confianza'], 2),
+        ['color'],
+        ['camara'],
+        ['nombre_camara']
+    ], ',');
+}
+
+fclose(); // L.122
+\end{lstlisting}
+
+\textbf{Descarga y limpieza (Líneas 125-138)}:
+\begin{itemize}
+    \item \textbf{Línea 127}: `texttt{return response()->download($rutaCompleta, $nombreArchivo)->deleteFileAfterSend(true)}
+    \item El método `texttt{deleteFileAfterSend(true)} elimina automáticamente el archivo temporal
+\end{itemize}
+
