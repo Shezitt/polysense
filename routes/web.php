@@ -13,12 +13,10 @@ Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
 Route::post('/login', [AuthController::class, 'login'])->name('login.post');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-// Rutas de preferencias de usuario (requiere autenticación)
 Route::middleware(['auth'])->group(function () {
     Route::post('/preferences/header-position', [UserPreferencesController::class, 'updateHeaderPosition'])->name('preferences.header-position');
 });
 
-// Rutas públicas (o protégelas si quieres)
 Route::get('/', function () {
     return view('modulo1');
 });
@@ -34,7 +32,6 @@ Route::prefix('modulo2')->group(function() {
     Route::post('/generate-report', [ReporteController::class, 'generateMyReport'])->name('modulo2.generate-report');
 });
 
-// Automatizaciones - Automatización y Gestión (Solo Administradores)
 Route::middleware(['isAdmin'])->prefix('modulo3')->group(function () {
     Route::get('/', [App\Http\Controllers\ModuloTresController::class, 'index'])->name('modulo3');
     Route::get('/user/{userId}/configure', [App\Http\Controllers\ModuloTresController::class, 'configureUser'])->name('modulo3.configure');
@@ -49,12 +46,10 @@ Route::get('/modulo4', function() {
     return view('modulo4');
 })->name('modulo4');
 
-// API para obtener datos del detector Python
 Route::get('/api/vehicle-monitor/{cameraId}', [VehicleMonitorController::class, 'getStats']);
 
 Route::get('/modulo2/exportar/excel', [ReporteController::class, 'exportarExcel'])->name('exportar.excel');
 
-// Gestion - Gestión de usuarios (solo admin)
 Route::middleware(['isAdmin'])->group(function () {
     Route::get('/modulo5', [UserController::class, 'index'])->name('modulo5');
     Route::post('/usuarios', [UserController::class, 'store'])->name('usuarios.store');
@@ -62,7 +57,6 @@ Route::middleware(['isAdmin'])->group(function () {
     Route::put('/usuarios/{id}/role', [UserController::class, 'changeRole'])->name('usuarios.changeRole');
 });
 
-// API para comandos de voz
 Route::prefix('api/voice-commands')->group(function () {
     Route::get('/', [VoiceCommandController::class, 'index']);
     Route::get('/active/{module?}', [VoiceCommandController::class, 'getActiveCommands']);
@@ -74,7 +68,6 @@ Route::prefix('api/voice-commands')->group(function () {
     Route::post('/defaults', [VoiceCommandController::class, 'createDefaults']);
 });
 
-// API para notificaciones y reportes - Solo para administradores
 Route::middleware(['isAdmin'])->prefix('api')->group(function () {
     Route::get('/notifications', [App\Http\Controllers\NotificationController::class, 'index']);
     Route::get('/notifications/unread', [App\Http\Controllers\NotificationController::class, 'unread']);

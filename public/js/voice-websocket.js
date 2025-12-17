@@ -214,21 +214,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         await voiceClient.connect();
         await voiceClient.loadCommands();
         
-        // Mostrar indicador visual
-        const indicator = document.getElementById('voiceIndicator');
-        if (indicator) {
-            indicator.classList.remove('hidden');
-        }
-        
-        // Callbacks opcionales
-        voiceClient.onPartial((text) => {
-            const partialDiv = document.getElementById('voicePartial');
-            if (partialDiv) {
-                partialDiv.textContent = text;
-                partialDiv.classList.remove('hidden');
-            }
-        });
-        
         voiceClient.onCommand((command, text, confidence) => {
             showVoiceNotification(command.name, text);
         });

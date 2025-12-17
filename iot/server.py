@@ -19,19 +19,13 @@ import select
 app = Flask(__name__)
 sock = Sock(app)
 
-# ===========================
-# CONFIGURACIÓN OPTIMIZADA
-# ===========================
 UDP_IP = "0.0.0.0"
-UDP_PORT = 5001  # UDP en puerto diferente
-WEB_PORT = 5000  # Web en puerto 5000 (como antes)
+UDP_PORT = 5001  
+WEB_PORT = 5000 
 MAX_PACKET_SIZE = 2048
-SOCKET_BUFFER_SIZE = 2 * 1024 * 1024  # 2MB buffer (reducido para estabilidad)
-NUM_RECEIVER_THREADS = 1  # Solo 1 thread para evitar problemas
+SOCKET_BUFFER_SIZE = 2 * 1024 * 1024  
+NUM_RECEIVER_THREADS = 1  
 
-# ===========================
-# ALMACENAMIENTO
-# ===========================
 camera_frames = defaultdict(lambda: {
     'frame': None,
     'last_update': 0,
@@ -42,16 +36,11 @@ camera_frames = defaultdict(lambda: {
     'fps_buffer': deque(maxlen=30)
 })
 
-# Buffers para frames fragmentados
 frame_buffers = defaultdict(lambda: defaultdict(dict))
 frame_lock = threading.Lock()
 
-# WebSocket queues optimizadas
 websocket_clients = defaultdict(list)
 
-# ===========================
-# HTML OPTIMIZADO
-# ===========================
 HTML_TEMPLATE = """
 <!DOCTYPE html>
 <html>
@@ -340,12 +329,10 @@ HTML_TEMPLATE = """
 """
 
 def udp_receiver_thread(thread_id):
-    """Thread optimizado para recibir paquetes UDP"""
-    # Crear socket individual por thread
     udp_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     udp_socket.setsockopt(socket.SOL_SOCKET, socket.SO_RCVBUF, SOCKET_BUFFER_SIZE)
     udp_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-    udp_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEPORT, 1)  # Crítico para múltiples threads
+    udp_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEPORT, 1)  
     udp_socket.bind((UDP_IP, UDP_PORT))
     
     print(f"✓ Thread {thread_id}: UDP Listener en {UDP_IP}:{UDP_PORT}")
@@ -359,33 +346,26 @@ def udp_receiver_thread(thread_id):
             if len(data) < header_size:
                 continue
             
-            # Parsear header (optimizado con struct)
             frame_id, packet_num, total_packets, frame_size, node_id_bytes = \
                 struct.unpack('IHHI12s', data[:header_size])
             
             node_id = node_id_bytes.decode('utf-8', errors='ignore').rstrip('\x00')
             packet_data = data[header_size:]
             
-            # Log de debug cada 100 paquetes
             if frame_id % 100 == 0 and packet_num == 0:
                 print(f"[Thread {thread_id}] Recibido frame {frame_id} de {node_id} ({total_packets} paquetes)")
             
-            # Almacenar paquete
             frame_buffers[node_id][frame_id][packet_num] = packet_data
             
-            # Verificar frame completo
             if len(frame_buffers[node_id][frame_id]) == total_packets:
-                # Reensamblar (zero-copy cuando sea posible)
                 sorted_packets = sorted(frame_buffers[node_id][frame_id].items())
                 frame_data = b''.join([pkt for _, pkt in sorted_packets])
                 
                 current_time = time.time()
                 
-                # Actualizar datos de cámara
                 with frame_lock:
                     cam_data = camera_frames[node_id]
                     
-                    # FPS suavizado con buffer
                     time_delta = current_time - cam_data['last_fps_time']
                     if time_delta > 0:
                         instant_fps = 1.0 / time_delta
@@ -398,7 +378,6 @@ def udp_receiver_thread(thread_id):
                     cam_data['frame_count'] += 1
                     cam_data['total_bytes'] += len(frame_data)
                     
-                    # Broadcast a WebSocket clients
                     if node_id in websocket_clients:
                         dead_clients = []
                         for ws in websocket_clients[node_id]:
@@ -407,14 +386,11 @@ def udp_receiver_thread(thread_id):
                             except:
                                 dead_clients.append(ws)
                         
-                        # Limpiar clientes muertos
                         for ws in dead_clients:
                             websocket_clients[node_id].remove(ws)
                 
-                # Limpiar buffer
                 del frame_buffers[node_id][frame_id]
                 
-                # Limitar tamaño de buffer (mantener solo últimos 3 frames)
                 if len(frame_buffers[node_id]) > 3:
                     oldest = min(frame_buffers[node_id].keys())
                     del frame_buffers[node_id][oldest]

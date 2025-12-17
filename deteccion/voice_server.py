@@ -25,23 +25,17 @@ class VoiceRecognitionServer:
         self.clients = set()
         self.audio_thread = None
         
-        # Cargar modelo
         model_dir = Path(__file__).parent / model_path
         print(f"Cargando modelo desde {model_dir}...")
         self.model = vosk.Model(str(model_dir))
         print("Modelo cargado")
         
     def audio_callback(self, indata, frames, time, status):
-        """Callback de audio"""
         if status:
             print(f"Warning: {status}")
         self.q.put(bytes(indata))
     
     def process_audio(self):
-        """Procesa el audio y emite resultados por WebSocket"""
-        print("Iniciando captura de audio...")
-        
-        # Crear nuevo recognizer para este hilo
         recognizer = vosk.KaldiRecognizer(self.model, self.sample_rate)
         recognizer.SetWords(True)
         
@@ -53,7 +47,6 @@ class VoiceRecognitionServer:
                 channels=1,
                 callback=self.audio_callback
             ):
-                print("Stream de audio iniciado")
                 
                 while self.is_listening:
                     try:
@@ -82,7 +75,6 @@ class VoiceRecognitionServer:
         except Exception as e:
             print(f"Error en stream de audio: {e}")
         finally:
-            # Limpiar cola
             while not self.q.empty():
                 try:
                     self.q.get_nowait()
@@ -90,18 +82,15 @@ class VoiceRecognitionServer:
                     pass
             print("Audio detenido")
 
-# Instancia global
 voice_server = VoiceRecognitionServer()
 
 @socketio.on('connect')
 def handle_connect():
-    """Cliente conectado"""
     voice_server.clients.add(request.sid)
     print(f"Cliente conectado (Total: {len(voice_server.clients)})")
 
 @socketio.on('disconnect')
 def handle_disconnect():
-    """Cliente desconectado"""
     voice_server.clients.discard(request.sid)
     print(f"Cliente desconectado (Total: {len(voice_server.clients)})")
 
@@ -170,10 +159,8 @@ if __name__ == '__main__':
     print("Pagina de prueba: http://localhost:5001")
     print("=" * 60)
     
-    # Iniciar audio inmediatamente
     voice_server.is_listening = True
     voice_server.audio_thread = threading.Thread(target=voice_server.process_audio, daemon=True)
     voice_server.audio_thread.start()
-    print("Audio iniciado - siempre activo")
     
     socketio.run(app, host='0.0.0.0', port=5001, debug=False, allow_unsafe_werkzeug=True)
