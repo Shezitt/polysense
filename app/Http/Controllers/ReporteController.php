@@ -117,7 +117,6 @@ class ReporteController extends Controller
         if ($validated['date_from']) $filters['date_from'] = $validated['date_from'];
         if ($validated['date_to']) $filters['date_to'] = $validated['date_to'];
 
-        // Usar el servicio de reportes
         $reportService = app(\App\Services\ReportService::class);
         $report = $reportService->generate(auth()->id(), $validated['type'], $filters);
 
@@ -125,13 +124,10 @@ class ReporteController extends Controller
             ->with('success', 'Reporte generado exitosamente');
     }
 
-    // Funcionalidad del Botón: EXPORTAR A EXCEL (Simulado con CSV)
     public function exportarExcel(Request $request)
     {
-        // Obtener registros filtrados usando la misma lógica que index()
         $registros = $this->obtenerRegistrosFiltrados($request);
         
-        // Generar nombre de archivo con información de filtros
         $filename = "reporte_vehiculos_" . date('Y-m-d_His');
         if ($request->has('tipo') && $request->tipo != '') {
             $filename .= "_" . strtolower($request->tipo);
@@ -149,13 +145,10 @@ class ReporteController extends Controller
         header('Content-Type: text/csv; charset=utf-8');
         header('Content-Disposition: attachment; filename="'. $filename .'"');
         
-        // BOM para UTF-8
         fprintf($handle, chr(0xEF).chr(0xBB).chr(0xBF));
         
-        // Cabeceras
         fputcsv($handle, ['Fecha', 'Tipo', 'Color', 'Confianza (%)']);
         
-        // Escribir solo los registros filtrados
         foreach ($registros as $registro) {
             fputcsv($handle, [
                 $registro['fecha'], 

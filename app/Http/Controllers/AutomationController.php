@@ -18,10 +18,8 @@ class AutomationController extends Controller
         $dbPath = storage_path('app/' . $this->dbPath);
         $dbSize = file_exists($dbPath) ? $this->formatBytes(filesize($dbPath)) : '0 B';
 
-        // Get cameras from existing vehicle DB for the dropdown
         $cameras = $this->getUniqueCameras();
         
-        // Get status for each camera (simplified for now as we only track one active stream in XML effectively)
         $cameraStatus = [];
         foreach($cameras as $cam) {
             $cameraStatus[$cam] = $this->getCameraStatus($cam);
@@ -32,36 +30,27 @@ class AutomationController extends Controller
 
     private function getUniqueCameras()
     {
-        // En un escenario real con múltiples cámaras, esto vendría de una tabla de configuración
-        // o se extraería de los metadatos del XML si el script de Python los guardara.
-        // Basado en el código del ESP32 (esp.cpp), el ID del nodo es "CAM_001".
-        // Asumiremos que es la cámara principal activa.
         return ['CAM_001'];
     }
 
     private function getCameraStatus($camera = 'CAM_001')
     {
-        // Verificar si la cámara está activa basándose en la última detección en el XML
         $xmlPath = storage_path('app/' . $this->dbPath);
         $status = 'OFFLINE';
         $lastSeen = 'Nunca';
 
         if (file_exists($xmlPath)) {
             $xml = simplexml_load_file($xmlPath);
-            // Obtener la última detección
             if ($xml->deteccion && count($xml->deteccion) > 0) {
-                // Asumiendo que el último elemento es el más reciente (appends)
-                // O buscar la fecha más reciente
                 $lastNode = $xml->deteccion[count($xml->deteccion) - 1];
                 $lastDateStr = (string)$lastNode->fecha;
                 
-                // Si la última detección fue hace menos de 5 minutos, consideramos ONLINE
                 $lastTime = strtotime($lastDateStr);
                 $diff = time() - $lastTime;
                 
                 $lastSeen = $lastDateStr;
                 
-                if ($diff < 300) { // 5 minutos
+                if ($diff < 300) { 
                     $status = 'ONLINE';
                 }
             }
@@ -149,7 +138,6 @@ class AutomationController extends Controller
         $newUser->addChild('name', $request->input('name'));
         $newUser->addChild('email', $request->input('email'));
 
-        // Default report config
         $reports = $xml->reports;
         $newReport = $reports->addChild('report');
         $newReport->addChild('user_email', $request->input('email'));
@@ -165,11 +153,9 @@ class AutomationController extends Controller
         $this->ensureConfigExists();
         $xml = simplexml_load_string(Storage::get($this->configPath));
 
-        // Add or update notification for a specific user/camera
-        // For simplicity, just appending a new rule logic
         $notifs = $xml->notifications;
         $rule = $notifs->addChild('notification');
-        $rule->addChild('user_email', $request->input('user_email')); // Select from existing
+        $rule->addChild('user_email', $request->input('user_email'));
         $rule->addChild('camera', $request->input('camera'));
         $rule->addChild('min_threshold', $request->input('min_threshold'));
         $rule->addChild('max_threshold', $request->input('max_threshold'));

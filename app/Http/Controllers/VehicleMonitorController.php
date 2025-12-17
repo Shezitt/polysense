@@ -15,13 +15,11 @@ class VehicleMonitorController extends Controller
     public function getStats($cameraId = 'CAM_002')
     {
         try {
-            // Asegurar que cameraId tiene el formato correcto
             $cameraId = strtoupper($cameraId);
             if (!in_array($cameraId, ['CAM_001', 'CAM_002'])) {
                 $cameraId = 'CAM_002';
             }
             
-            // IMPORTANTE: Pasar camera_id como parámetro a la API del detector
             $url = "{$this->detectorUrl}/api/vehicles?camera_id={$cameraId}";
             $response = Http::timeout(5)->get($url);
             

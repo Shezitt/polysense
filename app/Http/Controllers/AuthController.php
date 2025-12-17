@@ -26,7 +26,7 @@ class AuthController extends Controller
      */
     public function login(Request $request)
     {
-        $credentials = $request->validate([
+        $credenciales = $request->validate([
             'email' => 'required|email',
             'password' => 'required',
         ]);
@@ -73,7 +73,7 @@ class AuthController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'role' => 'user', // Los nuevos usuarios son 'user' por defecto
+            'role' => 'user', 
         ]);
 
         Auth::login($user);

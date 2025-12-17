@@ -10,14 +10,10 @@ use App\Models\Report;
 
 class ModuloTresController extends Controller
 {
-    /**
-     * Dashboard principal - Lista de usuarios con configuración
-     */
     public function index()
     {
         $users = User::with('automationConfig')->get();
         
-        // Estadísticas generales
         $totalNotifications = Notification::count();
         $totalReports = Report::count();
         $activeUsers = User::where('role', '!=', 'admin')->count();
@@ -108,7 +104,6 @@ class ModuloTresController extends Controller
      */
     public function xmlCleanupConfig()
     {
-        // Obtener configuración del primer admin o crear una global
         $adminUser = User::where('role', 'admin')->first();
         $config = $adminUser ? AutomationConfig::getOrCreateForUser($adminUser->id) : null;
         

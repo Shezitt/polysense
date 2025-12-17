@@ -53,7 +53,6 @@ class UserController extends Controller
     {
         $user = User::findOrFail($id);
         
-        // No permitir eliminar al usuario actual
         if (auth()->check() && auth()->user()->id == $id) {
             return redirect()->back()->with('error', 'No puedes eliminar tu propio usuario');
         }
@@ -78,7 +77,6 @@ class UserController extends Controller
 
         $user = User::findOrFail($id);
         
-        // No permitir cambiar el rol del usuario actual
         if (auth()->check() && auth()->user()->id == $id) {
             return redirect()->back()->with('error', 'No puedes cambiar tu propio rol');
         }
