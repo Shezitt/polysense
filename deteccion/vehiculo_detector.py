@@ -263,7 +263,7 @@ def get_skyline_stream_url_robust():
     
     def handle_request(request):
         nonlocal found_url
-        if ".m3u8" in request.url and "live" in request.url:
+        if re.search(r'live.*\.m3u8|\.m3u8.*live', request.url):
             logger.info(f"Skyline: URL capturada")
             found_url = request.url
 
