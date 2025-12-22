@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Notification;
+use App\Utils\PriorityQueue;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 
@@ -192,5 +193,89 @@ class NotificationService
         }
 
         return $count;
+    }
+
+    /**
+     * Create multiple notifications at once, processing higher priority items first.
+     *
+     * Each item must be an array with keys: user_id, title, message, type (optional), priority (optional), metadata (optional).
+     * This method sorts by priority (high > medium > low) and then creates notifications in that order so
+     * that when multiple notifications are requested "simultaneously" the higher priority ones are persisted/issued first.
+     *
+     * @param array $items
+     * @return \Illuminate\Support\Collection Created Notification models
+     */
+    public function createBulk(array $items)
+    {
+        // priority weight map
+        $weights = [
+            'low' => 0,
+            'medium' => 1,
+            'high' => 2,
+        ];
+
+        // normalize and sort items by weight descending, then preserve original order for same priority
+        $normalized = [];
+        foreach ($items as $i => $it) {
+            $priority = isset($it['priority']) ? $it['priority'] : 'medium';
+            $weight = $weights[$priority] ?? $weights['medium'];
+            $normalized[] = array_merge($it, ['_priority_weight' => $weight, '_original_index' => $i]);
+        }
+
+        usort($normalized, function ($a, $b) {
+            if ($a['_priority_weight'] === $b['_priority_weight']) {
+                return $a['_original_index'] <=> $b['_original_index'];
+            }
+            return $b['_priority_weight'] <=> $a['_priority_weight'];
+        });
+
+        $created = collect();
+
+        foreach ($normalized as $it) {
+            $created->push($this->create(
+                (int)($it['user_id'] ?? 0),
+                (string)($it['title'] ?? 'Sin título'),
+                (string)($it['message'] ?? ''),
+                (string)($it['type'] ?? 'info'),
+                (string)($it['priority'] ?? 'medium'),
+                (array)($it['metadata'] ?? [])
+            ));
+        }
+
+        return $created;
+    }
+
+    /**
+     * Alternative bulk creation using the explicit PriorityQueue utility.
+     * Items are enqueued by their 'priority' key and then dequeued in order
+     * high -> medium -> low, preserving FIFO within the same priority.
+     *
+     * @param array $items
+     * @return \Illuminate\Support\Collection
+     */
+    public function createBulkWithQueue(array $items)
+    {
+        $pq = new PriorityQueue();
+
+        foreach ($items as $it) {
+            $priority = isset($it['priority']) ? $it['priority'] : 'medium';
+            $pq->enqueue($it, $priority);
+        }
+
+        $created = collect();
+
+        while (!$pq->isEmpty()) {
+            $it = $pq->dequeue();
+            $created->push($this->create(
+                (int)($it['user_id'] ?? 0),
+                (string)($it['title'] ?? 'Sin título'),
+                (string)($it['message'] ?? ''),
+                (string)($it['type'] ?? 'info'),
+                (string)($it['priority'] ?? 'medium'),
+                (array)($it['metadata'] ?? [])
+            ));
+        }
+
+        return $created;
     }
 }
