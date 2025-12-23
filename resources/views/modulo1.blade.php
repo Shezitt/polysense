@@ -128,13 +128,11 @@
         reconnectWebSocket();
     });
 
-    // Inicializar
     function init() {
         connectWebSocket();
         startStatsPolling();
     }
 
-    // Desconectar WebSocket anterior
     function reconnectWebSocket() {
         console.log(`Reconectando a ${currentCamera}...`);
         if (websocket) {
@@ -142,11 +140,9 @@
             websocket.close();
             websocket = null;
         }
-        // Pequeño delay para asegurar que se cierre antes de reconectar
         setTimeout(connectWebSocket, 500);
     }
 
-    // Conectar WebSocket para video
     function connectWebSocket() {
         const wsUrl = `ws://localhost:8080/ws/stream?camera_id=${currentCamera}`;
         console.log(`Conectando a: ${wsUrl}`);
@@ -155,18 +151,14 @@
         websocket = new WebSocket(wsUrl);
         websocket.binaryType = 'arraybuffer';
         
-        // Agregar ID único para este WebSocket para debugging
         websocket._debug_camera = currentCamera;
         websocket._debug_id = Math.random().toString(36).substr(2, 9);
-        console.log(`WebSocket ID: ${websocket._debug_id} para ${websocket._debug_camera}`);
 
         websocket.onopen = () => {
-            console.log(`WebSocket abierto para ${websocket._debug_camera}`);
             updateStatus(true);
         };
 
         websocket.onmessage = (event) => {
-            console.log(`Frame recibido de ${websocket._debug_camera} (${event.data.byteLength} bytes)`);
             
             const blob = new Blob([event.data], {type: 'image/jpeg'});
             const url = URL.createObjectURL(blob);

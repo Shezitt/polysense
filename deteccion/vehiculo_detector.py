@@ -71,6 +71,14 @@ COCO_CLASSES = {
 # ===========================
 # ESTADO GLOBAL (por cámara)
 # ===========================
+
+# Cache de URL para CAM_002
+skyline_url_cache = {
+    'url': None,
+    'timestamp': 0,
+    'ttl': 300  # 5 minutos de validez
+}
+
 camera_states = {
     'CAM_001': {
         'raw_frame': None,
@@ -257,8 +265,14 @@ def detect_vehicles(frame, tracked_vehicles=None):
 # ===========================
 
 def get_skyline_stream_url_robust():
-    """Extrae m3u8 con Playwright"""
-    logger.info("Skyline: Iniciando Playwright...")
+    global skyline_url_cache
+    
+    current_time = time.time()
+    if skyline_url_cache['url'] and (current_time - skyline_url_cache['timestamp']) < skyline_url_cache['ttl']:
+        logger.info("Skyline: Usando URL cacheada")
+        return skyline_url_cache['url']
+    
+    logger.info("Skyline: Extrayendo nueva URL...")
     found_url = None
     
     def handle_request(request):
@@ -269,36 +283,43 @@ def get_skyline_stream_url_robust():
 
     try:
         with sync_playwright() as p:
-            browser = p.chromium.launch(headless=True)
+            browser = p.chromium.launch(
+                headless=True,
+                args=['--disable-blink-features=AutomationControlled', '--no-sandbox']
+            )
             context = browser.new_context(
-                user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36"
+                user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36",
+                viewport={'width': 1280, 'height': 720}
             )
             page = context.new_page()
             page.on("request", handle_request)
             
             logger.info("Skyline: Navegando...")
             try:
-                page.goto(CAMERAS_CONFIG['CAM_002']['url'], timeout=60000, wait_until="domcontentloaded")
+                page.goto(CAMERAS_CONFIG['CAM_002']['url'], timeout=20000, wait_until="domcontentloaded")
             except: pass
 
             try:
-                page.wait_for_timeout(2000)
+                page.wait_for_timeout(1500)
                 selectors = ["#player", ".play-btn", "video", ".jw-display-icon-container"]
                 for sel in selectors:
                     try:
-                        if page.is_visible(sel):
-                            page.click(sel, force=True)
-                            page.wait_for_timeout(500)
+                        if page.is_visible(sel, timeout=500):
+                            page.click(sel, force=True, timeout=500)
+                            page.wait_for_timeout(300)
                     except: pass
                 page.mouse.click(640, 360)
             except: pass
 
             start_t = time.time()
-            while time.time() - start_t < 45:
+            while time.time() - start_t < 20:  # Reducido de 45 a 20 segundos
                 if found_url:
+                    skyline_url_cache['url'] = found_url
+                    skyline_url_cache['timestamp'] = time.time()
+                    logger.info("Skyline: URL cacheada exitosamente")
                     browser.close()
                     return found_url
-                page.wait_for_timeout(1000)
+                page.wait_for_timeout(500)  
             
             browser.close()
             return None
@@ -505,21 +526,29 @@ def worker_oracle():
 
 def worker_skyline():
     """Worker para CAM_002 (Skyline)"""
+    global skyline_url_cache
     logger.info("CAM_002 (Skyline): Iniciando...")
     
     while True:
         stream_url = get_skyline_stream_url_robust()
         
         if not stream_url:
-            logger.warning("💤 CAM_002: No URL. Reintentando en 10s...")
+            logger.warning("CAM_002: No URL. Reintentando")
+            # Invalidar cache
+            skyline_url_cache['url'] = None
             time.sleep(10)
             continue
         
         logger.info(f"CAM_002: Abriendo OpenCV...")
         cap = cv2.VideoCapture(stream_url)
         
+        # Configurar buffer para reducir latencia
+        cap.set(cv2.CAP_PROP_BUFFERSIZE, 1)
+        
         if not cap.isOpened():
             logger.error("CAM_002: OpenCV no abrió")
+            # Invalidar cache si falla
+            skyline_url_cache['url'] = None
             time.sleep(10)
             continue
         
@@ -539,6 +568,8 @@ def worker_skyline():
                     logger.warning("CAM_002: Stream perdido")
                     with data_lock:
                         camera_states['CAM_002']['status'] = 'offline'
+                    # Invalidar cache
+                    skyline_url_cache['url'] = None
                     break
                 time.sleep(0.01)
                 continue
@@ -546,7 +577,8 @@ def worker_skyline():
             consecutive_errors = 0
             frame_counter += 1
             
-            if frame_counter % 3 != 0: continue  # Procesar 1 de cada 3
+            # Procesar 1 de cada 2 frames en lugar de 1 de cada 3 (más fluido)
+            if frame_counter % 2 != 0: continue
             
             process_frame_generic(frame, 'CAM_002')
             

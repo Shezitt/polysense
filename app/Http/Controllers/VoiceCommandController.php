@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Services\VoiceCommandService;
 
 class VoiceCommandController extends Controller
 {
@@ -19,9 +20,7 @@ class VoiceCommandController extends Controller
         return response()->json($commands);
     }
 
-    /**
-     * Obtener comandos activos para un módulo específico
-     */
+    
     public function getActiveCommands($module = 'all')
     {
         $commands = DB::table('voice_commands')
@@ -35,9 +34,6 @@ class VoiceCommandController extends Controller
         return response()->json($commands);
     }
 
-    /**
-     * Crear un nuevo comando de voz
-     */
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -218,5 +214,17 @@ class VoiceCommandController extends Controller
             'message' => 'Comandos predeterminados creados',
             'count' => count($defaults)
         ]);
+    }
+
+    public function processVoice(Request $request)
+    {
+        $validated = $request->validate([
+            'text' => 'required|string'
+        ]);
+
+        $voiceService = new VoiceCommandService();
+        $result = $voiceService->processVoiceInput($validated['text']);
+
+        return response()->json($result);
     }
 }

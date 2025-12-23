@@ -66,6 +66,7 @@ Route::prefix('api/voice-commands')->group(function () {
     Route::delete('/{id}', [VoiceCommandController::class, 'destroy']);
     Route::post('/{id}/toggle', [VoiceCommandController::class, 'toggle']);
     Route::post('/defaults', [VoiceCommandController::class, 'createDefaults']);
+    Route::post('/process', [VoiceCommandController::class, 'processVoice']);
 });
 
 Route::middleware(['isAdmin'])->prefix('api')->group(function () {

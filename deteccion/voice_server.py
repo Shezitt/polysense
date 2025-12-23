@@ -59,12 +59,6 @@ class VoiceRecognitionServer:
                             if text:
                                 print(f"Reconocido: {text}")
                                 socketio.emit('voice_command', {'text': text, 'confidence': 1.0})
-                        else:
-                            partial = json.loads(recognizer.PartialResult())
-                            partial_text = partial.get('partial', '').strip()
-                            
-                            if partial_text:
-                                socketio.emit('voice_partial', {'text': partial_text})
                                 
                     except queue.Empty:
                         continue
@@ -94,69 +88,11 @@ def handle_disconnect():
     voice_server.clients.discard(request.sid)
     print(f"Cliente desconectado (Total: {len(voice_server.clients)})")
 
-@app.route('/')
-def index():
-    """Página de prueba del servidor"""
-    return render_template_string("""
-    <!DOCTYPE html>
-    <html>
-    <head>
-        <title>Voice Server - Test</title>
-        <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
-        <style>
-            body { font-family: Arial; max-width: 800px; margin: 50px auto; padding: 20px; }
-            .status { padding: 10px; border-radius: 5px; margin: 10px 0; }
-            .connected { background: #d4edda; color: #155724; }
-            .disconnected { background: #f8d7da; color: #721c24; }
-            .command { background: #e7f3ff; padding: 10px; margin: 5px 0; border-left: 4px solid #0066cc; }
-            #partial { color: #666; font-style: italic; }
-        </style>
-    </head>
-    <body>
-        <h1>Voice Recognition Server</h1>
-        <div id="status" class="status disconnected">Desconectado</div>
-        
-        <h2>Comandos Reconocidos:</h2>
-        <div id="commands"></div>
-        
-        <h3>Escuchando:</h3>
-        <div id="partial"></div>
-        
-        <script>
-            const socket = io('http://localhost:5001');
-            
-            socket.on('connect', () => {
-                document.getElementById('status').className = 'status connected';
-                document.getElementById('status').textContent = 'Conectado - Escuchando...';
-            });
-            
-            socket.on('disconnect', () => {
-                document.getElementById('status').className = 'status disconnected';
-                document.getElementById('status').textContent = 'Desconectado';
-            });
-            
-            socket.on('voice_command', (data) => {
-                const div = document.createElement('div');
-                div.className = 'command';
-                div.innerHTML = `<strong>${data.text}</strong> <small>(confianza: ${(data.confidence * 100).toFixed(0)}%)</small>`;
-                document.getElementById('commands').insertBefore(div, document.getElementById('commands').firstChild);
-                document.getElementById('partial').textContent = '';
-            });
-            
-            socket.on('voice_partial', (data) => {
-                document.getElementById('partial').textContent = data.text + '...';
-            });
-        </script>
-    </body>
-    </html>
-    """)
-
 if __name__ == '__main__':
     print("=" * 60)
     print("SERVIDOR DE RECONOCIMIENTO DE VOZ")
     print("=" * 60)
     print("WebSocket: http://localhost:5001")
-    print("Pagina de prueba: http://localhost:5001")
     print("=" * 60)
     
     voice_server.is_listening = True

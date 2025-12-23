@@ -50,15 +50,6 @@
             </select>
         </div>
 
-        <div class="flex flex-col min-w-[120px]">
-            <label class="text-xs text-gray-600 font-semibold mb-1">Agrupación</label>
-            <select name="view_mode" class="border-gray-300 rounded text-sm px-2 py-1.5 focus:ring-blue-500 focus:border-blue-500">
-                <option value="auto">Automático</option>
-                <option value="hourly" {{ request('view_mode') == 'hourly' ? 'selected' : '' }}>Por Hora (0-23h)</option>
-                <option value="daily" {{ request('view_mode') == 'daily' ? 'selected' : '' }}>Por Día</option>
-            </select>
-        </div>
-
         <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-1.5 rounded text-sm font-medium transition-colors">
             Filtrar
         </button>
@@ -208,83 +199,46 @@
 
     function processAndInitCharts(data) {
         // --- PROCESAMIENTO DE DATOS ---
-        const urlParams = new URLSearchParams(window.location.search);
-        const startDate = urlParams.get('fecha_inicio');
-        const endDate = urlParams.get('fecha_fin');
-        const viewMode = urlParams.get('view_mode') || 'auto';
         
-        // Determinar modo: 'daily' (por fecha) o 'hourly' (por horas del día)
-        let isMultiDay = false;
-        
-        if (viewMode === 'daily') {
-            isMultiDay = true;
-        } else if (viewMode === 'hourly') {
-            isMultiDay = false;
-        } else {
-            // Modo Automático
-            if (startDate && endDate && startDate !== endDate) {
-                isMultiDay = true;
-            } else if (!startDate && !endDate && data.length > 0) {
-                const uniqueDates = new Set(data.map(item => item.fecha.split(' ')[0]));
-                if (uniqueDates.size > 1) isMultiDay = true;
-            }
-        }
-
-        const stats = {};
+        // 1. Agrupar por HORA y Tipo para el Gráfico de Barras
+        const hourlyCounts = {};
         const typesCount = { 'Auto': 0, 'Moto': 0, 'Bus': 0, 'Otro': 0 };
 
         data.forEach(item => {
+            // Extraer hora de la fecha (formato: "2025-12-15 09:42:58" -> "09")
             const dateTimeParts = item.fecha.split(' ');
             if (dateTimeParts.length >= 2) {
-                const datePart = dateTimeParts[0];
-                const timePart = dateTimeParts[1];
-                const hour = timePart.split(':')[0];
+                const hour = dateTimeParts[1].split(':')[0]; // Obtener solo la hora
                 const type = item.tipo;
 
-                // Clave de agrupación según el modo
-                const key = isMultiDay ? datePart : `${hour}:00`;
-
-                // Inicializar objeto
-                if (!stats[key]) {
-                    stats[key] = { 'Auto': 0, 'Moto': 0, 'Bus': 0, 'Otro': 0 };
+                // Inicializar objeto de la hora si no existe
+                if (!hourlyCounts[hour]) {
+                    hourlyCounts[hour] = { 'Auto': 0, 'Moto': 0, 'Bus': 0, 'Otro': 0 };
                 }
 
-                // Contar
+                // Contar para la hora
                 if (['Auto', 'Moto', 'Bus'].includes(type)) {
-                    stats[key][type]++;
-                    typesCount[type]++;
+                    hourlyCounts[hour][type]++;
+                    typesCount[type]++; // Contar global para la torta
                 } else {
-                    stats[key]['Otro']++;
+                    hourlyCounts[hour]['Otro']++;
                     typesCount['Otro']++;
                 }
             }
         });
 
-        // Ordenar claves
-        let sortedKeys = Object.keys(stats);
-        if (isMultiDay) {
-            // Ordenar fechas cronológicamente
-            sortedKeys.sort((a, b) => new Date(a) - new Date(b));
-        } else {
-            // Ordenar horas
-            sortedKeys.sort((a, b) => parseInt(a) - parseInt(b));
-        }
+        // Ordenar horas numéricamente (00, 01, 02, ..., 23)
+        const sortedHours = Object.keys(hourlyCounts).sort((a, b) => parseInt(a) - parseInt(b));
 
-        // Preparar arrays
-        const labels = sortedKeys;
-        const dataAuto = sortedKeys.map(k => stats[k]['Auto']);
-        const dataMoto = sortedKeys.map(k => stats[k]['Moto']);
-        const dataBus = sortedKeys.map(k => stats[k]['Bus']);
-
-        // Actualizar título del gráfico
-        const chartTitle = isMultiDay ? 'Vehículos Detectados por Día' : 'Vehículos Detectados por Hora';
-        const canvasContainer = document.getElementById('dailyChart').parentElement;
-        if (canvasContainer && canvasContainer.previousElementSibling) {
-            canvasContainer.previousElementSibling.querySelector('h2').textContent = chartTitle;
-        }
+        // Preparar arrays para Chart.js con formato "00:00", "01:00", etc.
+        const labels = sortedHours.map(h => `${h}:00`);
+        const dataAuto = sortedHours.map(hour => hourlyCounts[hour]['Auto']);
+        const dataMoto = sortedHours.map(hour => hourlyCounts[hour]['Moto']);
+        const dataBus = sortedHours.map(hour => hourlyCounts[hour]['Bus']);
 
         // --- 2. CONFIGURACIÓN GRÁFICOS ---
 
+        // Destruir gráficos anteriores si existen
         if (chartBar) chartBar.destroy();
         if (chartPie) chartPie.destroy();
 
@@ -293,11 +247,26 @@
         chartBar = new Chart(ctxBar, {
             type: 'bar',
             data: {
-                labels: labels,
+                labels: labels, // Fechas dinámicas
                 datasets: [
-                    { label: 'Autos', data: dataAuto, backgroundColor: '#3b82f6', borderRadius: 4 },
-                    { label: 'Motos', data: dataMoto, backgroundColor: '#ef4444', borderRadius: 4 },
-                    { label: 'Buses', data: dataBus, backgroundColor: '#10b981', borderRadius: 4 }
+                    {
+                        label: 'Autos',
+                        data: dataAuto,
+                        backgroundColor: '#3b82f6',
+                        borderRadius: 4,
+                    },
+                    {
+                        label: 'Motos',
+                        data: dataMoto,
+                        backgroundColor: '#ef4444',
+                        borderRadius: 4,
+                    },
+                    {
+                        label: 'Buses',
+                        data: dataBus,
+                        backgroundColor: '#10b981',
+                        borderRadius: 4,
+                    }
                 ]
             },
             options: {
