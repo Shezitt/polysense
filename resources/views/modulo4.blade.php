@@ -292,12 +292,11 @@ function openEditModal(id) {
     }, 100);
 }
 
-// Cerrar modal
 function closeModal() {
     document.getElementById('edit-modal').classList.add('hidden');
 }
 
-// Guardar cambios
+
 document.getElementById('edit-form').addEventListener('submit', async (e) => {
     e.preventDefault();
     
